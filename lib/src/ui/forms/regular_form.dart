@@ -1,0 +1,88 @@
+import 'package:flutter/material.dart';
+
+import 'package:craft_dynamic/craft_dynamic.dart';
+import 'package:craft_dynamic/dynamic_widget.dart';
+import 'package:craft_dynamic/src/ui/dynamic_components.dart';
+
+class RegularFormWidget extends StatefulWidget {
+  final ModuleItem moduleItem;
+  final List<FormItem> sortedForms;
+  final List<dynamic>? jsonDisplay, formFields;
+  final bool hasRecentList;
+
+  const RegularFormWidget(
+      {super.key,
+      required this.moduleItem,
+      required this.sortedForms,
+      required this.jsonDisplay,
+      required this.formFields,
+      this.hasRecentList = false});
+
+  @override
+  State<StatefulWidget> createState() => _RegularFormWidgetState();
+}
+
+class _RegularFormWidgetState extends State<RegularFormWidget> {
+  final _formKey = GlobalKey<FormState>();
+  List<FormItem> formItems = [];
+
+  @override
+  Widget build(BuildContext context) {
+    formItems = widget.sortedForms.toList()
+      ..removeWhere((element) => element.controlType == ViewType.LIST.name);
+
+    return Scaffold(
+        appBar: AppBar(
+          elevation: 2,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
+          title: Text(widget.moduleItem.moduleName),
+          actions: widget.hasRecentList
+              ? [
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.view_list,
+                        color: Colors.white,
+                      ))
+                ]
+              : null,
+        ),
+        body: SizedBox(
+            height: double.infinity,
+            child: SingleChildScrollView(
+                child: Column(
+              children: [
+                const SizedBox(
+                  height: 12,
+                ),
+                Form(
+                    key: _formKey,
+                    child: ListView.builder(
+                        padding:
+                            const EdgeInsets.only(left: 14, right: 14, top: 8),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: formItems.length,
+                        itemBuilder: (context, index) {
+                          return BaseFormComponent(
+                              formItem: formItems[index],
+                              moduleItem: widget.moduleItem,
+                              formItems: formItems,
+                              formKey: _formKey,
+                              child: IFormWidget(formItems[index],
+                                      jsonText: widget.jsonDisplay,
+                                      formFields: widget.formFields)
+                                  .render());
+                        }))
+              ],
+            ))));
+  }
+}

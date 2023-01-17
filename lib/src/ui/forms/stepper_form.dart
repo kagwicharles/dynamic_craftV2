@@ -20,9 +20,9 @@ class StepperFormWidget extends StatefulWidget {
 class _StepperFormWidgetState extends State<StepperFormWidget> {
   int _index = 0;
   List<FormItem> stepControls = [];
+  List<GlobalKey<FormState>> formKeys = [];
   List<Step> steps = [];
   int stepperLength = 0;
-  var formKey;
 
   @override
   void initState() {
@@ -36,17 +36,18 @@ class _StepperFormWidgetState extends State<StepperFormWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    formKey = BaseFormInheritedComponent.of(context)?.formKey;
   }
 
   getSteps() {
     steps.clear();
     stepControls.asMap().forEach((key, step) {
+      formKeys.add(GlobalKey<FormState>());
       steps.add(Step(
           title: Text(step.controlText ?? ""),
           isActive: _index >= key,
           state: _index >= key ? StepState.complete : StepState.disabled,
           content: StepForm(
+            formKey: formKeys[key],
             formItems: widget.formItems,
             formItem: step,
             moduleItem: widget.moduleItem,
@@ -73,6 +74,21 @@ class _StepperFormWidgetState extends State<StepperFormWidget> {
         ),
         body: Stepper(
             currentStep: _index,
+            controlsBuilder: (BuildContext context, ControlsDetails details) {
+              return _index == stepperLength
+                  ? const SizedBox()
+                  : Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        OutlinedButton(
+                            onPressed: details.onStepContinue,
+                            child: const Text("NEXT")),
+                        OutlinedButton(
+                            onPressed: details.onStepCancel,
+                            child: const Text("CANCEL")),
+                      ],
+                    );
+            },
             onStepCancel: () {
               if (_index > 0) {
                 setState(() {
@@ -82,7 +98,8 @@ class _StepperFormWidgetState extends State<StepperFormWidget> {
             },
             onStepContinue: () {
               if (_index < stepperLength) {
-                if (formKey?.currentState?.validate()!) {
+                final validator = formKeys[_index].currentState?.validate();
+                if (validator!) {
                   setState(() {
                     _index += 1;
                   });
@@ -109,14 +126,15 @@ class _StepperFormWidgetState extends State<StepperFormWidget> {
 }
 
 class StepForm extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
+  final formKey;
   List<dynamic>? jsonDisplay, formFields;
   List<FormItem> formItems;
   ModuleItem moduleItem;
   FormItem formItem;
 
   StepForm(
-      {required this.formItems,
+      {required this.formKey,
+      required this.formItems,
       required this.formItem,
       required this.moduleItem,
       super.key});
@@ -130,7 +148,7 @@ class StepForm extends StatelessWidget {
         .toList();
 
     return Form(
-        key: _formKey,
+        key: formKey,
         child: ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -140,7 +158,7 @@ class StepForm extends StatelessWidget {
                   formItem: stepForms[index],
                   moduleItem: moduleItem,
                   formItems: stepForms,
-                  formKey: _formKey,
+                  formKey: formKey,
                   child: IFormWidget(stepForms[index],
                           jsonText: jsonDisplay, formFields: formFields)
                       .render());

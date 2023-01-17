@@ -98,6 +98,7 @@ class PostDynamicValidate implements IPostDynamicCheck {
       ..status = dynamicResponse.status
       ..message = dynamicResponse.message
       ..jsonDisplay = dynamicResponse.display
+      ..formFields = dynamicResponse.formFields
       ..moduleItem = moduleItem
       ..notifyText = dynamicResponse.notifyText
       ..opensDynamicRoute = true

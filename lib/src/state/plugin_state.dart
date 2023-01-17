@@ -33,3 +33,7 @@ var showLoadingScreen = false.obs;
 var isBiometricEnabled = false.obs;
 
 var isCallingService = false.obs;
+
+var currentStepperIndex = 0.obs;
+
+var isStepperForm = false.obs;

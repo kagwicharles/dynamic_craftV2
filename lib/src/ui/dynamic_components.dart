@@ -15,9 +15,9 @@ import 'package:vibration/vibration.dart';
 import 'package:camera/camera.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:craft_dynamic/src/dynamic_static/grouped_button.dart';
-import 'package:craft_dynamic/src/dynamic_static/list_screen.dart';
-import 'package:craft_dynamic/src/dynamic_static/qr_scanner.dart';
+import 'package:craft_dynamic/src/ui/dynamic_static/grouped_button.dart';
+import 'package:craft_dynamic/src/ui/dynamic_static/list_screen.dart';
+import 'package:craft_dynamic/src/ui/dynamic_static/qr_scanner.dart';
 import 'package:craft_dynamic/src/network/dynamic_request.dart';
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/providers/group_button_provider.dart';
@@ -235,16 +235,19 @@ class HiddenWidget implements IFormWidget {
   @override
   Widget render() {
     String controlValue = "";
+
     if (formFields != null) {
       formFields?.forEach((formField) {
         if (formField[FormFieldProp.ControlID.name] == formItem?.controlId) {
           controlValue = formField[FormFieldProp.ControlValue.name];
+          if (controlValue.isNotEmpty) {
+            DynamicInput.formInputValues
+                .add({"${formItem?.serviceParamId}": controlValue});
+            debugPrint(
+                "Setting control value:$controlValue on hidden form item:${formItem?.serviceParamId}");
+          }
         }
       });
-      if (controlValue.isNotEmpty) {
-        DynamicInput.formInputValues
-            .add({"${formItem?.serviceParamId}": controlValue});
-      }
     } else {
       DynamicInput.formInputValues
           .add({"${formItem?.serviceParamId}": "${formItem?.controlValue}"});

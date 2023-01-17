@@ -1,9 +1,9 @@
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/builder/factory_builder.dart';
-import 'package:craft_dynamic/src/dynamic_static/list_data.dart';
-import 'package:craft_dynamic/src/dynamic_static/list_screen.dart';
-import 'package:craft_dynamic/src/dynamic_static/request_status.dart';
-import 'package:craft_dynamic/src/dynamic_static/transaction_receipt.dart';
+import 'package:craft_dynamic/src/ui/dynamic_static/list_data.dart';
+import 'package:craft_dynamic/src/ui/dynamic_static/list_screen.dart';
+import 'package:craft_dynamic/src/ui/dynamic_static/request_status.dart';
+import 'package:craft_dynamic/src/ui/dynamic_static/transaction_receipt.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +47,7 @@ class DynamicUtil {
     var builder = DynamicFactory.getPostDynamicObject(
         dynamicData); //Get a builder based on action type
     var postDynamic = PostDynamic(builder, context, controlID);
-    debugPrint("PostDynamic Status::::${postDynamic.status}");
+    debugPrint("PostDynamic formfields::::${postDynamic.formFields}");
 
     switch (postDynamic.status) {
       case "000":

@@ -58,12 +58,17 @@ class _TransactionListState extends State<TransactionList> {
                 var list = snapshot.data?.dynamicList;
                 if (list != null) {
                   addTransactions(list: list);
-                  widget = ListView.builder(
+                  widget = ListView.separated(
                     itemCount: transactionList.length,
                     itemBuilder: (context, index) {
                       return TransactionItem(
                           transaction: transactionList[index]);
                     },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(
+                      color: Colors.grey,
+                      height: 1,
+                    ),
                   );
                 }
               }
@@ -92,12 +97,11 @@ class TransactionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 8),
-        margin: const EdgeInsets.only(bottom: 8.0, top: 4),
         child: Material(
             elevation: 2,
             borderRadius: BorderRadius.circular(8.0),
             child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: IntrinsicHeight(
                     child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -106,40 +110,56 @@ class TransactionItem extends StatelessWidget {
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          transaction.serviceName,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        Text(transaction.date),
-                        const SizedBox(
-                          height: 18,
-                        ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Amount"),
-                            const SizedBox(
-                              width: 12,
+                            Text(
+                              transaction.serviceName,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: APIService.appPrimaryColor),
                             ),
-                            Text(transaction.amount,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold))
+                            Text(
+                              transaction.status,
+                              style: TextStyle(
+                                color: transaction.status == "FAIL"
+                                    ? Colors.red
+                                    : Colors.green,
+                              ),
+                            ),
                           ],
                         ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Date"),
+                                  Text(
+                                    transaction.date,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ]),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Amount"),
+                                  Text(transaction.amount,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold))
+                                ])
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 18,
+                        )
                       ],
                     )),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(
-                          Icons.radio_button_on_rounded,
-                          color: transaction.status == "FAIL"
-                              ? Colors.red
-                              : Colors.green,
-                        ),
-                        Text(transaction.status),
-                      ],
-                    ),
                   ],
                 )))));
   }

@@ -28,6 +28,7 @@ class TabWidget extends StatefulWidget {
 }
 
 class _TabWidgetState extends State<TabWidget> {
+  bool hasRecentList = false;
   List<FormItem> horizontalScroll = [];
   List<Tab> tabs = [];
   List<TabWidgetList> tabWidgetList = [];
@@ -36,7 +37,9 @@ class _TabWidgetState extends State<TabWidget> {
   @override
   void initState() {
     super.initState();
+    tabWidgetList.clear();
     logForms();
+    addTabWidgetList();
   }
 
   List<FormItem> getContainers(List<FormItem> forms) {
@@ -111,10 +114,8 @@ class _TabWidgetState extends State<TabWidget> {
     return items;
   }
 
-  @override
-  Widget build(BuildContext context) {
+  addTabWidgetList() {
     List<FormItem> tabForms = [];
-    bool hasRecentList = false;
 
     linkControls.asMap().forEach((index, linkControl) {
       tabForms = getTabForms(widget.formItems, linkControl).toList();
@@ -129,7 +130,10 @@ class _TabWidgetState extends State<TabWidget> {
         horizontalScroll: horizontalScroll,
       ));
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return DefaultTabController(
         length: tabs.length,
         child: Builder(builder: (BuildContext context) {
@@ -229,8 +233,6 @@ class _TabWidgetListState extends State<TabWidgetList> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: sortedForms.length,
                   itemBuilder: (context, index) {
-                    debugPrint(
-                        "Form control type... ${sortedForms[index].controlType} control id...${sortedForms[index].controlId}");
                     return BaseFormComponent(
                         formItem: sortedForms[index],
                         moduleItem: widget.moduleItem,

@@ -71,5 +71,3 @@ part 'src/repository/account_repository.dart';
 part 'src/session_manager/session_helper.dart';
 
 part 'src/ui/dynamic_static/blurr_load_screen.dart';
-
-part 'src/ui/dynamic_static/search_module_delegate.dart';

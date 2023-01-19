@@ -1,36 +1,30 @@
 // ignore_for_file: must_be_immutable
 part of dynamic_widget;
 
-class DynamicWidget extends StatefulWidget {
+class DynamicWidget extends StatelessWidget {
   List<dynamic>? jsonDisplay, formFields;
   int? nextFormSequence;
-  bool isWizard;
+  bool isWizard, isNextForm;
   ModuleItem? moduleItem;
   FrequentAccessedModule? favouriteModule;
 
-  DynamicWidget({
-    Key? key,
-    this.moduleItem,
-    this.favouriteModule,
-    this.jsonDisplay,
-    this.formFields,
-    this.nextFormSequence,
-    this.isWizard = false,
-  }) : super(key: key);
+  DynamicWidget(
+      {Key? key,
+      this.moduleItem,
+      this.favouriteModule,
+      this.jsonDisplay,
+      this.formFields,
+      this.nextFormSequence,
+      this.isWizard = false,
+      this.isNextForm = false})
+      : super(key: key);
 
-  @override
-  State<DynamicWidget> createState() => _DynamicWidgetState();
-}
-
-class _DynamicWidgetState extends State<DynamicWidget> {
   List<FormItem> content = [];
-  ModuleItem? moduleItem;
-  FrequentAccessedModule? favouriteModule;
 
   @override
   Widget build(BuildContext context) {
     moduleItem = checkModuleType(
-        moduleItem: widget.moduleItem, favouriteModule: widget.favouriteModule);
+        moduleItem: moduleItem, favouriteModule: favouriteModule);
 
     final orientation = MediaQuery.of(context).orientation;
     EasyLoading.dismiss();
@@ -41,11 +35,12 @@ class _DynamicWidgetState extends State<DynamicWidget> {
         create: (context) => PluginState(),
         child: moduleItem?.moduleCategory == "FORM"
             ? FormsListWidget(
-                jsonDisplay: widget.jsonDisplay,
-                formFields: widget.formFields,
-                nextFormSequence: widget.nextFormSequence,
-                isWizard: widget.isWizard,
+                jsonDisplay: jsonDisplay,
+                formFields: formFields,
+                nextFormSequence: nextFormSequence,
+                isWizard: isWizard,
                 moduleItem: moduleItem!,
+                isNextForm: isNextForm,
               )
             : ModulesListWidget(
                 orientation: orientation,
@@ -66,10 +61,5 @@ class _DynamicWidgetState extends State<DynamicWidget> {
           merchantID: favouriteModule.merchantID);
     }
     return item;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

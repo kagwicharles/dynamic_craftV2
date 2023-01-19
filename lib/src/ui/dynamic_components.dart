@@ -3,6 +3,7 @@
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:craft_dynamic/database.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -49,6 +50,7 @@ class BaseFormComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("DI::::::${formItem.controlType}");
     return Column(
       children: [
         BaseFormInheritedComponent(
@@ -208,11 +210,11 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
       }
     }
     if (isObscured) {
-      DynamicInput.encryptedField[formItem?.serviceParamId] =
-          CryptLib.encryptField(formattedValue);
+      Provider.of<PluginState>(context, listen: false).addEncryptedFields(
+          formItem?.serviceParamId, CryptLib.encryptField(formattedValue));
     } else {
-      DynamicInput.formInputValues
-          .add({"${formItem?.serviceParamId}": "$value"});
+      Provider.of<PluginState>(context, listen: false)
+          .addFormInput({"${formItem?.serviceParamId}": "$value"});
     }
     return null;
   }
@@ -234,28 +236,34 @@ class HiddenWidget implements IFormWidget {
 
   @override
   Widget render() {
-    String controlValue = "";
+    return Builder(builder: (context) {
+      String controlValue = "";
 
-    if (formFields != null) {
-      formFields?.forEach((formField) {
-        if (formField[FormFieldProp.ControlID.name] == formItem?.controlId) {
-          controlValue = formField[FormFieldProp.ControlValue.name];
-          if (controlValue.isNotEmpty) {
-            DynamicInput.formInputValues
-                .add({"${formItem?.serviceParamId}": controlValue});
-            debugPrint(
-                "Setting control value:$controlValue on hidden form item:${formItem?.serviceParamId}");
+      if (formFields != null) {
+        formFields?.forEach((formField) {
+          if (formField[FormFieldProp.ControlID.name] == formItem?.controlId) {
+            controlValue = formField[FormFieldProp.ControlValue.name];
+            if (controlValue.isNotEmpty) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Provider.of<PluginState>(context, listen: false).addFormInput(
+                    {"${formItem?.serviceParamId}": controlValue});
+              });
+              debugPrint(
+                  "Setting control value:$controlValue on hidden form item:${formItem?.serviceParamId}");
+            }
           }
-        }
-      });
-    } else {
-      DynamicInput.formInputValues
-          .add({"${formItem?.serviceParamId}": "${formItem?.controlValue}"});
-    }
-    return const Visibility(
-      visible: false,
-      child: SizedBox(),
-    );
+        });
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Provider.of<PluginState>(context, listen: false).addFormInput(
+              {"${formItem?.serviceParamId}": "${formItem?.controlValue}"});
+        });
+      }
+      return const Visibility(
+        visible: false,
+        child: SizedBox(),
+      );
+    });
   }
 }
 
@@ -273,6 +281,7 @@ class DynamicButton extends StatefulWidget implements IFormWidget {
 
 class _DynamicButtonState extends State<DynamicButton> {
   final _dynamicRequest = DynamicFormRequest();
+  final _moduleRepository = ModuleRepository();
   FormItem? formItem;
   ModuleItem? moduleItem;
   var formKey;
@@ -287,9 +296,6 @@ class _DynamicButtonState extends State<DynamicButton> {
 
   @override
   Widget build(BuildContext context) {
-    // AppLogger.appLogI(
-    //     tag: "Button",
-    //     message: "${formItem?.serviceParamId}..${formItem?.controlId}");
     return Builder(builder: (BuildContext context) {
       return Container(
           alignment: Alignment.bottomCenter,
@@ -311,31 +317,48 @@ class _DynamicButtonState extends State<DynamicButton> {
     }
 
     if (formItem?.controlFormat == ControlFormat.OPENFORM.name) {
-      CommonUtils.navigateToRoute(
-          context: context,
-          widget: DynamicWidget(
-            moduleItem: moduleItem,
-          ));
+      getModule(formItem?.actionId ?? "").then((module) {
+        CommonUtils.navigateToRoute(
+            context: context,
+            widget: DynamicWidget(
+              moduleItem: module,
+            ));
+      });
+
       return;
     }
 
     if (formKey?.currentState?.validate()!) {
-      Provider.of<PluginState>(context, listen: false).setRequestState(true);
-
-      _dynamicRequest
-          .dynamicRequest(moduleItem!,
-              formItem: formItem,
-              dataObj: DynamicInput.formInputValues,
-              encryptedField: DynamicInput.encryptedField,
-              context: context,
-              tappedButton: true)
-          .then((value) => DynamicUtil.processDynamicResponse(
-              value!.dynamicData!, context, formItem!.controlId!,
-              moduleItem: moduleItem));
+      if (formItem?.controlFormat == ControlFormat.NEXT.name) {
+        CommonUtils.navigateToRoute(
+            context: context,
+            widget: DynamicWidget(
+              moduleItem: moduleItem,
+              nextFormSequence: 2,
+              isNextForm: true,
+            ));
+        return;
+      } else {
+        Provider.of<PluginState>(context, listen: false).setRequestState(true);
+        _dynamicRequest
+            .dynamicRequest(moduleItem!,
+                formItem: formItem,
+                dataObj: Provider.of<PluginState>(context, listen: false)
+                    .formInputValues,
+                encryptedField: Provider.of<PluginState>(context, listen: false)
+                    .encryptedFields,
+                context: context,
+                tappedButton: true)
+            .then((value) => DynamicUtil.processDynamicResponse(
+                value!.dynamicData!, context, formItem!.controlId!,
+                moduleItem: moduleItem));
+      }
     } else {
       Vibration.vibrate();
     }
   }
+
+  getModule(String moduleID) => _moduleRepository.getModuleById(moduleID);
 }
 
 class DynamicDropDown implements IFormWidget {
@@ -390,8 +413,8 @@ class DynamicDropDown implements IFormWidget {
                 style: const TextStyle(fontSize: 16, color: Colors.black),
                 onChanged: ((value) => {_currentValue = value.toString()}),
                 validator: (value) {
-                  DynamicInput.formInputValues
-                      .add({"${formItem?.serviceParamId}": "$value"});
+                  Provider.of<PluginState>(context, listen: false)
+                      .addFormInput({"${formItem?.serviceParamId}": value});
                 },
                 items: dropdownPicks,
               );
@@ -416,8 +439,10 @@ class DynamicLabelWidget implements IFormWidget {
       _dynamicRequest.dynamicRequest(
         moduleItem,
         formItem: formItem,
-        dataObj: DynamicInput.formInputValues,
-        encryptedField: DynamicInput.encryptedField,
+        dataObj:
+            Provider.of<PluginState>(context, listen: false).formInputValues,
+        encryptedField:
+            Provider.of<PluginState>(context, listen: false).encryptedFields,
         isList: true,
         context: context,
       );
@@ -470,60 +495,63 @@ class DynamicTextViewWidget implements IFormWidget {
     jsonText?.forEach((item) {
       mapItems.add(item);
     });
-    return Builder(builder: (BuildContext context) {
-      return Column(children: [
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: mapItems.length,
-          itemBuilder: (context, index) {
-            var mapItem = mapItems[index];
-            mapItem.removeWhere(
-                (key, value) => key == null || value == null || value == "");
+    return mapItems.isNotEmpty
+        ? Builder(builder: (BuildContext context) {
+            return Column(children: [
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: mapItems.length,
+                itemBuilder: (context, index) {
+                  var mapItem = mapItems[index];
+                  mapItem.removeWhere((key, value) =>
+                      key == null || value == null || value == "");
 
-            return Material(
-                elevation: 2,
-                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0, vertical: 8.0),
-                  child: Column(
-                    children: mapItem
-                        .map((key, value) => MapEntry(
-                            key,
-                            Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "$key:",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                    ),
-                                    Flexible(
-                                        child: Text(
-                                      value.toString(),
-                                      textAlign: TextAlign.right,
-                                      style:
-                                          const TextStyle(fontFamily: "Roboto"),
-                                    ))
-                                  ],
-                                ))))
-                        .values
-                        .toList(),
-                  ),
-                ));
-          },
-        ),
-        const SizedBox(
-          height: 12,
-        )
-      ]);
-    });
+                  return Material(
+                      elevation: 2,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 8.0),
+                        child: Column(
+                          children: mapItem
+                              .map((key, value) => MapEntry(
+                                  key,
+                                  Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "$key:",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium,
+                                          ),
+                                          Flexible(
+                                              child: Text(
+                                            value.toString(),
+                                            textAlign: TextAlign.right,
+                                            style: const TextStyle(
+                                                fontFamily: "Roboto"),
+                                          ))
+                                        ],
+                                      ))))
+                              .values
+                              .toList(),
+                        ),
+                      ));
+                },
+              ),
+              const SizedBox(
+                height: 12,
+              )
+            ]);
+          })
+        : const SizedBox();
   }
 }
 
@@ -606,8 +634,10 @@ class _DynamicPhonePickerFormWidgetState
             }),
       ),
       validator: (value) {
-        DynamicInput.formInputValues
-            .add({"${formItem?.serviceParamId}": "$value"});
+        Provider.of<PluginState>(context, listen: false)
+            .addFormInput({"${formItem?.serviceParamId}": value});
+        // Provider.of<PluginState>(context, listen: false).formInputValues
+        //     .add({"${formItem?.serviceParamId}": "$value"});
         return null;
       },
       style: const TextStyle(fontSize: 16),
@@ -625,8 +655,10 @@ class DynamicListWidget implements IFormWidget {
       _dynamicRequest.dynamicRequest(
         moduleItem,
         formItem: formItem,
-        dataObj: DynamicInput.formInputValues,
-        encryptedField: DynamicInput.encryptedField,
+        dataObj:
+            Provider.of<PluginState>(context, listen: false).formInputValues,
+        encryptedField:
+            Provider.of<PluginState>(context, listen: false).encryptedFields,
         isList: true,
         context: context,
       );
@@ -815,8 +847,10 @@ class _DynamicLinkedContainerState extends State<DynamicLinkedContainer> {
                     inputDecoration:
                         InputDecoration(hintText: formItem?.controlText)),
                 (string) {
-              DynamicInput.formInputValues
-                  .add({"${formItem?.serviceParamId}": _controller.text});
+              Provider.of<PluginState>(context, listen: false).addFormInput(
+                  {"${formItem?.serviceParamId}": _controller.text});
+              // Provider.of<PluginState>(context, listen: false).formInputValues
+              //     .add({"${formItem?.serviceParamId}": _controller.text});
               return null;
             });
           }));
@@ -844,6 +878,7 @@ class _DynamicLinkedContainerState extends State<DynamicLinkedContainer> {
 class NullWidget implements IFormWidget {
   @override
   Widget render() {
+    debugPrint("A null widget was found!");
     return const Visibility(
       visible: false,
       child: SizedBox(),

@@ -29,7 +29,7 @@ class _TransactionReceiptState extends State<TransactionReceipt>
     _controller = AnimationController(vsync: this);
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Future.delayed(const Duration(milliseconds: 5000), () {
+        Future.delayed(const Duration(milliseconds: 1000), () {
           if (!mounted) {
             _controller.forward(from: 0.0);
           }

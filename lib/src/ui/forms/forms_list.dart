@@ -1,18 +1,19 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/ui/forms/stepper_form.dart';
 import 'package:flutter/material.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/database.dart';
-import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:craft_dynamic/src/ui/forms/regular_form.dart';
 import 'package:craft_dynamic/src/ui/forms/tab_form.dart';
 import 'package:craft_dynamic/src/util/widget_util.dart';
+import 'package:provider/provider.dart';
 
-class FormsListWidget extends StatefulWidget {
+class FormsListWidget extends StatelessWidget {
   ModuleItem moduleItem;
-  bool isWizard;
+  bool isWizard, isNextForm;
   int? nextFormSequence;
   List<dynamic>? jsonDisplay, formFields;
 
@@ -22,24 +23,26 @@ class FormsListWidget extends StatefulWidget {
       this.jsonDisplay,
       this.formFields,
       this.nextFormSequence,
-      this.isWizard = false})
+      this.isWizard = false,
+      this.isNextForm = false})
       : super(key: key);
 
-  @override
-  State<FormsListWidget> createState() => _FormsListWidgetState();
-}
-
-class _FormsListWidgetState extends State<FormsListWidget> {
   int? currentForm;
+
   final _formsRepository = FormsRepository();
 
-  getFormItems() =>
-      _formsRepository.getFormsByModuleId(widget.moduleItem.moduleId);
+  getFormItems() => _formsRepository.getFormsByModuleId(moduleItem.moduleId);
 
   @override
   Widget build(BuildContext context) {
-    DynamicInput.formInputValues.clear();
-    DynamicInput.encryptedField.clear();
+    if (isNextForm == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Provider.of<PluginState>(context, listen: false).clearDynamicInput();
+      });
+    }
+
+    debugPrint(
+        "Current forms list::::${Provider.of<PluginState>(context, listen: false).formInputValues}");
 
     return FutureBuilder<List<FormItem>>(
         future: getFormItems(),
@@ -47,7 +50,7 @@ class _FormsListWidgetState extends State<FormsListWidget> {
             (BuildContext context, AsyncSnapshot<List<FormItem>> snapshot) {
           Widget child = const SizedBox();
           if (snapshot.hasData) {
-            int? currentFormSequence = widget.nextFormSequence;
+            int? currentFormSequence = nextFormSequence;
             debugPrint("Current form sequence...$currentFormSequence");
             if (currentFormSequence != null) {
               if (currentFormSequence == 0) {
@@ -56,7 +59,7 @@ class _FormsListWidgetState extends State<FormsListWidget> {
                 currentForm = currentFormSequence;
               }
             } else {
-              if (widget.isWizard) {
+              if (isWizard) {
                 currentForm = 2;
               } else {
                 currentForm = 1;
@@ -87,19 +90,19 @@ class _FormsListWidgetState extends State<FormsListWidget> {
               child = TabWidget(
                 title: "test",
                 formItems: filteredFormItems,
-                moduleItem: widget.moduleItem,
+                moduleItem: moduleItem,
               );
             } else if (isStepperWigdet) {
               child = StepperFormWidget(
-                moduleItem: widget.moduleItem,
+                moduleItem: moduleItem,
                 formItems: filteredFormItems,
               );
             } else {
               child = RegularFormWidget(
-                moduleItem: widget.moduleItem,
+                moduleItem: moduleItem,
                 sortedForms: sortedForms,
-                jsonDisplay: widget.jsonDisplay,
-                formFields: widget.formFields,
+                jsonDisplay: jsonDisplay,
+                formFields: formFields,
                 hasRecentList: hasRecentList,
               );
             }
@@ -107,10 +110,5 @@ class _FormsListWidgetState extends State<FormsListWidget> {
 
           return child;
         });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

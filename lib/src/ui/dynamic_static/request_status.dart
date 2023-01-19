@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:vibration/vibration.dart';
@@ -102,8 +103,8 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                           child: Column(
                             children: [
                               Lottie.asset(getAvatarType(widget.statusCode),
-                                  height: 64,
-                                  width: 64,
+                                  height: 88,
+                                  width: 88,
                                   controller: _controller, onLoaded: (comp) {
                                 _controller
                                   ..duration = comp.duration
@@ -125,11 +126,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
         const Spacer(),
         Align(
             alignment: Alignment.bottomCenter,
-            child: ElevatedButton(
-                onPressed: () {
-                  closePage();
-                },
-                child: const Text("Close"))),
+            child: WidgetFactory.buildButton(context, closePage, "Done")),
         const SizedBox(
           height: 15,
         )

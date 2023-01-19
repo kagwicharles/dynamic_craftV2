@@ -51,6 +51,8 @@ class _StepperFormWidgetState extends State<StepperFormWidget> {
             formItems: widget.formItems,
             formItem: step,
             moduleItem: widget.moduleItem,
+            currentIndex: _index,
+            stepperLength: stepperLength,
           )));
     });
   }
@@ -131,12 +133,15 @@ class StepForm extends StatelessWidget {
   List<FormItem> formItems;
   ModuleItem moduleItem;
   FormItem formItem;
+  int stepperLength, currentIndex;
 
   StepForm(
       {required this.formKey,
       required this.formItems,
       required this.formItem,
       required this.moduleItem,
+      required this.stepperLength,
+      required this.currentIndex,
       super.key});
 
   @override

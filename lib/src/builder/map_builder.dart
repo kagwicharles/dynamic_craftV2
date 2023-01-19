@@ -21,6 +21,7 @@ abstract class IRequestObject {
             actionID: actionID,
             requestObject: requestMap,
             dataObject: dataObject,
+            encryptedFields: encryptedFields,
             isList: isList,
             listType: listType);
 
@@ -148,6 +149,7 @@ class DBCall implements IRequestObject {
   @override
   ActionType? actionType;
 
+  Map? encryptedFields;
   final String merchantID, actionID;
   final ListType listType;
   final bool isList;
@@ -158,6 +160,7 @@ class DBCall implements IRequestObject {
       required this.actionID,
       required this.requestObject,
       required this.dataObject,
+      this.encryptedFields,
       this.listType = ListType.TransactionList,
       this.isList = false});
 
@@ -173,6 +176,9 @@ class DBCall implements IRequestObject {
     }
     if (listType == ListType.ViewOrderList) {
       fields[RequestParam.MerchantID.name] = merchantID;
+    }
+    if (encryptedFields != null) {
+      requestObject[RequestParam.EncryptedFields.name] = encryptedFields;
     }
     requestObject[RequestParam.DynamicForm.name] = fields;
     return requestObject;

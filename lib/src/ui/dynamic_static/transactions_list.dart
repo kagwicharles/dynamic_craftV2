@@ -59,16 +59,13 @@ class _TransactionListState extends State<TransactionList> {
                 if (list != null) {
                   addTransactions(list: list);
                   widget = ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
                     itemCount: transactionList.length,
                     itemBuilder: (context, index) {
                       return TransactionItem(
                           transaction: transactionList[index]);
                     },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(
-                      color: Colors.grey,
-                      height: 1,
-                    ),
                   );
                 }
               }

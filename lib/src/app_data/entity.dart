@@ -321,23 +321,25 @@ class FrequentAccessedModule {
 class Beneficiary {
   @primaryKey
   int? no;
+  int rowId;
   String merchantID;
   String merchantName;
   String accountID;
   String accountAlias;
   String? bankID;
   String? branchID;
-
   Beneficiary(
       {required this.merchantID,
       required this.merchantName,
       required this.accountID,
       required this.accountAlias,
+      required this.rowId,
       this.bankID,
       this.branchID});
 
   Beneficiary.fromJson(Map<String, dynamic> json)
-      : merchantID = json["MerchantID"],
+      : rowId = json["RowID"],
+        merchantID = json["MerchantID"],
         merchantName = json["MerchantName"],
         accountID = json["AccountID"],
         accountAlias = json["AccountAlias"],

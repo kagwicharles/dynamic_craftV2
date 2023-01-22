@@ -6,7 +6,6 @@ import 'dart:io';
 import 'package:craft_dynamic/database.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -31,6 +30,11 @@ import 'package:craft_dynamic/src/util/widget_util.dart';
 class DynamicInput {
   static List<Map<String?, dynamic>> formInputValues = [];
   static Map<String?, dynamic> encryptedField = {};
+
+  clearDynamicInput() {
+    formInputValues.clear();
+    encryptedField.clear();
+  }
 }
 
 class BaseFormComponent extends StatelessWidget {
@@ -330,12 +334,12 @@ class _DynamicButtonState extends State<DynamicButton> {
 
     if (formKey?.currentState?.validate()!) {
       if (formItem?.controlFormat == ControlFormat.NEXT.name) {
+        Provider.of<PluginState>(context, listen: false).setDeleteForm(false);
         CommonUtils.navigateToRoute(
             context: context,
             widget: DynamicWidget(
               moduleItem: moduleItem,
               nextFormSequence: 2,
-              isNextForm: true,
             ));
         return;
       } else {
@@ -491,10 +495,12 @@ class DynamicTextViewWidget implements IFormWidget {
 
   @override
   Widget render() {
-    // return Text(jsonTxt!.toString());
     jsonText?.forEach((item) {
       mapItems.add(item);
     });
+
+    debugPrint("Triggered DynamicTextView:::$jsonText");
+
     return mapItems.isNotEmpty
         ? Builder(builder: (BuildContext context) {
             return Column(children: [
@@ -646,8 +652,8 @@ class _DynamicPhonePickerFormWidgetState
 }
 
 class DynamicListWidget implements IFormWidget {
-  DynamicResponse? dynamicResponse;
   final _dynamicRequest = DynamicFormRequest();
+  DynamicResponse? dynamicResponse;
   FormItem? formItem;
   ModuleItem? moduleItem;
 
@@ -670,7 +676,9 @@ class DynamicListWidget implements IFormWidget {
       moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
 
       return isEmptyList()
-          ? const Visibility(visible: false, child: SizedBox())
+          ? const Center(
+              child: Text("Nothing was found!"),
+            )
           : FutureBuilder<DynamicResponse?>(
               future: getDynamicList(context, formItem, moduleItem),
               builder: (BuildContext context,
@@ -703,7 +711,6 @@ class DynamicListWidget implements IFormWidget {
         formItem?.actionId == "") {
       return true;
     }
-    EasyLoading.show(status: "Processing");
     return false;
   }
 }
@@ -873,6 +880,61 @@ class _DynamicLinkedContainerState extends State<DynamicLinkedContainer> {
           children: widgets,
         ));
   }
+}
+
+class DynamicCheckBox extends StatefulWidget implements IFormWidget {
+  const DynamicCheckBox({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _DynamicCheckBoxState();
+
+  @override
+  Widget render() => const DynamicCheckBox();
+}
+
+class _DynamicCheckBoxState extends State<DynamicCheckBox> {
+  FormItem? formItem;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    formItem = BaseFormInheritedComponent.of(context)?.formItem;
+    return CheckboxFormField(
+        title: Text(formItem?.controlText ?? ""),
+        validator: (value) {
+          validate(value);
+        });
+  }
+
+  validate(value) {
+    Provider.of<PluginState>(context, listen: false)
+        .addFormInput({"${formItem?.serviceParamId}": "$value"});
+  }
+}
+
+class CheckboxFormField extends FormField<bool> {
+  CheckboxFormField(
+      {super.key,
+      required Widget title,
+      required FormFieldValidator<bool> validator,
+      bool initialValue = false,
+      bool autovalidate = false})
+      : super(
+            validator: validator,
+            initialValue: initialValue,
+            builder: (FormFieldState<bool> state) {
+              return CheckboxListTile(
+                dense: state.hasError,
+                title: title,
+                value: state.value,
+                onChanged: state.didChange,
+                controlAffinity: ListTileControlAffinity.platform,
+              );
+            });
 }
 
 class NullWidget implements IFormWidget {

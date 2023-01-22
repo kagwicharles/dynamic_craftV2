@@ -56,7 +56,8 @@ class DynamicResponse {
       formFields,
       display,
       receiptDetails,
-      accountStatement;
+      accountStatement,
+      beneficiaries;
 
   DynamicResponse(
       {required this.status,
@@ -70,7 +71,8 @@ class DynamicResponse {
       this.resultsData,
       this.formFields,
       this.receiptDetails,
-      this.accountStatement});
+      this.accountStatement,
+      this.beneficiaries});
 
   DynamicResponse.fromJson(Map<String, dynamic> json) {
     status = json["Status"];
@@ -86,6 +88,7 @@ class DynamicResponse {
     formFields = json["FormFields"];
     receiptDetails = json["ReceiptDetails"];
     accountStatement = json["AccountStatement"];
+    beneficiaries = json["Beneficiary"];
   }
 }
 

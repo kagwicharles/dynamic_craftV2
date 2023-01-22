@@ -212,7 +212,7 @@ class APIService {
     await performDioRequest(await dioRequestBodySetUp(formId), route: route)
         .then((value) async => {
               res = value?.data["Response"],
-              decrypted = await CryptLib.oldDecrypt(res),
+              decrypted = await CryptLib.decryptResponse(res),
               // decrypted = CryptLib.gzipDecompressStaticData(res),
               AppLogger.appLogI(
                   tag: "\n\nSTATIC DATA REQ:", message: decrypted),
@@ -239,12 +239,11 @@ class APIService {
     await performDioRequest(
             await dioRequestBodySetUp(formID, objectMap: requestObj),
             route: route)
-        .then((value) async => {
-              res = value?.data["Response"],
-              decrypted = await CryptLib.oldDecrypt(res),
-              AppLogger.appLogI(
-                  tag: "\n\nnDYNAMIC RESPONSE", message: decrypted),
-            });
+        .then((value) async {
+      res = value?.data["Response"];
+      decrypted = await CryptLib.decryptResponse(res);
+      AppLogger.appLogI(tag: "\n\nnDYNAMIC RESPONSE", message: decrypted);
+    });
     try {
       dynamicResponse = DynamicResponse.fromJson(jsonDecode(decrypted));
     } catch (e) {
@@ -268,15 +267,13 @@ class APIService {
     await performDioRequest(
             await dioRequestBodySetUp(formId, objectMap: requestObj),
             route: route)
-        .then((value) async => {
-              debugPrint(value.toString()),
-              res = value?.data["Response"],
-              decrypted = await CryptLib.oldDecrypt(res),
-              AppLogger.appLogI(
-                  tag: "\n\nnACTIVATION RESPONSE", message: decrypted),
-              AppLogger.writeResponseToFile(
-                  fileName: "Login_res", response: decrypted)
-            });
+        .then((value) async {
+      debugPrint(value.toString());
+      res = value?.data["Response"];
+      decrypted = await CryptLib.decryptResponse(res);
+      AppLogger.appLogI(tag: "\n\nnACTIVATION RESPONSE", message: decrypted);
+      AppLogger.writeResponseToFile(fileName: "Login_res", response: decrypted);
+    });
     try {
       activationResponse = ActivationResponse.fromJson(json.decode(decrypted));
     } catch (e) {
@@ -301,7 +298,7 @@ class APIService {
             route: route)
         .then((value) async => {
               res = value?.data["Response"],
-              decrypted = await CryptLib.oldDecrypt(res),
+              decrypted = await CryptLib.decryptResponse(res),
               logger.d("\n\nACTIVATION RESPONSE: $decrypted"),
             });
     try {
@@ -332,7 +329,7 @@ class APIService {
             route: route)
         .then((value) async => {
               res = value?.data["Response"],
-              decrypted = await CryptLib.oldDecrypt(res),
+              decrypted = await CryptLib.decryptResponse(res),
               logger.d("\n\nOTP VERIFICATION RESPONSE: $decrypted"),
             });
 
@@ -365,7 +362,7 @@ class APIService {
         .then((value) async => {
               res = value?.data["Response"],
               debugPrint("Raw res: $res"),
-              decrypted = await CryptLib.oldDecrypt(res),
+              decrypted = await CryptLib.decryptResponse(res),
               logger.d("\n\nBANK BALANCE RESPONSE: $decrypted"),
             });
     try {
@@ -398,7 +395,7 @@ class APIService {
         .then((value) async => {
               res = value?.data["Response"],
               debugPrint("Raw res: $res"),
-              decrypted = await CryptLib.oldDecrypt(res),
+              decrypted = await CryptLib.decryptResponse(res),
               logger.d("\n\nMINI-STATEMENT RESPONSE: $decrypted"),
             });
     try {

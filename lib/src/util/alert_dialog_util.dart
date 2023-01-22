@@ -1,9 +1,11 @@
+import 'package:craft_dynamic/dynamic_widget.dart';
+import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class AlertUtil {
   static showAlertDialog(BuildContext context, String message,
-      {isConfirm = false}) {
+      {isConfirm = false, isInfoAlert = false, formFields}) {
     return showGeneralDialog(
       context: context,
       barrierDismissible: false,
@@ -23,8 +25,13 @@ class AlertUtil {
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Lottie.asset("packages/craft_dynamic/assets/lottie/error.json",
-                    height: 110, width: 110)
+                isInfoAlert
+                    ? Lottie.asset(
+                        "packages/craft_dynamic/assets/lottie/info_lottie.json")
+                    : Lottie.asset(
+                        "packages/craft_dynamic/assets/lottie/error.json",
+                        height: 110,
+                        width: 110)
               ],
             )),
             content: SizedBox(
@@ -76,6 +83,35 @@ class AlertUtil {
         );
       },
       transitionDuration: const Duration(milliseconds: 300),
+    );
+  }
+
+  static showModalBottomDialog(context, message) {
+    showModalBottomSheet<void>(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
+      ),
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+            padding:
+                const EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 4),
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12))),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                DynamicTextViewWidget(jsonText: message).render(),
+                WidgetFactory.buildButton(context, () {
+                  Navigator.of(context).pop();
+                }, "Done")
+              ],
+            ));
+      },
     );
   }
 }

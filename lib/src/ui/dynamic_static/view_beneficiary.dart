@@ -20,6 +20,12 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
   final _beneficiaryRepository = BeneficiaryRepository();
   final _dynamicFormRequest = DynamicFormRequest();
 
+  @override
+  initState() {
+    super.initState();
+    isCallingService.value = false;
+  }
+
   getBeneficiaries() => _beneficiaryRepository.getAllBeneficiaries();
 
   @override
@@ -116,7 +122,7 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
                                             isConfirm: true)
                                         .then((value) {
                                       if (value) {
-                                        deleteBeneficiary(beneficiary);
+                                        deleteBeneficiary(beneficiary, context);
                                       }
                                     });
                                   },
@@ -135,23 +141,34 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
     );
   }
 
-  deleteBeneficiary(Beneficiary beneficiary) {
+  deleteBeneficiary(Beneficiary beneficiary, context) {
     isCallingService.value = true;
     DynamicInput.formInputValues.clear();
     DynamicInput.formInputValues.add({"INFOFIELD1": beneficiary.accountAlias});
     DynamicInput.formInputValues.add({"INFOFIELD2": beneficiary.merchantName});
     DynamicInput.formInputValues.add({"INFOFIELD4": beneficiary.accountID});
-    DynamicInput.formInputValues.add({"INFOFIELD3": beneficiary.merchantID});
+    DynamicInput.formInputValues.add({"INFOFIELD3": beneficiary.rowId});
     DynamicInput.formInputValues
         .add({"MerchantID": widget.moduleItem.merchantID});
     DynamicInput.formInputValues.add({"HEADER": "DELETEBENEFICIARY"});
     _dynamicFormRequest
         .dynamicRequest(widget.moduleItem,
             dataObj: DynamicInput.formInputValues,
+            context: context,
             listType: ListType.BeneficiaryList)
         .then((value) {
       isCallingService.value = false;
-      if (value?.status != StatusCode.success.statusCode) {
+
+      if (value?.status == StatusCode.success.statusCode) {
+        setState(() {
+          _beneficiaryRepository.deleteBeneficiary(beneficiary.rowId);
+          _beneficiaryRepository.clearTable();
+          value?.beneficiaries?.forEach((beneficiary) {
+            _beneficiaryRepository
+                .insertBeneficiary(Beneficiary.fromJson(beneficiary));
+          });
+        });
+      } else {
         AlertUtil.showAlertDialog(
           context,
           value?.message ?? "Error",

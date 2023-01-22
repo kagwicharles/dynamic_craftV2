@@ -33,6 +33,7 @@ import 'package:crypto/crypto.dart';
 import "package:hex/hex.dart";
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:unique_identifier/unique_identifier.dart';
 import 'package:yaml/yaml.dart';
 

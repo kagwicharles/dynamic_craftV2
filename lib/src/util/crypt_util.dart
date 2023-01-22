@@ -70,4 +70,15 @@ class CryptLib {
   static String gzipDecompressStaticData(String gzippedString) {
     return utf8.decode(GZipDecoder().decodeBytes(base64.decode(gzippedString)));
   }
+
+  static decryptResponse(String response) async {
+    String decrypted = "";
+    try {
+      decrypted = await CryptLib.oldDecrypt(response);
+    } catch (e) {
+      AppLogger.appLogE(
+          tag: "Decryption Error", message: "Unable to decrypt data!");
+    }
+    return decrypted;
+  }
 }

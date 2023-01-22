@@ -53,17 +53,23 @@ class DynamicUtil {
       case "000":
         {
           if (postDynamic.opensDynamicRoute) {
-            CommonUtils.navigateToRoute(
-                context: postDynamic.context,
-                widget: DynamicWidget(
-                  nextFormSequence: postDynamic.nextFormSequence,
-                  isWizard: true,
-                  jsonDisplay: postDynamic.jsonDisplay,
-                  formFields: postDynamic.formFields,
-                  moduleItem: postDynamic.moduleItem,
-                ));
+            postDynamic.formID != null &&
+                    postDynamic.formID == "ALERTCONFIRMATIONFORM"
+                ? AlertUtil.showModalBottomDialog(
+                    postDynamic.context, postDynamic.jsonDisplay)
+                : CommonUtils.navigateToRoute(
+                    context: postDynamic.context,
+                    widget: DynamicWidget(
+                      nextFormSequence: postDynamic.nextFormSequence,
+                      isWizard: true,
+                      jsonDisplay: postDynamic.jsonDisplay,
+                      formFields: postDynamic.formFields,
+                      moduleItem: postDynamic.moduleItem,
+                      formID: postDynamic.formID,
+                    ));
             break;
           }
+
           if (!postDynamic.isList) {
             var receiptDetails = postDynamic.receiptDetails;
             if (receiptDetails != null && receiptDetails.isNotEmpty) {
@@ -71,6 +77,7 @@ class DynamicUtil {
                   context: postDynamic.context,
                   postDynamic: postDynamic,
                   moduleName: moduleItem.moduleName);
+              break;
             } else {
               navigateToStatusRoute(
                 context: postDynamic.context,
@@ -80,6 +87,7 @@ class DynamicUtil {
                     ? postDynamic.message
                     : postDynamic.notifyText,
               );
+              break;
             }
           } else if (postDynamic.tappedButton) {
             CommonUtils.navigateToRoute(
@@ -91,17 +99,13 @@ class DynamicUtil {
                       scrollable: true,
                       controlID: postDynamic.controlID,
                     )));
+            break;
           }
         }
         break;
       case "091":
         {
           AlertUtil.showAlertDialog(context, postDynamic.message ?? "Error");
-          // navigateToStatusRoute(
-          //   context: postDynamic.context,
-          //   status: postDynamic.status,
-          //   message: postDynamic.message,
-          // );
         }
         break;
       case "099":

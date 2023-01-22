@@ -1,6 +1,5 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:floor/floor.dart';
-import 'package:flutter/material.dart';
 
 @dao
 abstract class ActionControlDao {
@@ -142,8 +141,8 @@ abstract class BeneficiaryDao {
   @insert
   Future<void> insertBeneficiary(Beneficiary beneficiary);
 
-  @Query('DELETE FROM Beneficiary WHERE no =:no')
-  Future<void> deleteBeneficiary(String no);
+  @Query('DELETE FROM Beneficiary WHERE rowId =:no')
+  Future<void> deleteBeneficiary(int no);
 
   @Query('DELETE FROM Beneficiary')
   Future<void> clearTable();

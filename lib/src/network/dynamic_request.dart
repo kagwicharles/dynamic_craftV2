@@ -1,7 +1,9 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/database.dart';
+import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 import '../builder/factory_builder.dart';
 
@@ -49,6 +51,11 @@ class DynamicFormRequest {
     }
 
     debugPrint("Action Type::::::$actionType");
+    if (actionType == ActionType.VALIDATE) {
+      Provider.of<PluginState>(context, listen: false).setDeleteForm(false);
+    } else {
+      Provider.of<PluginState>(context, listen: false).setDeleteForm(true);
+    }
 
     requestObj = DynamicFactory.getDynamicRequestObject(actionType,
         merchantID: moduleItem.merchantID,

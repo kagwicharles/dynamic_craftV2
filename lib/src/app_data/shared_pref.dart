@@ -106,7 +106,7 @@ class CommonSharedPref {
   }
 
   setLatLong(String latlong) async {
-    await storage.read(key: "latlong");
+    await storage.write(key: "latlong", value: latlong);
   }
 
   getLatLong() async {

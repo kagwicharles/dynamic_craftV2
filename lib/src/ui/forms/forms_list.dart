@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 
 class FormsListWidget extends StatelessWidget {
   ModuleItem moduleItem;
-  bool isWizard, isNextForm;
+  bool isWizard;
+  bool? deleteInput;
   int? nextFormSequence;
   List<dynamic>? jsonDisplay, formFields;
 
@@ -24,7 +25,7 @@ class FormsListWidget extends StatelessWidget {
       this.formFields,
       this.nextFormSequence,
       this.isWizard = false,
-      this.isNextForm = false})
+      this.deleteInput})
       : super(key: key);
 
   int? currentForm;
@@ -35,7 +36,8 @@ class FormsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isNextForm == false) {
+    if (Provider.of<PluginState>(context, listen: false).deleteFormInput) {
+      debugPrint("Deleting form input fields");
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Provider.of<PluginState>(context, listen: false).clearDynamicInput();
       });

@@ -44,65 +44,67 @@ class ModuleRepository {
 
 class FormsRepository {
   void insertFormItem(FormItem formItem) async {
-    final database =
-        await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-    final moduleItemDao = database.formItemDao;
-    moduleItemDao.insertFormItem(formItem);
+    await db.then((database) {
+      database.formItemDao.insertFormItem(formItem);
+    });
   }
 
   Future<List<FormItem>> getFormsByModuleId(String id) async {
-    final database =
-        await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-    final formItemDao = database.formItemDao;
-    return formItemDao.getFormsByModuleId(id);
+    var formItems;
+    await db.then((database) {
+      formItems = database.formItemDao.getFormsByModuleId(id);
+    });
+    return formItems;
   }
 
   Future<List<FormItem>> getFormsByModuleIdAndFormSequence(
       String id, int formSequence) async {
-    final database =
-        await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-    final formItemDao = database.formItemDao;
-    return formItemDao.getFormsByModuleIdAndFormSequence(id, formSequence);
+    var formItems;
+    await db.then((database) {
+      formItems = database.formItemDao
+          .getFormsByModuleIdAndFormSequence(id, formSequence);
+    });
+    return formItems;
   }
 
   Future<List<FormItem>> getFormsByModuleIdAndControlID(
       String id, controlID) async {
-    final database =
-        await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-    final formItemDao = database.formItemDao;
-    return formItemDao.getFormsByModuleIdAndControlID(id, controlID);
+    var formItems;
+    await db.then((database) {
+      formItems =
+          database.formItemDao.getFormsByModuleIdAndControlID(id, controlID);
+    });
+    return formItems;
   }
 
   void clearTable() async {
-    final database =
-        await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-    final formItemDao = database.formItemDao;
-    formItemDao.clearTable();
+    await db.then((database) {
+      database.formItemDao.clearTable();
+    });
   }
 }
 
 class ActionControlRepository {
   void insertActionControl(ActionItem actionItem) async {
-    final database =
-        await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-    final actionControlDao = database.actionControlDao;
-    actionControlDao.insertActionControl(actionItem);
+    await db.then((database) {
+      database.actionControlDao.insertActionControl(actionItem);
+    });
   }
 
   Future<ActionItem?> getActionControlByModuleIdAndControlId(
       String moduleId, controlId) async {
-    final database =
-        await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-    final actionControlDao = database.actionControlDao;
-    return actionControlDao.getActionControlByModuleIdAndControlId(
-        moduleId, controlId);
+    var actionItems;
+    await db.then((database) {
+      actionItems = database.actionControlDao
+          .getActionControlByModuleIdAndControlId(moduleId, controlId);
+    });
+    return actionItems;
   }
 
   void clearTable() async {
-    final database =
-        await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-    final actionControlDao = database.actionControlDao;
-    actionControlDao.clearTable();
+    await db.then((database) {
+      database.actionControlDao.clearTable();
+    });
   }
 }
 
@@ -114,11 +116,11 @@ class UserCodeRepository {
   }
 
   Future<List<UserCode>> getUserCodesById(String? id) async {
-    var _userCodes;
+    var userCodes;
     await db.then((database) {
-      _userCodes = database.userCodeDao.getUserCodesById(id);
+      userCodes = database.userCodeDao.getUserCodesById(id);
     });
-    return _userCodes;
+    return userCodes;
   }
 
   void clearTable() async {
@@ -271,14 +273,14 @@ class BeneficiaryRepository {
     return beneficiaries;
   }
 
-  void deleteBeneficiary(int no) {
-    db.then((database) {
-      database.beneficiaryDao.clearTable();
+  Future<void> deleteBeneficiary(int rowId) async {
+    await db.then((database) {
+      database.beneficiaryDao.deleteBeneficiary(rowId);
     });
   }
 
-  void clearTable() async {
-    db.then((database) {
+  Future<void> clearTable() async {
+    await db.then((database) {
       database.beneficiaryDao.clearTable();
     });
   }

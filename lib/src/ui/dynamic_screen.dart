@@ -4,20 +4,21 @@ part of dynamic_widget;
 class DynamicWidget extends StatelessWidget {
   List<dynamic>? jsonDisplay, formFields;
   int? nextFormSequence;
-  bool isWizard, isNextForm;
+  bool isWizard;
   ModuleItem? moduleItem;
   FrequentAccessedModule? favouriteModule;
+  String? formID;
 
-  DynamicWidget(
-      {Key? key,
-      this.moduleItem,
-      this.favouriteModule,
-      this.jsonDisplay,
-      this.formFields,
-      this.nextFormSequence,
-      this.isWizard = false,
-      this.isNextForm = false})
-      : super(key: key);
+  DynamicWidget({
+    Key? key,
+    this.moduleItem,
+    this.favouriteModule,
+    this.jsonDisplay,
+    this.formFields,
+    this.nextFormSequence,
+    this.formID,
+    this.isWizard = false,
+  }) : super(key: key);
 
   List<FormItem> content = [];
 
@@ -27,25 +28,21 @@ class DynamicWidget extends StatelessWidget {
         moduleItem: moduleItem, favouriteModule: favouriteModule);
 
     final orientation = MediaQuery.of(context).orientation;
-    EasyLoading.dismiss();
     // _formItems = DynamicData.readFormsJson(moduleId);
     // _moduleItems = DynamicData.readModulesJson(moduleId);
 
-    return ChangeNotifierProvider(
-        create: (context) => PluginState(),
-        child: moduleItem?.moduleCategory == "FORM"
-            ? FormsListWidget(
-                jsonDisplay: jsonDisplay,
-                formFields: formFields,
-                nextFormSequence: nextFormSequence,
-                isWizard: isWizard,
-                moduleItem: moduleItem!,
-                isNextForm: isNextForm,
-              )
-            : ModulesListWidget(
-                orientation: orientation,
-                moduleItem: moduleItem,
-              ));
+    return moduleItem?.moduleCategory == "FORM"
+        ? FormsListWidget(
+            jsonDisplay: jsonDisplay,
+            formFields: formFields,
+            nextFormSequence: nextFormSequence,
+            isWizard: isWizard,
+            moduleItem: moduleItem!,
+          )
+        : ModulesListWidget(
+            orientation: orientation,
+            moduleItem: moduleItem,
+          );
   }
 
   ModuleItem? checkModuleType(

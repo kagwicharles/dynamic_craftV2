@@ -131,7 +131,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `FrequentAccessedModule` (`no` INTEGER, `parentModule` TEXT NOT NULL, `moduleID` TEXT NOT NULL, `moduleName` TEXT NOT NULL, `moduleCategory` TEXT NOT NULL, `moduleUrl` TEXT NOT NULL, `badgeColor` TEXT, `badgeText` TEXT, `merchantID` TEXT, `displayOrder` REAL, `containerID` TEXT, `lastAccessed` TEXT, PRIMARY KEY (`no`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Beneficiary` (`no` INTEGER, `merchantID` TEXT NOT NULL, `merchantName` TEXT NOT NULL, `accountID` TEXT NOT NULL, `accountAlias` TEXT NOT NULL, `bankID` TEXT, `branchID` TEXT, PRIMARY KEY (`no`))');
+            'CREATE TABLE IF NOT EXISTS `Beneficiary` (`no` INTEGER, `rowId` INTEGER NOT NULL, `merchantID` TEXT NOT NULL, `merchantName` TEXT NOT NULL, `accountID` TEXT NOT NULL, `accountAlias` TEXT NOT NULL, `bankID` TEXT, `branchID` TEXT, PRIMARY KEY (`no`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `ModuleToHide` (`no` INTEGER, `moduleId` TEXT NOT NULL, PRIMARY KEY (`no`))');
         await database.execute(
@@ -828,6 +828,7 @@ class _$BeneficiaryDao extends BeneficiaryDao {
             'Beneficiary',
             (Beneficiary item) => <String, Object?>{
                   'no': item.no,
+                  'rowId': item.rowId,
                   'merchantID': item.merchantID,
                   'merchantName': item.merchantName,
                   'accountID': item.accountID,
@@ -852,6 +853,7 @@ class _$BeneficiaryDao extends BeneficiaryDao {
             merchantName: row['merchantName'] as String,
             accountID: row['accountID'] as String,
             accountAlias: row['accountAlias'] as String,
+            rowId: row['rowId'] as int,
             bankID: row['bankID'] as String?,
             branchID: row['branchID'] as String?));
   }
@@ -866,15 +868,16 @@ class _$BeneficiaryDao extends BeneficiaryDao {
             merchantName: row['merchantName'] as String,
             accountID: row['accountID'] as String,
             accountAlias: row['accountAlias'] as String,
+            rowId: row['rowId'] as int,
             bankID: row['bankID'] as String?,
             branchID: row['branchID'] as String?),
         arguments: [merchantID]);
   }
 
   @override
-  Future<void> deleteBeneficiary(String no) async {
-    await _queryAdapter
-        .queryNoReturn('DELETE FROM Beneficiary WHERE no =?1', arguments: [no]);
+  Future<void> deleteBeneficiary(int no) async {
+    await _queryAdapter.queryNoReturn('DELETE FROM Beneficiary WHERE rowId =?1',
+        arguments: [no]);
   }
 
   @override

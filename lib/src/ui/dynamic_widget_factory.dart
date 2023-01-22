@@ -42,6 +42,9 @@ abstract class IFormWidget {
             ? const DynamicImageUpload()
             : NullWidget();
 
+      case ViewType.CHECKBOX:
+        return const DynamicCheckBox();
+
       case ViewType.CONTAINER:
         return const DynamicLinkedContainer();
 

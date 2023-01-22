@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:craft_dynamic/src/ui/dynamic_static/list_data.dart';
+import 'package:craft_dynamic/src/util/common_lib_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,9 +30,10 @@ class TabWidget extends StatefulWidget {
 }
 
 class _TabWidgetState extends State<TabWidget> {
-  bool hasRecentList = false;
+  FormItem? recentList;
   List<FormItem> horizontalScroll = [];
   List<Tab> tabs = [];
+  List<FormItem> tabForms = [];
   List<TabWidgetList> tabWidgetList = [];
   List<String> linkControls = [];
 
@@ -115,13 +118,17 @@ class _TabWidgetState extends State<TabWidget> {
   }
 
   addTabWidgetList() {
-    List<FormItem> tabForms = [];
-
+    tabForms.clear();
     linkControls.asMap().forEach((index, linkControl) {
       tabForms = getTabForms(widget.formItems, linkControl).toList();
 
-      hasRecentList =
-          tabForms.map((item) => item.controlType).contains(ViewType.LIST.name);
+      try {
+        recentList = tabForms.firstWhere(
+          (item) => item.controlType == ViewType.LIST.name,
+        );
+      } catch (e) {
+        debugPrint("Error:::$e");
+      }
 
       tabWidgetList.add(TabWidgetList(
         moduleItem: widget.moduleItem,
@@ -157,10 +164,16 @@ class _TabWidgetState extends State<TabWidget> {
                   color: Colors.white,
                 ),
               ),
-              actions: hasRecentList
+              actions: recentList != null
                   ? [
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            CommonUtils.navigateToRoute(
+                                context: context,
+                                widget: ListDataScreen(
+                                    widget: DynamicListWidget().render(),
+                                    title: widget.moduleItem.moduleName));
+                          },
                           icon: const Icon(
                             Icons.view_list,
                             color: Colors.white,

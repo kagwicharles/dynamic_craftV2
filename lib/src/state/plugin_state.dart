@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 class PluginState extends ChangeNotifier {
   bool _loadingNetworkData = false;
   bool _obscureText = true;
+  bool _deleteFormValues = true;
   String _currentTab = "";
   final List<Map<String?, dynamic>> _formInputValues = [];
   Map<String?, dynamic> _encryptedFields = {};
@@ -13,6 +14,8 @@ class PluginState extends ChangeNotifier {
   String get currentTab => _currentTab;
 
   bool get obscureText => _obscureText;
+
+  bool get deleteFormInput => _deleteFormValues;
 
   List<Map<String?, dynamic>> get formInputValues => _formInputValues;
 
@@ -30,6 +33,11 @@ class PluginState extends ChangeNotifier {
   }
 
   changeBiometricStatus(bool biometricStatus) {
+    notifyListeners();
+  }
+
+  setDeleteForm(bool status) {
+    _deleteFormValues = status;
     notifyListeners();
   }
 
@@ -59,3 +67,5 @@ var isCallingService = false.obs;
 var currentStepperIndex = 0.obs;
 
 var isStepperForm = false.obs;
+
+var deleteFormInput = true.obs;

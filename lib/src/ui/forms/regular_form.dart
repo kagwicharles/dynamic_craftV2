@@ -1,3 +1,5 @@
+import 'package:craft_dynamic/src/ui/dynamic_static/list_data.dart';
+import 'package:craft_dynamic/src/util/common_lib_util.dart';
 import 'package:flutter/material.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
@@ -47,7 +49,13 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
           actions: widget.hasRecentList
               ? [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        CommonUtils.navigateToRoute(
+                            context: context,
+                            widget: ListDataScreen(
+                                widget: DynamicListWidget().render(),
+                                title: widget.moduleItem.moduleName));
+                      },
                       icon: const Icon(
                         Icons.view_list,
                         color: Colors.white,

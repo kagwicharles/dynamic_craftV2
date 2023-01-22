@@ -171,12 +171,12 @@ class DBCall implements IRequestObject {
       fields.addAll(element);
     }
     requestObject[RequestParam.FormID.name] = actionType?.name;
+    requestObject[RequestParam.MerchantID.name] = merchantID;
     if (fields.containsKey(RequestParam.HEADER.name) == false) {
       fields[RequestParam.HEADER.name] = actionID;
     }
-    if (listType == ListType.ViewOrderList) {
-      fields[RequestParam.MerchantID.name] = merchantID;
-    }
+    fields[RequestParam.MerchantID.name] = merchantID;
+
     if (encryptedFields != null) {
       requestObject[RequestParam.EncryptedFields.name] = encryptedFields;
     }

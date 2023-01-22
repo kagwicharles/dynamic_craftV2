@@ -23,7 +23,8 @@ enum ViewType {
   FORM,
   OTHER,
   STEPPER,
-  STEP
+  STEP,
+  CHECKBOX
 }
 
 enum ControlFormat {

@@ -27,7 +27,10 @@ class WidgetUtil {
               onPressed: () {
                 CommonUtils.selectDate(context, refreshDate: refreshParent);
               },
-              icon: const Icon(Icons.calendar_month));
+              icon: Icon(
+                Icons.calendar_month,
+                color: APIService.appPrimaryColor,
+              ));
         }
         break;
       case ControlFormat.NUMERIC:
@@ -49,7 +52,9 @@ class WidgetUtil {
                     .changeVisibility(!pinVisibility);
               },
               icon: Icon(
-                  pinVisibility ? Icons.visibility : Icons.visibility_off));
+                pinVisibility ? Icons.visibility : Icons.visibility_off,
+                color: APIService.appPrimaryColor,
+              ));
         }
         break;
       case ControlFormat.PIN:

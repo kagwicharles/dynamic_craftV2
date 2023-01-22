@@ -67,20 +67,22 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   @override
   Widget build(BuildContext context) {
     return _sessionRepository.getSessionManager(
-        GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: widget.appTheme,
-          home: Obx(() => showLoadingScreen.value
-              ? widget.appLoadingScreen
-              : widget.dashboard),
-          navigatorKey: Get.key,
-          builder: (context, child) {
-            return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-              child: child!,
-            );
-          },
-        ),
+        ChangeNotifierProvider(
+            create: (context) => PluginState(),
+            child: GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: widget.appTheme,
+              home: Obx(() => showLoadingScreen.value
+                  ? widget.appLoadingScreen
+                  : widget.dashboard),
+              navigatorKey: Get.key,
+              builder: (context, child) {
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                  child: child!,
+                );
+              },
+            )),
         context: context,
         _appTimeout,
         widget.appInactivityScreen,

@@ -18,6 +18,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart' hide Response;
+import 'package:json_annotation/json_annotation.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
@@ -72,3 +73,5 @@ part 'src/repository/account_repository.dart';
 part 'src/session_manager/session_helper.dart';
 
 part 'src/ui/dynamic_static/blurr_load_screen.dart';
+
+part 'src/app_data/model.g.dart';

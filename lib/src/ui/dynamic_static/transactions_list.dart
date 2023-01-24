@@ -113,7 +113,7 @@ class TransactionItem extends StatelessWidget {
                             Text(
                               transaction.serviceName,
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   color: APIService.appPrimaryColor),
                             ),
                             Text(

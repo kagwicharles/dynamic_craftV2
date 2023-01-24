@@ -18,46 +18,35 @@ class ModuleItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var parentModule = moduleItem.parentModule;
-    bool isMainModule = parentModule == "MAIN"
-        ? isSearch
-            ? false
-            : true
-        : false;
+    const double iconSize = 58;
 
-    const double iconSize = 48;
-
-    return isMainModule
-        ? InkWell(
-            onTap: () {
-              _moduleItemUtil.onItemClick(moduleItem, context);
-            },
-            borderRadius: BorderRadius.circular(14.0),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              CachedNetworkImage(
-                imageUrl: moduleItem.moduleUrl!,
-                height: iconSize,
-                width: iconSize,
-                placeholder: (context, url) => Lottie.asset(
-                    'packages/craft_dynamic/assets/lottie/loading.json'),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Flexible(
-                  child: Text(
-                moduleItem.moduleName,
-                // overflow: TextOverflow.fade,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.visible,
-                style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-              )),
-            ]),
-          )
-        : OtherModuleItem(moduleItem: moduleItem);
+    return InkWell(
+      onTap: () {
+        _moduleItemUtil.onItemClick(moduleItem, context);
+      },
+      borderRadius: BorderRadius.circular(14.0),
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        CachedNetworkImage(
+          imageUrl: moduleItem.moduleUrl!,
+          height: iconSize,
+          width: iconSize,
+          placeholder: (context, url) =>
+              Lottie.asset('packages/craft_dynamic/assets/lottie/loading.json'),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        Flexible(
+            child: Text(
+          moduleItem.moduleName,
+          // overflow: TextOverflow.fade,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.visible,
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+        )),
+      ]),
+    );
   }
 }
 

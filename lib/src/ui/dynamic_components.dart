@@ -72,7 +72,8 @@ class BaseFormComponent extends StatelessWidget {
                 formItem.controlType == ViewType.TITLE.name ||
                 formItem.controlType == ViewType.SELECTEDTEXT.name ||
                 formItem.controlType == ViewType.FORM.name ||
-                formItem.controlType == ViewType.IMAGE.name
+                formItem.controlType == ViewType.IMAGE.name ||
+                formItem.controlType == ViewType.TEXTVIEW.name
             ? const SizedBox()
             : const SizedBox(
                 height: 18,
@@ -116,13 +117,15 @@ class DynamicTextFormField extends StatefulWidget implements IFormWidget {
   bool isEnabled;
   String? customText;
   TextEditingController? controller;
+  List<dynamic>? formFields;
 
   DynamicTextFormField(
       {Key? key,
       this.isEnabled = true,
       this.func,
       this.customText,
-      this.controller})
+      this.controller,
+      this.formFields})
       : super(key: key);
 
   @override
@@ -175,8 +178,16 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           refreshParent: refreshParent);
       inputType = textFieldParams['inputType'];
 
+      var formFieldValue = widget.formFields?.firstWhere((formField) =>
+              formField[FormFieldProp.ControlID.name] == formItem?.controlId) ??
+          "";
+
+      if (formFieldValue.isNotEmpty) {
+        controller.text = formFieldValue[FormFieldProp.ControlValue.name];
+      }
+
       var properties = TextFormFieldProperties(
-        isEnabled: widget.isEnabled,
+        isEnabled: formFieldValue.isNotEmpty ? false : widget.isEnabled,
         isObscured: isObscured ? state.obscureText : false,
         controller: controller,
         textInputType: inputType,
@@ -811,6 +822,29 @@ class _DynamicImageUpload extends State<DynamicImageUpload> {
   }
 }
 
+class DynamicContainer extends StatelessWidget implements IFormWidget {
+  const DynamicContainer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget child = const SizedBox();
+    var formItem = BaseFormInheritedComponent.of(context)?.formItem;
+    var formItems = BaseFormInheritedComponent.of(context)?.formItems;
+
+    if (formItem?.controlType == ControlFormat.RADIOGROUPS.name) {
+      formItems?.removeWhere(
+          (formItem) => formItem.controlType != ViewType.RBUTTON.name);
+      child = DynamicRadioGroup(
+        radios: formItems,
+      );
+    }
+    return child;
+  }
+
+  @override
+  Widget render() => const DynamicContainer();
+}
+
 class DynamicLinkedContainer extends StatefulWidget implements IFormWidget {
   const DynamicLinkedContainer({super.key});
 
@@ -933,6 +967,70 @@ class CheckboxFormField extends FormField<bool> {
                 value: state.value,
                 onChanged: state.didChange,
                 controlAffinity: ListTileControlAffinity.platform,
+              );
+            });
+}
+
+class DynamicRadioGroup extends StatefulWidget implements IFormWidget {
+  List<FormItem>? radios;
+  DynamicRadioGroup({this.radios, super.key});
+
+  @override
+  State<StatefulWidget> createState() => _DynamicRadioGroupState();
+  @override
+  Widget render() => DynamicRadioGroup();
+}
+
+class _DynamicRadioGroupState extends State<DynamicRadioGroup> {
+  String? selected = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: widget.radios?.length,
+        itemBuilder: ((context, index) {
+          final formItem = widget.radios?[index];
+          String controlID = formItem?.controlId ?? "";
+
+          return RadioListTileFormField(
+            title: formItem?.controlText ?? "",
+            groupValue: selected,
+            value: formItem?.controlId ?? "",
+            validator: (value) {
+              validate(controlID, formItem);
+            },
+            onChanged: ((value) {
+              (String? value) {
+                selected = value;
+              };
+            }),
+          );
+        }));
+  }
+
+  validate(String value, FormItem? formItem) {
+    Provider.of<PluginState>(context, listen: false)
+        .addFormInput({"${formItem?.serviceParamId}": value});
+  }
+}
+
+class RadioListTileFormField extends FormField<bool> {
+  RadioListTileFormField({
+    super.key,
+    required String title,
+    required FormFieldValidator<bool> validator,
+    required FormFieldValidator<String> onChanged,
+    String? groupValue = "",
+    String value = "",
+  }) : super(
+            validator: validator,
+            builder: (FormFieldState<bool> state) {
+              return RadioListTile<String>(
+                title: Text(title),
+                value: value,
+                groupValue: groupValue,
+                onChanged: onChanged,
               );
             });
 }

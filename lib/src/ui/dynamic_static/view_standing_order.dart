@@ -126,12 +126,6 @@ class StandingOrderItem extends StatelessWidget {
                     child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    VerticalDivider(
-                      thickness: 4,
-                      color: standingOrder.status == "FAIL"
-                          ? Colors.red
-                          : Colors.green,
-                    ),
                     Expanded(
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,13 +135,14 @@ class StandingOrderItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              standingOrder.serviceName,
-                              style: const TextStyle(fontSize: 18),
+                              standingOrder.requestData ?? "****",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: APIService.appPrimaryColor),
                             ),
-                            Text(standingOrder.status),
                           ],
                         ),
-                        Text(standingOrder.date),
+                        Text(standingOrder.effectiveDate ?? "****"),
                         const SizedBox(
                           height: 18,
                         ),
@@ -155,7 +150,7 @@ class StandingOrderItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text("Amount"),
-                            Text(standingOrder.amount,
+                            Text(standingOrder.amount.toString(),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold))
                           ],
@@ -165,26 +160,4 @@ class StandingOrderItem extends StatelessWidget {
                   ],
                 )))));
   }
-}
-
-class StandingOrder {
-  String bankAccountID;
-  String status;
-  String serviceName;
-  String date;
-  String amount;
-
-  StandingOrder(
-      {required this.bankAccountID,
-      required this.status,
-      required this.serviceName,
-      required this.date,
-      required this.amount});
-
-  StandingOrder.fromJson(Map<String, dynamic> json)
-      : bankAccountID = json["BankAccountID"],
-        status = json["Status"],
-        serviceName = json["ServiceName"],
-        date = json["Date"],
-        amount = json["Amount"];
 }

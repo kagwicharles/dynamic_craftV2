@@ -113,6 +113,15 @@ class _TabWidgetState extends State<TabWidget> {
             element.linkedToControl == "" ||
             element.linkedToControl == null)
         .toList();
+
+    try {
+      recentList = items.firstWhere(
+        (item) => item.controlType == ViewType.LIST.name,
+      );
+      debugPrint("Recent list::::$recentList");
+    } catch (e) {
+      debugPrint("Error:::$e");
+    }
     items.removeWhere((element) => element.controlType == ViewType.LIST.name);
     return items;
   }
@@ -121,15 +130,6 @@ class _TabWidgetState extends State<TabWidget> {
     tabForms.clear();
     linkControls.asMap().forEach((index, linkControl) {
       tabForms = getTabForms(widget.formItems, linkControl).toList();
-
-      try {
-        recentList = tabForms.firstWhere(
-          (item) => item.controlType == ViewType.LIST.name,
-        );
-      } catch (e) {
-        debugPrint("Error:::$e");
-      }
-
       tabWidgetList.add(TabWidgetList(
         moduleItem: widget.moduleItem,
         formItems: tabForms,

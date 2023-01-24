@@ -40,7 +40,8 @@ enum ControlFormat {
   LISTDATA,
   OTHER,
   OPENFORM,
-  NEXT
+  NEXT,
+  RADIOGROUPS
 }
 
 enum FormId { MENU, FORMS, ACTIONS, STATICDATA, LOGIN }

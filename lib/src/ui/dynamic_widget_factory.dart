@@ -5,7 +5,7 @@ abstract class IFormWidget {
     ViewType? controlType = EnumFormatter.getViewType(formItem.controlType!);
     switch (controlType) {
       case ViewType.TEXT:
-        return DynamicTextFormField();
+        return DynamicTextFormField(formFields: formFields);
 
       case ViewType.DATE:
         return DynamicTextFormField();
@@ -46,7 +46,7 @@ abstract class IFormWidget {
         return const DynamicCheckBox();
 
       case ViewType.CONTAINER:
-        return const DynamicLinkedContainer();
+        return const DynamicContainer();
 
       default:
         {

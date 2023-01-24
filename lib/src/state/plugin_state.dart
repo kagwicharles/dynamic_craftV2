@@ -69,3 +69,5 @@ var currentStepperIndex = 0.obs;
 var isStepperForm = false.obs;
 
 var deleteFormInput = true.obs;
+
+var selectedRadio = "".obs;

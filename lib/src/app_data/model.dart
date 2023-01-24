@@ -287,3 +287,41 @@ class DynamicData {
       this.listType,
       this.tappedButton});
 }
+
+@JsonSerializable()
+class StandingOrder {
+  @JsonKey(name: 'Amount')
+  double? amount;
+
+  @JsonKey(name: 'SOID')
+  String? standingOrderID;
+
+  @JsonKey(name: 'EffectiveDate')
+  String? effectiveDate;
+
+  @JsonKey(name: 'FrequencyID')
+  String? frequencyID;
+
+  @JsonKey(name: 'LastExecutionDate')
+  String? lastExecutionDate;
+
+  @JsonKey(name: 'CreatedBy')
+  String? createdBy;
+
+  @JsonKey(name: 'RequestData')
+  String? requestData;
+
+  StandingOrder(
+      {this.amount,
+      this.standingOrderID,
+      this.effectiveDate,
+      this.frequencyID,
+      this.lastExecutionDate,
+      this.createdBy,
+      this.requestData});
+
+  factory StandingOrder.fromJson(Map<String, dynamic> json) =>
+      _$StandingOrderFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StandingOrderToJson(this);
+}

@@ -105,25 +105,33 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                         const NeverScrollableScrollPhysics(),
                                     itemCount:
                                         postDynamic.receiptDetails?.length,
-                                    itemBuilder: (context, index) => Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 8),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(MapItem.fromJson(postDynamic
-                                                    .receiptDetails![index])
-                                                .title),
-                                            Text(
-                                              MapItem.fromJson(postDynamic
-                                                      .receiptDetails![index])
-                                                  .value,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            )
-                                          ],
-                                        ))),
+                                    itemBuilder: (context, index) {
+                                      String title = MapItem.fromJson(
+                                              postDynamic
+                                                  .receiptDetails?[index])
+                                          .title;
+                                      String? value = MapItem.fromJson(
+                                                  postDynamic
+                                                      .receiptDetails?[index])
+                                              .value ??
+                                          "****";
+                                      return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(title),
+                                              Text(
+                                                value.isEmpty ? "****" : value,
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )
+                                            ],
+                                          ));
+                                    }),
                                 const SizedBox(
                                   height: 44,
                                 ),
@@ -143,7 +151,8 @@ class _TransactionReceiptState extends State<TransactionReceipt>
 }
 
 class MapItem {
-  String title, value;
+  String title;
+  String? value;
 
   MapItem({required this.title, required this.value});
 

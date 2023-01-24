@@ -82,7 +82,7 @@ class FormsListWidget extends StatelessWidget {
 
             bool isTabWidget = filteredFormItems
                 .map((item) => item.controlType)
-                .contains(ViewType.CONTAINER.name);
+                .contains(ViewType.TAB.name);
 
             bool isStepperWigdet = filteredFormItems
                 .map((item) => item.controlType)

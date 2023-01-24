@@ -18,7 +18,7 @@ class ModuleItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double iconSize = 58;
+    const double iconSize = 54;
 
     return InkWell(
       onTap: () {
@@ -39,11 +39,11 @@ class ModuleItemWidget extends StatelessWidget {
         ),
         Flexible(
             child: Text(
-          moduleItem.moduleName,
+          moduleItem.moduleName.capitalizeWords(" "),
           // overflow: TextOverflow.fade,
           textAlign: TextAlign.center,
           overflow: TextOverflow.visible,
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+          style: GoogleFonts.roboto(fontSize: 14),
         )),
       ]),
     );

@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:craft_dynamic/database.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:floor_generator/value_object/view.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:image_picker/image_picker.dart';
@@ -831,11 +832,13 @@ class DynamicContainer extends StatelessWidget implements IFormWidget {
     var formItem = BaseFormInheritedComponent.of(context)?.formItem;
     var formItems = BaseFormInheritedComponent.of(context)?.formItems;
 
-    if (formItem?.controlType == ControlFormat.RADIOGROUPS.name) {
-      formItems?.removeWhere(
-          (formItem) => formItem.controlType != ViewType.RBUTTON.name);
+    if (formItem?.controlFormat == ControlFormat.RADIOGROUPS.name) {
+      var radioButtons = formItems
+          ?.where((formItem) => formItem.controlType == ViewType.RBUTTON.name)
+          .toList();
+
       child = DynamicRadioGroup(
-        radios: formItems,
+        radios: radioButtons,
       );
     }
     return child;
@@ -973,40 +976,47 @@ class CheckboxFormField extends FormField<bool> {
 
 class DynamicRadioGroup extends StatefulWidget implements IFormWidget {
   List<FormItem>? radios;
+
   DynamicRadioGroup({this.radios, super.key});
 
   @override
   State<StatefulWidget> createState() => _DynamicRadioGroupState();
+
   @override
   Widget render() => DynamicRadioGroup();
 }
 
 class _DynamicRadioGroupState extends State<DynamicRadioGroup> {
-  String? selected = "";
+  int? chipValue = 0;
+
+  List<Widget> radioButtons = [];
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: widget.radios?.length,
-        itemBuilder: ((context, index) {
-          final formItem = widget.radios?[index];
-          String controlID = formItem?.controlId ?? "";
-
-          return RadioListTileFormField(
-            title: formItem?.controlText ?? "",
-            groupValue: selected,
-            value: formItem?.controlId ?? "",
-            validator: (value) {
-              validate(controlID, formItem);
-            },
-            onChanged: ((value) {
-              (String? value) {
-                selected = value;
-              };
-            }),
-          );
-        }));
+    radioButtons.clear();
+    widget.radios?.asMap().forEach((index, radio) {
+      radioButtons.add(RadioListTileFormField(
+        title: radio.controlText ?? "",
+        value: chipValue == index,
+        validator: (selected) {
+          validate(radio.controlId ?? "", radio);
+        },
+        onSelected: (selected) {
+          setState(() {
+            chipValue = selected ?? false ? index : null;
+          });
+        },
+      ));
+    });
+    debugPrint("Radio buttons...${radioButtons.length}");
+    return radioButtons.isNotEmpty
+        ? Container(
+            padding: const EdgeInsets.only(bottom: 18),
+            width: double.infinity,
+            child: Wrap(
+              children: radioButtons,
+            ))
+        : const SizedBox();
   }
 
   validate(String value, FormItem? formItem) {
@@ -1020,17 +1030,20 @@ class RadioListTileFormField extends FormField<bool> {
     super.key,
     required String title,
     required FormFieldValidator<bool> validator,
-    required FormFieldValidator<String> onChanged,
+    required FormFieldValidator<bool> onSelected,
     String? groupValue = "",
-    String value = "",
+    bool value = false,
+    int index = 0,
   }) : super(
             validator: validator,
             builder: (FormFieldState<bool> state) {
-              return RadioListTile<String>(
-                title: Text(title),
-                value: value,
-                groupValue: groupValue,
-                onChanged: onChanged,
+              return ChoiceChip(
+                labelStyle: TextStyle(
+                  color: value ? Colors.white : APIService.appPrimaryColor,
+                ),
+                label: Text(title),
+                selected: value,
+                onSelected: onSelected,
               );
             });
 }

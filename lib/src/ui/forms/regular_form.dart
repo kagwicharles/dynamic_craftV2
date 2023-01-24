@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:craft_dynamic/src/ui/dynamic_static/list_data.dart';
 import 'package:craft_dynamic/src/util/common_lib_util.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +23,12 @@ class RegularFormWidget extends StatefulWidget {
       this.hasRecentList = false});
 
   @override
-  State<StatefulWidget> createState() => _RegularFormWidgetState();
+  State<RegularFormWidget> createState() => _RegularFormWidgetState();
 }
 
 class _RegularFormWidgetState extends State<RegularFormWidget> {
   final _formKey = GlobalKey<FormState>();
+
   List<FormItem> formItems = [];
 
   @override
@@ -67,6 +70,7 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
             height: double.infinity,
             child: SingleChildScrollView(
                 child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
                 const SizedBox(
                   height: 12,

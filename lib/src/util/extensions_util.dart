@@ -8,6 +8,15 @@ extension StringExtension on String {
   }
 }
 
+extension StringCapitalization on String {
+  String capitalizeWords(String separator) {
+    var words = split(separator);
+    var capitalizedWords =
+        words.map((word) => word[0].toUpperCase() + word.substring(1));
+    return capitalizedWords.join(separator);
+  }
+}
+
 extension ModuleIdExt on ModuleId {
   String get name => describeEnum(this);
 }

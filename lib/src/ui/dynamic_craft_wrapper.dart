@@ -34,11 +34,11 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   initializeApp() async {
     await PermissionUtil.checkRequiredPermissions();
     getCurrentLatLong();
+    showLoadingScreen.value = true;
     await getAppData();
   }
 
   getAppData() async {
-    showLoadingScreen.value = true;
     await _initRepository.getAppToken();
     await _initRepository.getAppUIData();
     showLoadingScreen.value = false;

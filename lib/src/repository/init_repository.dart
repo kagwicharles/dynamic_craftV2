@@ -30,7 +30,7 @@ class InitRepository {
       AppLogger.appLogI(
           tag: "New data version", message: currentStaticDataVersion);
       if (currentStaticDataVersion != null &&
-          currentStaticDataVersion > staticDataVersion) {
+          currentStaticDataVersion >= staticDataVersion) {
         refreshUIData = true;
       }
     });

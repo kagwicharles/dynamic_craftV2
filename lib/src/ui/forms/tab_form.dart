@@ -144,8 +144,8 @@ class _TabWidgetState extends State<TabWidget> {
     return DefaultTabController(
         length: tabs.length,
         child: Builder(builder: (BuildContext context) {
-          final TabController tabController = DefaultTabController.of(context);
-          tabController.addListener(() {
+          final TabController? tabController = DefaultTabController.of(context);
+          tabController?.addListener(() {
             if (!tabController.indexIsChanging) {
               Provider.of<PluginState>(context, listen: false).setRequestState(
                   false,

@@ -24,7 +24,8 @@ enum ViewType {
   OTHER,
   STEPPER,
   STEP,
-  CHECKBOX
+  CHECKBOX,
+  HORIZONTALTEXT
 }
 
 enum ControlFormat {

@@ -45,6 +45,9 @@ abstract class IFormWidget {
       case ViewType.CHECKBOX:
         return const DynamicCheckBox();
 
+      case ViewType.HORIZONTALTEXT:
+        return DynamicHorizontalText();
+
       // case ViewType.CONTAINER:
       //   return const DynamicContainer();
 

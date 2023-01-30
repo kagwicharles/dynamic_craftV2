@@ -826,31 +826,6 @@ class _DynamicImageUpload extends State<DynamicImageUpload> {
   }
 }
 
-class DynamicContainer extends StatelessWidget implements IFormWidget {
-  const DynamicContainer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    Widget child = const SizedBox();
-    var formItem = BaseFormInheritedComponent.of(context)?.formItem;
-    var formItems = BaseFormInheritedComponent.of(context)?.formItems;
-
-    if (formItem?.controlFormat == ControlFormat.RADIOGROUPS.name) {
-      var radioButtons = formItems
-          ?.where((formItem) => formItem.controlType == ViewType.RBUTTON.name)
-          .toList();
-
-      child = DynamicRadioGroup(
-        radios: radioButtons,
-      );
-    }
-    return child;
-  }
-
-  @override
-  Widget render() => const DynamicContainer();
-}
-
 class DynamicLinkedContainer extends StatefulWidget implements IFormWidget {
   const DynamicLinkedContainer({super.key});
 
@@ -977,78 +952,22 @@ class CheckboxFormField extends FormField<bool> {
             });
 }
 
-class DynamicRadioGroup extends StatefulWidget implements IFormWidget {
-  List<FormItem>? radios;
-
-  DynamicRadioGroup({this.radios, super.key});
-
-  @override
-  State<StatefulWidget> createState() => _DynamicRadioGroupState();
+class DynamicHorizontalText extends StatefulWidget implements IFormWidget {
+  List<Map<String?, dynamic>>? inputFields;
+  DynamicHorizontalText({this.inputFields, super.key});
 
   @override
-  Widget render() => DynamicRadioGroup();
+  State<StatefulWidget> createState() => _DynamicHorizontalText();
+
+  @override
+  Widget render() => DynamicHorizontalText();
 }
 
-class _DynamicRadioGroupState extends State<DynamicRadioGroup> {
-  int? chipValue = 0;
-
-  List<Widget> radioButtons = [];
-
+class _DynamicHorizontalText extends State<DynamicHorizontalText> {
   @override
   Widget build(BuildContext context) {
-    radioButtons.clear();
-    widget.radios?.asMap().forEach((index, radio) {
-      radioButtons.add(RadioListTileFormField(
-        title: radio.controlText ?? "",
-        value: chipValue == index,
-        validator: (selected) {
-          validate(radio.controlId ?? "", radio);
-        },
-        onSelected: (selected) {
-          setState(() {
-            chipValue = selected ?? false ? index : null;
-          });
-        },
-      ));
-    });
-    debugPrint("Radio buttons...${radioButtons.length}");
-    return radioButtons.isNotEmpty
-        ? Container(
-            padding: const EdgeInsets.only(bottom: 18),
-            width: double.infinity,
-            child: Wrap(
-              children: radioButtons,
-            ))
-        : const SizedBox();
+    return SizedBox();
   }
-
-  validate(String value, FormItem? formItem) {
-    Provider.of<PluginState>(context, listen: false)
-        .addFormInput({"${formItem?.serviceParamId}": value});
-  }
-}
-
-class RadioListTileFormField extends FormField<bool> {
-  RadioListTileFormField({
-    super.key,
-    required String title,
-    required FormFieldValidator<bool> validator,
-    required FormFieldValidator<bool> onSelected,
-    String? groupValue = "",
-    bool value = false,
-    int index = 0,
-  }) : super(
-            validator: validator,
-            builder: (FormFieldState<bool> state) {
-              return ChoiceChip(
-                labelStyle: TextStyle(
-                  color: value ? Colors.white : APIService.appPrimaryColor,
-                ),
-                label: Text(title),
-                selected: value,
-                onSelected: onSelected,
-              );
-            });
 }
 
 class NullWidget implements IFormWidget {

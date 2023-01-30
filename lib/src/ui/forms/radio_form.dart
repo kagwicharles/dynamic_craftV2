@@ -97,13 +97,11 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
   List<Widget> chips = [];
   List<FormItem> chipChoices = [];
   List<FormItem> rButtonForms = [];
-  int? currentChip = 0;
+  int? _value = 0;
 
   @override
   void initState() {
     super.initState();
-    addChips(getRButtons());
-    debugPrint("Chip choices::$chipChoices::::RButtons::$rButtonForms");
   }
 
   List<FormItem> getRButtons() => widget.formItems
@@ -111,18 +109,19 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
       .toList();
 
   addChips(List<FormItem> formItems) {
+    chips.clear();
+    chipChoices.clear();
     formItems.asMap().forEach((index, formItem) {
       chipChoices.add(formItem);
       chips.add(ChoiceChip(
         labelStyle: TextStyle(
-          color:
-              currentChip == index ? Colors.white : APIService.appPrimaryColor,
+          color: _value == index ? Colors.white : APIService.appPrimaryColor,
         ),
         label: Text(formItem.controlText ?? ""),
-        selected: currentChip == index,
-        onSelected: (bool isSelected) {
+        selected: _value == index,
+        onSelected: (bool selected) {
           setState(() {
-            currentChip = isSelected ? index : null;
+            _value = selected ? index : null;
           });
         },
       ));
@@ -130,9 +129,11 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
   }
 
   getRButtonForms(FormItem formItem) {
+    sortedForms.clear();
+    rButtonForms.clear();
     rButtonForms = widget.formItems
         .where((element) =>
-            element.linkedToControl == formItem.linkedToControl ||
+            element.linkedToControl == formItem.controlId ||
             element.linkedToControl == "" ||
             element.linkedToControl == null)
         .toList();
@@ -144,7 +145,8 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
 
   @override
   Widget build(BuildContext context) {
-    getRButtonForms(chipChoices[currentChip ?? 0]);
+    addChips(getRButtons());
+    getRButtonForms(chipChoices[_value ?? 0]);
 
     return SizedBox(
         height: double.infinity,
@@ -160,11 +162,12 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
           ),
           Padding(
               padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
-              child: Wrap(
-                alignment: WrapAlignment.start,
-                spacing: 2,
-                children: chips,
-              )),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Wrap(
+                    spacing: 2,
+                    children: chips,
+                  ))),
           const SizedBox(
             height: 18,
           ),
@@ -187,6 +190,4 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
                   }))
         ])));
   }
-
-  bool get wantKeepAlive => true;
 }

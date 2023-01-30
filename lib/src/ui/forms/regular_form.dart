@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/list_data.dart';
 import 'package:craft_dynamic/src/util/common_lib_util.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
+import 'package:provider/provider.dart';
 
 class RegularFormWidget extends StatefulWidget {
   final ModuleItem moduleItem;
@@ -39,15 +41,6 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
     return Scaffold(
         appBar: AppBar(
           elevation: 2,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-          ),
           title: Text(widget.moduleItem.moduleName),
           actions: widget.hasRecentList
               ? [
@@ -96,5 +89,11 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
                         }))
               ],
             ))));
+  }
+
+  @override
+  void dispose() {
+    Provider.of<PluginState>(context, listen: false).setRequestState(false);
+    super.dispose();
   }
 }

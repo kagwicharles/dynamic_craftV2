@@ -45,8 +45,8 @@ abstract class IFormWidget {
       case ViewType.CHECKBOX:
         return const DynamicCheckBox();
 
-      case ViewType.CONTAINER:
-        return const DynamicContainer();
+      // case ViewType.CONTAINER:
+      //   return const DynamicContainer();
 
       default:
         {

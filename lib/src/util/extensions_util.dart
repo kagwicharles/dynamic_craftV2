@@ -9,11 +9,11 @@ extension StringExtension on String {
 }
 
 extension StringCapitalization on String {
-  String capitalizeWords(String separator) {
-    var words = split(separator);
+  String capitalizeWords() {
+    var words = split(" ");
     var capitalizedWords =
         words.map((word) => word[0].toUpperCase() + word.substring(1));
-    return capitalizedWords.join(separator);
+    return capitalizedWords.join(" ");
   }
 }
 

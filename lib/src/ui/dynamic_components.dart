@@ -5,7 +5,6 @@ import 'dart:io';
 
 import 'package:craft_dynamic/database.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:floor_generator/value_object/view.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:image_picker/image_picker.dart';
@@ -345,6 +344,11 @@ class _DynamicButtonState extends State<DynamicButton> {
     }
 
     if (formKey?.currentState?.validate()!) {
+      FocusScopeNode currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+
       if (formItem?.controlFormat == ControlFormat.NEXT.name) {
         Provider.of<PluginState>(context, listen: false).setDeleteForm(false);
         CommonUtils.navigateToRoute(
@@ -414,7 +418,6 @@ class DynamicDropDown implements IFormWidget {
                         ),
                       ))
                   .toList();
-              debugPrint("Dropdown items...${dropdownPicks?.toList()}");
               dropdownPicks?.toSet().toList();
               if (dropdownPicks != null) {
                 if (dropdownPicks.isNotEmpty) {

@@ -1,6 +1,7 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/database.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
+import 'package:craft_dynamic/src/ui/forms/confirmation_form.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +10,12 @@ import '../builder/factory_builder.dart';
 
 class DynamicFormRequest {
   Map<String, dynamic> requestObj = {};
-  late DynamicResponse dynamicResponse;
   final _actionControlRepository = ActionControlRepository();
+  final _formsRepository = FormsRepository();
   final _services = APIService();
   final _sharedPref = CommonSharedPref();
+  String? confirmationModuleID;
+  DynamicResponse? dynamicResponse;
 
   Future<DynamicResponse?> dynamicRequest(
     ModuleItem moduleItem, {
@@ -24,6 +27,7 @@ class DynamicFormRequest {
     listType = ListType.TransactionList,
     tappedButton = false,
   }) async {
+    dynamicResponse = DynamicResponse(status: "XXXX");
     if (dataObj == null) {
       Fluttertoast.showToast(
           msg: "Unable to process data", backgroundColor: Colors.red);
@@ -57,6 +61,27 @@ class DynamicFormRequest {
       Provider.of<PluginState>(context, listen: false).setDeleteForm(true);
     }
 
+    confirmationModuleID = actionControl?.confirmationModuleID;
+    if (confirmationModuleID != null && confirmationModuleID != "") {
+      List<FormItem> form =
+          await _formsRepository.getFormsByModuleId(confirmationModuleID ?? "");
+      var result = await ConfirmationForm.showModalBottomDialog(
+          context,
+          form,
+          moduleItem,
+          Provider.of<PluginState>(context, listen: false).formInputValues);
+      if (result != null) {
+        if (result == 1) {
+          Provider.of<PluginState>(context, listen: false)
+              .setRequestState(false);
+          return dynamicResponse;
+        }
+      } else {
+        Provider.of<PluginState>(context, listen: false).setRequestState(false);
+        return dynamicResponse;
+      }
+    }
+
     requestObj = DynamicFactory.getDynamicRequestObject(actionType,
         merchantID: moduleItem.merchantID,
         actionID: formItem?.actionId,
@@ -74,19 +99,21 @@ class DynamicFormRequest {
 
     var dynamicData = DynamicData(
         actionType: actionType,
-        dynamicResponse: dynamicResponse,
+        dynamicResponse: dynamicResponse ?? DynamicResponse(status: "XXXX"),
         moduleItem: moduleItem,
         controlID: formItem?.controlId,
         isList: isList,
         listType: listType,
         tappedButton: tappedButton);
 
-    dynamicResponse.dynamicData = dynamicData;
+    dynamicResponse?.dynamicData = dynamicData;
 
     if (moduleItem.moduleId == "PIN" &&
-        dynamicResponse.status == StatusCode.success.statusCode) {
+        dynamicResponse?.status == StatusCode.success.statusCode) {
       _sharedPref.setBio(false);
     }
+
+    Provider.of<PluginState>(context, listen: false).setRequestState(false);
 
     return dynamicResponse;
   }

@@ -11,6 +11,8 @@ import 'package:craft_dynamic/src/ui/forms/tab_form.dart';
 import 'package:craft_dynamic/src/util/widget_util.dart';
 import 'package:provider/provider.dart';
 
+import 'radio_form.dart';
+
 class FormsListWidget extends StatelessWidget {
   ModuleItem moduleItem;
   bool isWizard;
@@ -80,6 +82,10 @@ class FormsListWidget extends StatelessWidget {
                 .map((item) => item.controlType)
                 .contains(ViewType.LIST.name);
 
+            bool isRadioWidget = filteredFormItems
+                .map((item) => item.controlType)
+                .contains(ViewType.RBUTTON.name);
+
             bool isTabWidget = filteredFormItems
                 .map((item) => item.controlType)
                 .contains(ViewType.TAB.name);
@@ -90,6 +96,12 @@ class FormsListWidget extends StatelessWidget {
 
             if (isTabWidget) {
               child = TabWidget(
+                title: "test",
+                formItems: filteredFormItems,
+                moduleItem: moduleItem,
+              );
+            } else if (isRadioWidget) {
+              child = RadioWidget(
                 title: "test",
                 formItems: filteredFormItems,
                 moduleItem: moduleItem,

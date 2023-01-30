@@ -2,8 +2,10 @@
 
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/dynamic_widget.dart';
+import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
 class StepperFormWidget extends StatefulWidget {
@@ -63,15 +65,6 @@ class _StepperFormWidgetState extends State<StepperFormWidget> {
     return Scaffold(
         appBar: AppBar(
           elevation: 2,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-          ),
           title: Text(widget.moduleItem.moduleName),
         ),
         body: Stepper(
@@ -124,6 +117,12 @@ class _StepperFormWidgetState extends State<StepperFormWidget> {
     } else {
       return false;
     }
+  }
+
+  @override
+  void dispose() {
+    Provider.of<PluginState>(context, listen: false).setRequestState(false);
+    super.dispose();
   }
 }
 

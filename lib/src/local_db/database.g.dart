@@ -117,7 +117,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `FormItem` (`no` INTEGER, `controlType` TEXT, `controlText` TEXT, `moduleId` TEXT, `controlId` TEXT, `containerID` TEXT, `actionId` TEXT, `linkedToControl` TEXT, `formSequence` INTEGER, `serviceParamId` TEXT, `displayOrder` REAL, `controlFormat` TEXT, `dataSourceId` TEXT, `controlValue` TEXT, `isMandatory` INTEGER, `isEncrypted` INTEGER, `minValue` TEXT, `maxValue` TEXT, PRIMARY KEY (`no`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `ActionItem` (`no` INTEGER, `moduleId` TEXT NOT NULL, `actionType` TEXT NOT NULL, `actionId` TEXT NOT NULL, `serviceParamsIds` TEXT NOT NULL, `controlId` TEXT NOT NULL, `webHeader` TEXT NOT NULL, `merchantId` TEXT, `formId` TEXT, `displayFormID` TEXT, PRIMARY KEY (`no`))');
+            'CREATE TABLE IF NOT EXISTS `ActionItem` (`no` INTEGER, `moduleID` TEXT NOT NULL, `actionType` TEXT NOT NULL, `webHeader` TEXT NOT NULL, `controlID` TEXT, `displayFormID` TEXT, `confirmationModuleID` TEXT, PRIMARY KEY (`no`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `UserCode` (`no` INTEGER, `id` TEXT NOT NULL, `subCodeId` TEXT NOT NULL, `description` TEXT, `relationId` TEXT, `extraField` TEXT, `displayOrder` INTEGER, `isDefault` INTEGER, `extraFieldName` TEXT, PRIMARY KEY (`no`))');
         await database.execute(
@@ -461,15 +461,12 @@ class _$ActionControlDao extends ActionControlDao {
             'ActionItem',
             (ActionItem item) => <String, Object?>{
                   'no': item.no,
-                  'moduleId': item.moduleId,
+                  'moduleID': item.moduleID,
                   'actionType': item.actionType,
-                  'actionId': item.actionId,
-                  'serviceParamsIds': item.serviceParamsIds,
-                  'controlId': item.controlId,
                   'webHeader': item.webHeader,
-                  'merchantId': item.merchantId,
-                  'formId': item.formId,
-                  'displayFormID': item.displayFormID
+                  'controlID': item.controlID,
+                  'displayFormID': item.displayFormID,
+                  'confirmationModuleID': item.confirmationModuleID
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -488,15 +485,12 @@ class _$ActionControlDao extends ActionControlDao {
     return _queryAdapter.query(
         'SELECT * FROM ActionItem WHERE moduleId = ?1 AND controlId = ?2',
         mapper: (Map<String, Object?> row) => ActionItem(
-            moduleId: row['moduleId'] as String,
+            moduleID: row['moduleID'] as String,
             actionType: row['actionType'] as String,
-            actionId: row['actionId'] as String,
-            serviceParamsIds: row['serviceParamsIds'] as String,
-            controlId: row['controlId'] as String,
             webHeader: row['webHeader'] as String,
+            controlID: row['controlID'] as String?,
             displayFormID: row['displayFormID'] as String?,
-            formId: row['formId'] as String?,
-            merchantId: row['merchantId'] as String?),
+            confirmationModuleID: row['confirmationModuleID'] as String?),
         arguments: [moduleId, controlId]);
   }
 

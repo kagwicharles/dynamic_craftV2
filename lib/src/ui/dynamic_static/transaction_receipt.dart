@@ -82,11 +82,24 @@ class _TransactionReceiptState extends State<TransactionReceipt>
                                     ..duration = comp.duration
                                     ..forward();
                                 }),
-                                const Text(
-                                  "Success",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        child: Divider(
+                                      color: Colors.grey[300],
+                                    )),
+                                    const Text(
+                                      "Success",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Expanded(
+                                      child: Divider(
+                                        color: Colors.grey[300],
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                const Divider(),
                                 const SizedBox(
                                   height: 22,
                                 ),

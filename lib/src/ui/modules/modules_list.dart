@@ -1,9 +1,11 @@
 // ignore_for_file: must_be_immutable
+import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/database.dart';
 import 'package:craft_dynamic/dynamic_widget.dart';
+import 'package:provider/provider.dart';
 
 class ModulesListWidget extends StatefulWidget {
   final Orientation orientation;
@@ -34,15 +36,6 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
     return Scaffold(
         appBar: AppBar(
             elevation: 2,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-            ),
             title: Text(widget.favouriteModule == null
                 ? widget.moduleItem!.moduleName
                 : widget.favouriteModule!.moduleName)),
@@ -80,6 +73,7 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
 
   @override
   void dispose() {
+    Provider.of<PluginState>(context, listen: false).setRequestState(false);
     super.dispose();
   }
 }

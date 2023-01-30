@@ -27,7 +27,7 @@ class ModuleItemWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(14.0),
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         CachedNetworkImage(
-          imageUrl: moduleItem.moduleUrl!,
+          imageUrl: moduleItem.moduleUrl ?? "",
           height: iconSize,
           width: iconSize,
           placeholder: (context, url) =>
@@ -39,7 +39,7 @@ class ModuleItemWidget extends StatelessWidget {
         ),
         Flexible(
             child: Text(
-          moduleItem.moduleName.capitalizeWords(" "),
+          moduleItem.moduleName.capitalizeWords(),
           // overflow: TextOverflow.fade,
           textAlign: TextAlign.center,
           overflow: TextOverflow.visible,

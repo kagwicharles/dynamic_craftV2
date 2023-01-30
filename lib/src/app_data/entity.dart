@@ -93,37 +93,28 @@ class FormItem {
 class ActionItem {
   @primaryKey
   int? no;
-  String moduleId;
+  String moduleID;
   String actionType;
-  String actionId;
-  String serviceParamsIds;
-  String controlId;
   String webHeader;
-  String? merchantId;
-  String? formId;
+  String? controlID;
   String? displayFormID;
+  String? confirmationModuleID;
 
   ActionItem(
-      {required this.moduleId,
+      {required this.moduleID,
       required this.actionType,
-      required this.actionId,
-      required this.serviceParamsIds,
-      required this.controlId,
       required this.webHeader,
+      this.controlID,
       this.displayFormID,
-      this.formId,
-      this.merchantId});
+      this.confirmationModuleID});
 
   ActionItem.fromJson(Map<String, dynamic> json)
-      : moduleId = json["ModuleID"],
+      : moduleID = json["ModuleID"],
         actionType = json["ActionType"],
-        actionId = json["ActionID"],
-        serviceParamsIds = json["ServiceParamIDs"],
-        controlId = json["ControlID"],
         webHeader = json["WebHeader"],
+        controlID = json["ControlID"],
         displayFormID = json["DisplayFormID"],
-        formId = json["FormID"],
-        merchantId = json["MerchantID"];
+        confirmationModuleID = json["ConfirmationModuleID"];
 }
 
 @entity

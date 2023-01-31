@@ -59,13 +59,16 @@ class _TransactionListState extends State<TransactionList> {
                 if (list != null) {
                   addTransactions(list: list);
                   widget = ListView.separated(
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
                     itemCount: transactionList.length,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     itemBuilder: (context, index) {
                       return TransactionItem(
                           transaction: transactionList[index]);
                     },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const SizedBox(
+                      height: 8,
+                    ),
                   );
                 }
               }
@@ -95,7 +98,7 @@ class TransactionItem extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Material(
-            elevation: 2,
+            elevation: 1,
             borderRadius: BorderRadius.circular(8.0),
             child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),

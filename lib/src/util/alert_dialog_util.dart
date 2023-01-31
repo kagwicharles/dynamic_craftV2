@@ -1,7 +1,4 @@
-import 'package:craft_dynamic/dynamic_widget.dart';
-import 'package:craft_dynamic/src/ui/dynamic_components.dart';
-import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+part of craft_dynamic;
 
 class AlertUtil {
   static showAlertDialog(BuildContext context, String message,
@@ -28,10 +25,10 @@ class AlertUtil {
                 isInfoAlert
                     ? Lottie.asset(
                         "packages/craft_dynamic/assets/lottie/info_lottie.json")
-                    : Lottie.asset(
-                        "packages/craft_dynamic/assets/lottie/error.json",
-                        height: 110,
-                        width: 110)
+                    : Image.asset(
+                        "packages/craft_dynamic/assets/images/warning.png",
+                        height: 88,
+                        width: 88)
               ],
             )),
             content: SizedBox(

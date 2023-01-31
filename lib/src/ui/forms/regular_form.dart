@@ -30,8 +30,16 @@ class RegularFormWidget extends StatefulWidget {
 
 class _RegularFormWidgetState extends State<RegularFormWidget> {
   final _formKey = GlobalKey<FormState>();
-
   List<FormItem> formItems = [];
+  FormItem? recentList;
+
+  @override
+  initState() {
+    recentList = widget.sortedForms
+        .toList()
+        .firstWhere((formItem) => formItem.controlType == ViewType.LIST.name);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +57,10 @@ class _RegularFormWidgetState extends State<RegularFormWidget> {
                         CommonUtils.navigateToRoute(
                             context: context,
                             widget: ListDataScreen(
-                                widget: DynamicListWidget().render(),
+                                widget: DynamicListWidget(
+                                        moduleItem: widget.moduleItem,
+                                        formItem: recentList)
+                                    .render(),
                                 title: widget.moduleItem.moduleName));
                       },
                       icon: const Icon(

@@ -11,8 +11,6 @@ import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/util/common_lib_util.dart';
 import 'package:provider/provider.dart';
 
-import 'alert_dialog_util.dart';
-
 class DynamicUtil {
   static showReceipt({required context, required postDynamic, moduleName}) {
     Future.delayed(const Duration(milliseconds: 500), () {
@@ -40,13 +38,13 @@ class DynamicUtil {
   }
 
   static processDynamicResponse(
-      DynamicData dynamicData, BuildContext context, String controlID,
+      DynamicData? dynamicData, BuildContext context, String? controlID,
       {moduleItem}) {
     Provider.of<PluginState>(context, listen: false).setRequestState(false);
 
     var builder = DynamicFactory.getPostDynamicObject(
         dynamicData); //Get a builder based on action type
-    var postDynamic = PostDynamic(builder, context, controlID);
+    var postDynamic = PostDynamic(builder, context, controlID ?? "");
     debugPrint("PostDynamic formfields::::${postDynamic.formFields}");
 
     switch (postDynamic.status) {

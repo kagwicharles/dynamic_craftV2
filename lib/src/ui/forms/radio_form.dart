@@ -57,7 +57,10 @@ class _RadioWidgetState extends State<RadioWidget> {
                         CommonUtils.navigateToRoute(
                             context: context,
                             widget: ListDataScreen(
-                                widget: DynamicListWidget().render(),
+                                widget: DynamicListWidget(
+                                        moduleItem: widget.moduleItem,
+                                        formItem: recentList)
+                                    .render(),
                                 title: widget.moduleItem.moduleName));
                       },
                       icon: const Icon(

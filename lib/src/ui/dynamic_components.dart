@@ -669,12 +669,13 @@ class _DynamicPhonePickerFormWidgetState
 class DynamicListWidget implements IFormWidget {
   final _dynamicRequest = DynamicFormRequest();
   DynamicResponse? dynamicResponse;
-  FormItem? formItem;
-  ModuleItem? moduleItem;
+  FormItem? formItem, inheritedFormItem;
+  ModuleItem? moduleItem, inheritedModuleItem;
 
-  getDynamicList(context, formItem, moduleItem) =>
-      _dynamicRequest.dynamicRequest(
-        moduleItem,
+  DynamicListWidget({this.moduleItem, this.formItem});
+
+  getDynamicList(context, formItem, module) => _dynamicRequest.dynamicRequest(
+        module,
         formItem: formItem,
         dataObj:
             Provider.of<PluginState>(context, listen: false).formInputValues,
@@ -687,24 +688,34 @@ class DynamicListWidget implements IFormWidget {
   @override
   Widget render() {
     return Builder(builder: (BuildContext context) {
-      formItem = BaseFormInheritedComponent.of(context)?.formItem;
-      moduleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
+      inheritedFormItem = BaseFormInheritedComponent.of(context)?.formItem;
+      inheritedModuleItem = BaseFormInheritedComponent.of(context)?.moduleItem;
+
+      Provider.of<PluginState>(context, listen: false).addFormInput({
+        RequestParam.HEADER.name:
+            inheritedFormItem?.actionId ?? formItem?.actionId
+      });
+      debugPrint(
+          "New form input:::${Provider.of<PluginState>(context, listen: false).formInputValues}");
 
       return isEmptyList()
           ? const Center(
               child: Text("Nothing was found!"),
             )
           : FutureBuilder<DynamicResponse?>(
-              future: getDynamicList(context, formItem, moduleItem),
+              future: getDynamicList(
+                  context, formItem, inheritedModuleItem ?? moduleItem),
               builder: (BuildContext context,
                   AsyncSnapshot<DynamicResponse?> snapshot) {
-                Widget child = const SizedBox();
+                Widget child = Center(
+                  child: Lottie.asset("assets/lottie/loading_list.json"),
+                );
                 if (snapshot.hasData) {
                   dynamicResponse = snapshot.data;
-                  DynamicUtil.processDynamicResponse(
-                      dynamicResponse!.dynamicData!,
-                      context,
-                      formItem!.controlId!);
+                  // DynamicUtil.processDynamicResponse(
+                  //     dynamicResponse?.dynamicData,
+                  //     context,
+                  //     formItem?.controlId);
 
                   child = ListWidget(
                     dynamicList: dynamicResponse?.dynamicList,
@@ -724,9 +735,9 @@ class DynamicListWidget implements IFormWidget {
             formItem!.controlFormat!.isNotEmpty ||
         formItem?.actionId == null ||
         formItem?.actionId == "") {
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 }
 
@@ -953,20 +964,39 @@ class CheckboxFormField extends FormField<bool> {
 }
 
 class DynamicHorizontalText extends StatefulWidget implements IFormWidget {
-  List<Map<String?, dynamic>>? inputFields;
-  DynamicHorizontalText({this.inputFields, super.key});
+  const DynamicHorizontalText({super.key});
 
   @override
   State<StatefulWidget> createState() => _DynamicHorizontalText();
 
   @override
-  Widget render() => DynamicHorizontalText();
+  Widget render() => const DynamicHorizontalText();
 }
 
 class _DynamicHorizontalText extends State<DynamicHorizontalText> {
+  List<Map<String?, dynamic>>? inputFields;
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox();
+    inputFields =
+        Provider.of<PluginState>(context, listen: false).formInputValues;
+    var formItem = BaseFormInheritedComponent.of(context)?.formItem;
+    var formInput = inputFields?.firstWhere(
+      (input) => input.containsKey(formItem?.controlId),
+      orElse: () => {},
+    );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(formItem?.controlText ?? ""),
+        Text(
+          formInput?[formItem?.controlId] ?? "****",
+          style: const TextStyle(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.start,
+        )
+      ],
+    );
   }
 }
 

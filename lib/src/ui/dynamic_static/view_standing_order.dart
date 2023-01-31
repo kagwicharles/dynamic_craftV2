@@ -3,7 +3,6 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/network/dynamic_request.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
-import 'package:craft_dynamic/src/util/alert_dialog_util.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

@@ -23,7 +23,7 @@ class DynamicFactory {
         .getRequestObject();
   }
 
-  static PostDynamicBuilder getPostDynamicObject(DynamicData dynamicData) {
+  static PostDynamicBuilder getPostDynamicObject(DynamicData? dynamicData) {
     return IPostDynamicCheck(dynamicData).getBuilder();
   }
 }

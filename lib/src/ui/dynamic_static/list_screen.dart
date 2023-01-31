@@ -115,7 +115,7 @@ class ListWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                "assets/icons/empty-list.png",
+                "packages/craft_dynamic/assets/images/empty.png",
                 height: 64,
                 width: 64,
                 fit: BoxFit.cover,
@@ -124,9 +124,9 @@ class ListWidget extends StatelessWidget {
                 height: 14,
               ),
               const Text(
-                "LOOKS EMPTY",
+                "No transactions yet!",
                 style: TextStyle(
-                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
                 ),
               )
             ],

@@ -162,7 +162,10 @@ class _TabWidgetState extends State<TabWidget> {
                             CommonUtils.navigateToRoute(
                                 context: context,
                                 widget: ListDataScreen(
-                                    widget: DynamicListWidget().render(),
+                                    widget: DynamicListWidget(
+                                            moduleItem: widget.moduleItem,
+                                            formItem: recentList)
+                                        .render(),
                                     title: widget.moduleItem.moduleName));
                           },
                           icon: const Icon(

@@ -25,7 +25,9 @@ enum ViewType {
   STEPPER,
   STEP,
   CHECKBOX,
-  HORIZONTALTEXT
+  HORIZONTALTEXT,
+  DYNAMICDROPDOWN,
+  CAROUSELVIEW
 }
 
 enum ControlFormat {

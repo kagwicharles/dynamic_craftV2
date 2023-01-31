@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';

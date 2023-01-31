@@ -27,18 +27,22 @@ class DynamicFormRequest {
     listType = ListType.TransactionList,
     tappedButton = false,
   }) async {
+    debugPrint("****Making dynamic request****");
     dynamicResponse = DynamicResponse(status: "XXXX");
     if (dataObj == null) {
+      debugPrint("Data object is null!!!");
       Fluttertoast.showToast(
           msg: "Unable to process data", backgroundColor: Colors.red);
       return dynamicResponse;
     }
+
     ActionType actionType = ActionType.DBCALL;
     if (listType == ListType.ViewOrderList ||
         listType == ListType.BeneficiaryList) {
       requestObj["EncryptedFields"] = {};
       requestObj["MerchantID"] = moduleItem.merchantID;
     }
+
     requestObj["ModuleID"] = moduleItem.moduleId;
     requestObj["SessionID"] = "ffffffff-e46c-53ce-0000-00001d093e12";
 
@@ -96,6 +100,10 @@ class DynamicFormRequest {
         requestObj: requestObj,
         webHeader: actionControl?.webHeader,
         formID: actionType.name);
+
+    if (dynamicResponse?.status == "XXXX") {
+      Provider.of<PluginState>(context, listen: false).setRequestState(false);
+    }
 
     var dynamicData = DynamicData(
         actionType: actionType,

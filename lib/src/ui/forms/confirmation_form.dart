@@ -35,7 +35,7 @@ class ConfirmationForm {
                         Navigator.of(context).pop(1);
                       },
                       child: Row(
-                          children: const [Icon(Icons.close), Text("Close")]),
+                          children: const [Icon(Icons.close), Text("Cancel")]),
                     ),
                   ],
                 ),
@@ -47,6 +47,7 @@ class ConfirmationForm {
                     child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: formItems.length,
+                        padding: const EdgeInsets.symmetric(horizontal: 14),
                         itemBuilder: (context, index) {
                           return BaseFormComponent(
                               formItem: formItems[index],

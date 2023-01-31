@@ -38,9 +38,11 @@ import 'package:provider/provider.dart';
 import 'package:unique_identifier/unique_identifier.dart';
 import 'package:yaml/yaml.dart';
 
+import 'dynamic_widget.dart';
 import 'src/app_data/constants.dart';
 import 'src/session_manager/session_manager.dart';
 import 'src/state/plugin_state.dart';
+import 'src/ui/dynamic_components.dart';
 import 'src/util/common_lib_util.dart';
 import 'src/util/logger_util.dart';
 
@@ -75,3 +77,7 @@ part 'src/session_manager/session_helper.dart';
 part 'src/ui/dynamic_static/blurr_load_screen.dart';
 
 part 'src/app_data/model.g.dart';
+
+part 'src/util/alert_dialog_util.dart';
+
+part 'src/ui/dynamic_static/search_module_screen.dart';

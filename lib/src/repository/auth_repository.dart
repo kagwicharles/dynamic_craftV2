@@ -7,8 +7,9 @@ class AuthRepository {
   final _services = APIService();
 
   // Call this method to login
-  Future<ActivationResponse> login(String encryptedPin) async {
-    ActivationResponse activationResponse = await _services.login(encryptedPin);
+  Future<ActivationResponse> login(String pin) async {
+    ActivationResponse activationResponse =
+        await _services.login(CryptLib.encryptField(pin));
     if (activationResponse.status == StatusCode.success.statusCode) {
       await ClearDB.clearAllUserData();
       await _userAccountRepository.addUserAccountData(activationResponse);
@@ -18,10 +19,10 @@ class AuthRepository {
 
   // Call this method to activate app
   Future<ActivationResponse> activate(
-      {required mobileNumber, required encryptedPin}) async {
+      {required mobileNumber, required pin}) async {
     ActivationResponse activationResponse = await _services.activateMobile(
       mobileNumber: mobileNumber,
-      encryptedPin: encryptedPin,
+      encryptedPin: CryptLib.encryptField(pin),
     );
     return activationResponse;
   }
@@ -31,7 +32,8 @@ class AuthRepository {
       {required mobileNumber, required otp}) async {
     ActivationResponse activationResponse =
         await _services.verifyOTP(mobileNumber: mobileNumber, key: otp);
-    if (activationResponse.customerID != null) {
+    if (activationResponse.customerID != null &&
+        activationResponse.customerID != "") {
       _sharedPref.addActivationData(
           mobileNumber, activationResponse.customerID!);
     }

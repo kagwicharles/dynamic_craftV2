@@ -316,7 +316,7 @@ class _DynamicButtonState extends State<DynamicButton> {
           padding: const EdgeInsets.symmetric(vertical: 34),
           child: Consumer<PluginState>(builder: (context, state, child) {
             return state.loadingNetworkData
-                ? Lottie.asset("assets/lottie/loading_list.json")
+                ? Lottie.asset("packages/craft_dynamic/assets/lottie/loading_list.json")
                 : WidgetFactory.buildButton(
                     context, onClick, formItem!.controlText!.capitalize());
           }));
@@ -707,7 +707,7 @@ class DynamicListWidget implements IFormWidget {
               builder: (BuildContext context,
                   AsyncSnapshot<DynamicResponse?> snapshot) {
                 Widget child = Center(
-                  child: Lottie.asset("assets/lottie/loading_list.json"),
+                  child: Lottie.asset("packages/craft_dynamic/assets/lottie/loading_list.json"),
                 );
                 if (snapshot.hasData) {
                   dynamicResponse = snapshot.data;

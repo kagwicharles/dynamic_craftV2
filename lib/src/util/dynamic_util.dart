@@ -8,7 +8,6 @@ import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:craft_dynamic/src/util/common_lib_util.dart';
 import 'package:provider/provider.dart';
 
 class DynamicUtil {

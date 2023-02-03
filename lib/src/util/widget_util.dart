@@ -3,8 +3,6 @@ import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'common_lib_util.dart';
-
 class WidgetUtil {
   static Map<String, dynamic> checkControlFormat(String widgetControlFormat,
       {context, isObscure, refreshParent}) {

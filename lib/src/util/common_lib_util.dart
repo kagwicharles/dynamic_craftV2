@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
+part of craft_dynamic;
 
 class CommonUtils {
   static var snackBarDuration = const Duration(seconds: 6);

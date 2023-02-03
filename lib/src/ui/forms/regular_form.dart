@@ -2,7 +2,6 @@
 
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/list_data.dart';
-import 'package:craft_dynamic/src/util/common_lib_util.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 

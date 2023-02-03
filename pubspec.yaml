@@ -64,6 +64,7 @@ flutter:
   # To add assets to your package, add an assets section, like this:
   assets:
     - packages/craft_dynamic/assets/lottie/loading.json
+    - packages/craft_dynamic/assets/lottie/loading_list.json
     - packages/craft_dynamic/assets/lottie/error.json
     - packages/craft_dynamic/assets/lottie/success.json
     - packages/craft_dynamic/assets/lottie/information.json

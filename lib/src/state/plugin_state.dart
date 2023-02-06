@@ -71,3 +71,5 @@ var isStepperForm = false.obs;
 var deleteFormInput = true.obs;
 
 var selectedRadio = "".obs;
+
+var pinChanged = false.obs;

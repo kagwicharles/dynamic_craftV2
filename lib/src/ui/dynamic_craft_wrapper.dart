@@ -28,6 +28,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   @override
   void initState() {
     super.initState();
+    pinChanged.value = false;
     initializeApp();
   }
 
@@ -74,7 +75,9 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
               theme: widget.appTheme,
               home: Obx(() => showLoadingScreen.value
                   ? widget.appLoadingScreen
-                  : widget.dashboard),
+                  : pinChanged.value
+                      ? widget.appTimeoutScreen
+                      : widget.dashboard),
               navigatorKey: Get.key,
               builder: (context, child) {
                 return MediaQuery(

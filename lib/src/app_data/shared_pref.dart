@@ -49,9 +49,12 @@ class CommonSharedPref {
     return await storage.read(key: routeName);
   }
 
-  addUserAccountData({required key, required value}) async {
+  addUserAccountInfo({required key, required value}) async {
     await storage.write(key: key, value: value);
   }
+
+  getUserAccountInfo(UserAccountData key) async =>
+      await storage.read(key: key.name);
 
   getCustomerMobile() async {
     return await storage.read(key: "customerMobile");

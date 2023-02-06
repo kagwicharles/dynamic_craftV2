@@ -42,18 +42,18 @@ class UIDataRepository {
 
 class UserAccountRepository {
   addUserAccountData(ActivationResponse activationResponse) {
-    _sharedPref.addUserAccountData(
+    _sharedPref.addUserAccountInfo(
         key: UserAccountData.FirstName.name,
         value: activationResponse.firstName);
-    _sharedPref.addUserAccountData(
+    _sharedPref.addUserAccountInfo(
         key: UserAccountData.LastName.name, value: activationResponse.lastName);
-    _sharedPref.addUserAccountData(
+    _sharedPref.addUserAccountInfo(
         key: UserAccountData.IDNumber.name, value: activationResponse.idNumber);
-    _sharedPref.addUserAccountData(
+    _sharedPref.addUserAccountInfo(
         key: UserAccountData.EmailID.name, value: activationResponse.emailID);
-    _sharedPref.addUserAccountData(
+    _sharedPref.addUserAccountInfo(
         key: UserAccountData.ImageUrl.name, value: activationResponse.imageUrl);
-    _sharedPref.addUserAccountData(
+    _sharedPref.addUserAccountInfo(
         key: UserAccountData.LastLoginDateTime.name,
         value: activationResponse.lastLoginDate);
     activationResponse.accounts?.forEach((item) {

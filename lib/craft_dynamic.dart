@@ -70,8 +70,6 @@ part 'src/repository/home_repository.dart';
 
 part 'src/repository/init_repository.dart';
 
-part 'src/repository/account_repository.dart';
-
 part 'src/session_manager/session_helper.dart';
 
 part 'src/ui/dynamic_static/blurr_load_screen.dart';
@@ -83,3 +81,5 @@ part 'src/util/alert_dialog_util.dart';
 part 'src/ui/dynamic_static/search_module_screen.dart';
 
 part 'src/util/common_lib_util.dart';
+
+part 'src/repository/profile_repository.dart';

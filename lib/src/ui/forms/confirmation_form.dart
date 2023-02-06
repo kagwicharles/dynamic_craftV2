@@ -22,8 +22,7 @@ class ConfirmationForm {
           return Container(
               padding: const EdgeInsets.only(
                   left: 16, right: 16, top: 12, bottom: 4),
-              child: Expanded(
-                  child: Column(
+              child: Column(
                 children: [
                   Row(
                     children: [
@@ -67,7 +66,7 @@ class ConfirmationForm {
                     Navigator.of(context).pop(0);
                   }, "Confirm")
                 ],
-              )));
+              ));
         });
       },
     );

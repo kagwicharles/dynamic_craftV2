@@ -8,8 +8,7 @@ class ProfileRepository {
   Future<List<BankAccount>> getUserBankAccounts() =>
       _bankRepository.getAllBankAccounts();
 
-  Future<String> getUserInfo(UserAccountData key) =>
-      _sharedPref.getUserAccountInfo(key);
+  getUserInfo(UserAccountData key) => _sharedPref.getUserAccountInfo(key);
 
   Future<DynamicResponse?> checkAccountBalance(String bankAccountID) {
     return _services.checkAccountBalance(

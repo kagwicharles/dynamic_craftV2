@@ -17,53 +17,58 @@ class ConfirmationForm {
       builder: (BuildContext context) {
         final formKey = GlobalKey<FormState>();
         debugPrint("Current input::$input");
-        return Container(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 4),
-            child: Expanded(
-                child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Text(
-                      "Confirm Transaction",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    const Spacer(),
-                    OutlinedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(1);
-                      },
-                      child: Row(
-                          children: const [Icon(Icons.close), Text("Cancel")]),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Form(
-                    key: formKey,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: formItems.length,
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
-                        itemBuilder: (context, index) {
-                          return BaseFormComponent(
-                              formItem: formItems[index],
-                              moduleItem: moduleItem,
-                              formItems: formItems,
-                              formKey: formKey,
-                              child:
-                                  IFormWidget(formItems[index], jsonText: input)
-                                      .render());
-                        })),
-                const Spacer(),
-                WidgetFactory.buildButton(context, () {
-                  Navigator.of(context).pop(0);
-                }, "Confirm")
-              ],
-            )));
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return Container(
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 12, bottom: 4),
+              child: Expanded(
+                  child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        "Confirm Transaction",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      const Spacer(),
+                      OutlinedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(1);
+                        },
+                        child: Row(children: const [
+                          Icon(Icons.close),
+                          Text("Cancel")
+                        ]),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Form(
+                      key: formKey,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: formItems.length,
+                          padding: const EdgeInsets.symmetric(horizontal: 14),
+                          itemBuilder: (context, index) {
+                            return BaseFormComponent(
+                                formItem: formItems[index],
+                                moduleItem: moduleItem,
+                                formItems: formItems,
+                                formKey: formKey,
+                                child: IFormWidget(formItems[index],
+                                        jsonText: input)
+                                    .render());
+                          })),
+                  const Spacer(),
+                  WidgetFactory.buildButton(context, () {
+                    Navigator.of(context).pop(0);
+                  }, "Confirm")
+                ],
+              )));
+        });
       },
     );
   }

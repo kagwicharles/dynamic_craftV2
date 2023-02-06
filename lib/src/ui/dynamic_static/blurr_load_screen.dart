@@ -30,12 +30,12 @@ class _BlurrLoadScreenState extends State<BlurrLoadScreen> {
                 )
               : const SizedBox()),
           Obx(() => isCallingService.value
-              ? Positioned(
+              ? const Positioned(
                   right: 0,
                   left: 0,
                   top: 0,
                   bottom: 0,
-                  child: Lottie.asset("packages/craft_dynamic/assets/lottie/loading_list.json"),
+                  child: LoadUtil(),
                 )
               : const SizedBox()),
         ],

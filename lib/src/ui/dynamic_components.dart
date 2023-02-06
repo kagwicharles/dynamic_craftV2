@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 import 'package:camera/camera.dart';
@@ -316,7 +315,7 @@ class _DynamicButtonState extends State<DynamicButton> {
           padding: const EdgeInsets.symmetric(vertical: 34),
           child: Consumer<PluginState>(builder: (context, state, child) {
             return state.loadingNetworkData
-                ? Lottie.asset("packages/craft_dynamic/assets/lottie/loading_list.json")
+                ? LoadUtil()
                 : WidgetFactory.buildButton(
                     context, onClick, formItem!.controlText!.capitalize());
           }));
@@ -707,7 +706,7 @@ class DynamicListWidget implements IFormWidget {
               builder: (BuildContext context,
                   AsyncSnapshot<DynamicResponse?> snapshot) {
                 Widget child = Center(
-                  child: Lottie.asset("packages/craft_dynamic/assets/lottie/loading_list.json"),
+                  child: LoadUtil(),
                 );
                 if (snapshot.hasData) {
                   dynamicResponse = snapshot.data;

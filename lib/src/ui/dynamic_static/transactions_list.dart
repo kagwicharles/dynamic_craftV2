@@ -52,7 +52,7 @@ class _TransactionListState extends State<TransactionList> {
             builder: (BuildContext context,
                 AsyncSnapshot<DynamicResponse> snapshot) {
               Widget widget = Center(
-                  child: Lottie.asset("packages/craft_dynamic/assets/lottie/loading_list.json"));
+                  child: LoadUtil());
 
               if (snapshot.hasData) {
                 var list = snapshot.data?.dynamicList;

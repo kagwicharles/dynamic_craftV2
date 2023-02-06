@@ -48,7 +48,7 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
               builder: (BuildContext context,
                   AsyncSnapshot<List<Beneficiary>> snapshot) {
                 Widget widget = Center(
-                    child: Lottie.asset("packages/craft_dynamic/assets/lottie/loading_list.json"));
+                    child: LoadUtil());
 
                 if (snapshot.hasData) {
                   final itemCount = snapshot.data?.length ?? 0;

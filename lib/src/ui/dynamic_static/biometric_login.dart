@@ -144,7 +144,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                 ),
                 _isLoading
                     ? Center(
-                        child: Lottie.asset("packages/craft_dynamic/assets/lottie/loading_list.json"))
+                        child: LoadUtil())
                     : Obx(() => WidgetFactory.buildButton(
                         context,
                         enableBiometric,

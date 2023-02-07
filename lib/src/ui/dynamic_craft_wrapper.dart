@@ -23,12 +23,11 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   final _initRepository = InitRepository();
   final _sessionRepository = SessionRepository();
   final _sharedPref = CommonSharedPref();
-  var _appTimeout = 60000;
+  var _appTimeout = 10000;
 
   @override
   void initState() {
     super.initState();
-    pinChanged.value = false;
     initializeApp();
   }
 
@@ -75,11 +74,11 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
               theme: widget.appTheme,
               home: Obx(() => showLoadingScreen.value
                   ? widget.appLoadingScreen
-                  : pinChanged.value
-                      ? widget.appTimeoutScreen
-                      : widget.dashboard),
+                  : widget.dashboard),
               navigatorKey: Get.key,
               builder: (context, child) {
+                Provider.of<PluginState>(context, listen: false)
+                    .setLogoutScreen(widget.appTimeoutScreen);
                 return MediaQuery(
                   data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                   child: child!,

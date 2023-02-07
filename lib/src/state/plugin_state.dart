@@ -6,6 +6,7 @@ class PluginState extends ChangeNotifier {
   bool _obscureText = true;
   bool _deleteFormValues = true;
   String _currentTab = "";
+  Widget? _logoutScreen;
   final List<Map<String?, dynamic>> _formInputValues = [];
   Map<String?, dynamic> _encryptedFields = {};
 
@@ -16,6 +17,8 @@ class PluginState extends ChangeNotifier {
   bool get obscureText => _obscureText;
 
   bool get deleteFormInput => _deleteFormValues;
+
+  Widget? get logoutScreen => _logoutScreen;
 
   List<Map<String?, dynamic>> get formInputValues => _formInputValues;
 
@@ -39,6 +42,10 @@ class PluginState extends ChangeNotifier {
   setDeleteForm(bool status) {
     _deleteFormValues = status;
     notifyListeners();
+  }
+
+  setLogoutScreen(Widget widget) {
+    _logoutScreen = widget;
   }
 
   addFormInput(Map<String?, dynamic> formInput) {
@@ -71,5 +78,3 @@ var isStepperForm = false.obs;
 var deleteFormInput = true.obs;
 
 var selectedRadio = "".obs;
-
-var pinChanged = false.obs;

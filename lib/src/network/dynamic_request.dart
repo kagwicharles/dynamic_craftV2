@@ -119,7 +119,6 @@ class DynamicFormRequest {
     if (moduleItem.moduleId == "PIN" &&
         dynamicResponse?.status == StatusCode.success.statusCode) {
       _sharedPref.setBio(false);
-      pinChanged.value = true;
     }
 
     Provider.of<PluginState>(context, listen: false).setRequestState(false);

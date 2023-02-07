@@ -23,12 +23,13 @@ class DynamicUtil {
   }
 
   static navigateToStatusRoute(
-      {required context, required status, required message}) {
+      {required context, required status, required message, moduleItem}) {
     if (status != null && message != null) {
       Future.delayed(const Duration(milliseconds: 500), () {
         CommonUtils.navigateToRoute(
             context: context,
             widget: RequestStatusScreen(
+              moduleItem: moduleItem,
               statusCode: status,
               message: message,
             ));
@@ -45,6 +46,7 @@ class DynamicUtil {
         dynamicData); //Get a builder based on action type
     var postDynamic = PostDynamic(builder, context, controlID ?? "");
     debugPrint("PostDynamic formfields::::${postDynamic.formFields}");
+    debugPrint("Current module name::::${moduleItem.moduleName}");
 
     switch (postDynamic.status) {
       case "000":
@@ -77,6 +79,7 @@ class DynamicUtil {
               break;
             } else {
               navigateToStatusRoute(
+                moduleItem: moduleItem,
                 context: postDynamic.context,
                 status: postDynamic.status,
                 message: postDynamic.notifyText == null ||

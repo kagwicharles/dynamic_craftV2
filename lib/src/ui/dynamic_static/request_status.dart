@@ -3,15 +3,23 @@
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
+
+import '../../../craft_dynamic.dart';
+import '../../state/plugin_state.dart';
 
 class RequestStatusScreen extends StatefulWidget {
   RequestStatusScreen(
-      {Key? key, required this.message, required this.statusCode})
+      {Key? key,
+      required this.message,
+      required this.statusCode,
+      this.moduleItem})
       : super(key: key);
 
   String message;
   String statusCode;
+  ModuleItem? moduleItem;
 
   @override
   State<RequestStatusScreen> createState() => _RequestStatusScreenState();
@@ -52,7 +60,10 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
             alignment: Alignment.centerLeft,
             child: OutlinedButton(
               onPressed: () {
-                closePage();
+                widget.moduleItem != null &&
+                        widget.moduleItem?.moduleId == "PIN"
+                    ? logout()
+                    : closePage();
               },
               child: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -126,7 +137,13 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
         const Spacer(),
         Align(
             alignment: Alignment.bottomCenter,
-            child: WidgetFactory.buildButton(context, closePage, "Done")),
+            child: WidgetFactory.buildButton(
+                context,
+                widget.moduleItem != null &&
+                        widget.moduleItem?.moduleId == "PIN"
+                    ? logout
+                    : closePage,
+                "Done")),
         const SizedBox(
           height: 15,
         )
@@ -143,6 +160,14 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
         return "packages/craft_dynamic/assets/lottie/error.json";
     }
     return "packages/craft_dynamic/assets/lottie/information.json";
+  }
+
+  void logout() {
+    Widget? logoutScreen =
+        Provider.of<PluginState>(context, listen: false).logoutScreen;
+    if (logoutScreen != null) {
+      CommonUtils.navigateToRoute(context: context, widget: logoutScreen);
+    }
   }
 
   void closePage() {

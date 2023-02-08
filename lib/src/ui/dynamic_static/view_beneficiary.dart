@@ -4,7 +4,8 @@ import 'package:craft_dynamic/src/network/dynamic_request.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+
+import '../../../dynamic_widget.dart';
 
 class ViewBeneficiary extends StatefulWidget {
   final ModuleItem moduleItem;
@@ -44,100 +45,133 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
       ),
       body: BlurrLoadScreen(
           mainWidget: FutureBuilder<List<Beneficiary>>(
-              future: getBeneficiaries(),
+              future: viewBeneficiaries(),
               builder: (BuildContext context,
                   AsyncSnapshot<List<Beneficiary>> snapshot) {
-                Widget widget = Center(
-                    child: LoadUtil());
+                Widget widget = const Center(child: LoadUtil());
 
                 if (snapshot.hasData) {
                   final itemCount = snapshot.data?.length ?? 0;
+                  debugPrint("Beneficiary list item count::::$itemCount");
 
-                  widget = ListView.separated(
-                      separatorBuilder: (context, index) => const Divider(),
-                      itemCount: itemCount,
-                      itemBuilder: (context, index) {
-                        final beneficiary = snapshot.data![index];
+                  if (itemCount == 0) {
+                    widget = const EmptyUtil();
+                  } else {
+                    widget = ListView.separated(
+                        separatorBuilder: (context, index) => const Divider(),
+                        itemCount: itemCount,
+                        itemBuilder: (context, index) {
+                          final beneficiary = snapshot.data![index];
 
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 14, vertical: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    beneficiary.merchantName,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: APIService.appPrimaryColor),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4),
-                                      child: Row(
-                                        children: [
-                                          const Text(
-                                            "Alias",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          const SizedBox(
-                                            width: 12,
-                                          ),
-                                          Text(beneficiary.accountAlias),
-                                        ],
-                                      )),
-                                  const SizedBox(
-                                    height: 2,
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 4),
-                                      child: Row(
-                                        children: [
-                                          const Text(
-                                            "Id",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          const SizedBox(
-                                            width: 12,
-                                          ),
-                                          Text(beneficiary.accountID),
-                                        ],
-                                      ))
-                                ],
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    AlertUtil.showAlertDialog(context,
-                                            "Confirm action to delete ${beneficiary.merchantName}",
-                                            isConfirm: true)
-                                        .then((value) {
-                                      if (value) {
-                                        deleteBeneficiary(beneficiary, context);
-                                      }
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.delete_outline_outlined,
-                                    color: Colors.red,
-                                    size: 34,
-                                  ))
-                            ],
-                          ),
-                        );
-                      });
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      beneficiary.merchantName,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: APIService.appPrimaryColor),
+                                    ),
+                                    const SizedBox(
+                                      height: 12,
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4),
+                                        child: Row(
+                                          children: [
+                                            const Text(
+                                              "Alias",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            const SizedBox(
+                                              width: 12,
+                                            ),
+                                            Text(beneficiary.accountAlias),
+                                          ],
+                                        )),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 4),
+                                        child: Row(
+                                          children: [
+                                            const Text(
+                                              "Id",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            const SizedBox(
+                                              width: 12,
+                                            ),
+                                            Text(beneficiary.accountID),
+                                          ],
+                                        ))
+                                  ],
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      AlertUtil.showAlertDialog(context,
+                                              "Confirm action to delete ${beneficiary.merchantName}",
+                                              isConfirm: true)
+                                          .then((value) {
+                                        if (value) {
+                                          deleteBeneficiary(
+                                              beneficiary, context);
+                                        }
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete_outline_outlined,
+                                      color: Colors.red,
+                                      size: 34,
+                                    ))
+                              ],
+                            ),
+                          );
+                        });
+                  }
                 }
                 return widget;
               })),
     );
+  }
+
+  Future<List<Beneficiary>> viewBeneficiaries() async {
+    isCallingService.value = true;
+    List<Beneficiary> beneficiaries = [];
+
+    DynamicInput.formInputValues.clear();
+    DynamicInput.formInputValues
+        .add({"MerchantID": widget.moduleItem.merchantID});
+
+    DynamicInput.formInputValues.add({"HEADER": "GETBENEFICIARY"});
+    await _dynamicFormRequest
+        .dynamicRequest(widget.moduleItem,
+            dataObj: DynamicInput.formInputValues,
+            context: context,
+            listType: ListType.BeneficiaryList)
+        .then((value) {
+      isCallingService.value = false;
+      if (value?.status == StatusCode.success.statusCode) {
+        var beneficiaryList = value?.beneficiaries;
+        if (beneficiaryList != []) {
+          beneficiaryList?.forEach((beneficiary) {
+            beneficiaries.add(beneficiary);
+          });
+        }
+      }
+    });
+    return beneficiaries;
   }
 
   deleteBeneficiary(Beneficiary beneficiary, context) {

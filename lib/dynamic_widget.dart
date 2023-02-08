@@ -24,3 +24,4 @@ part 'src/adapter/dropdown_adapter.dart';
 part 'src/ui/dynamic_widget_factory.dart';
 part 'src/ui/dynamic_screen.dart';
 part 'src/ui/modules/module_item.dart';
+part 'src/util/common_widgets_util.dart';

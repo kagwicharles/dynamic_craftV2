@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:lottie/lottie.dart';
 
 final _sharedPref = CommonSharedPref();
 
@@ -143,8 +142,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                   height: 24,
                 ),
                 _isLoading
-                    ? Center(
-                        child: LoadUtil())
+                    ? const Center(child: LoadUtil())
                     : Obx(() => WidgetFactory.buildButton(
                         context,
                         enableBiometric,

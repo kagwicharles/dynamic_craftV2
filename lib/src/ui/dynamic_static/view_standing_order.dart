@@ -4,7 +4,8 @@ import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/network/dynamic_request.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+
+import '../../../dynamic_widget.dart';
 
 class ViewStandingOrder extends StatefulWidget {
   final ModuleItem moduleItem;
@@ -47,11 +48,11 @@ class _ViewStandingOrderState extends State<ViewStandingOrder> {
         ),
         title: Text(widget.moduleItem.moduleName),
       ),
-      body: FutureBuilder<DynamicResponse>(
+      body: FutureBuilder<DynamicResponse?>(
           future: getStandingOrder(),
           builder:
-              (BuildContext context, AsyncSnapshot<DynamicResponse> snapshot) {
-            Widget widget = Center(
+              (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
+            Widget widget = const Center(
               child: LoadUtil(),
             );
             if (snapshot.hasData) {

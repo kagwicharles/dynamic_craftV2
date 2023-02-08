@@ -115,18 +115,28 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
     chipChoices.clear();
     formItems.asMap().forEach((index, formItem) {
       chipChoices.add(formItem);
-      chips.add(ChoiceChip(
-        labelStyle: TextStyle(
-          color: _value == index ? Colors.white : APIService.appPrimaryColor,
-        ),
-        label: Text(formItem.controlText ?? ""),
-        selected: _value == index,
-        onSelected: (bool selected) {
-          setState(() {
-            _value = selected ? index : null;
-          });
-        },
-      ));
+      chips.add(Expanded(
+          flex: 1,
+          child: Container(
+              margin: const EdgeInsets.only(right: 2),
+              child: ChoiceChip(
+                labelStyle: TextStyle(
+                  overflow: TextOverflow.visible,
+                  color: _value == index
+                      ? Colors.white
+                      : APIService.appPrimaryColor,
+                ),
+                label: SizedBox(
+                  width: double.infinity,
+                  child: Text(formItem.controlText ?? ""),
+                ),
+                selected: _value == index,
+                onSelected: (bool selected) {
+                  setState(() {
+                    _value = selected ? index : null;
+                  });
+                },
+              ))));
     });
   }
 
@@ -165,11 +175,9 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
           Padding(
               padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
               child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Wrap(
-                    spacing: 2,
-                    children: chips,
-                  ))),
+                  child: Row(
+                children: chips,
+              ))),
           const SizedBox(
             height: 18,
           ),

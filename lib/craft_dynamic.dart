@@ -82,6 +82,4 @@ part 'src/ui/dynamic_static/search_module_screen.dart';
 
 part 'src/util/common_lib_util.dart';
 
-part 'src/util/load_util.dart';
-
 part 'src/repository/profile_repository.dart';

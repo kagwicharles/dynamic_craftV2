@@ -4,7 +4,8 @@ import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/network/dynamic_request.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+
+import '../../../dynamic_widget.dart';
 
 class TransactionList extends StatefulWidget {
   TransactionList({Key? key, required this.moduleItem}) : super(key: key);
@@ -47,16 +48,16 @@ class _TransactionListState extends State<TransactionList> {
           ),
           title: Text(widget.moduleItem.moduleName),
         ),
-        body: FutureBuilder<DynamicResponse>(
+        body: FutureBuilder<DynamicResponse?>(
             future: getTransactionList(),
             builder: (BuildContext context,
-                AsyncSnapshot<DynamicResponse> snapshot) {
-              Widget widget = Center(
-                  child: LoadUtil());
+                AsyncSnapshot<DynamicResponse?> snapshot) {
+              Widget widget = const Center(child: LoadUtil());
 
               if (snapshot.hasData) {
+                debugPrint("Transactions SNAPSHOT:::${snapshot.data}");
                 var list = snapshot.data?.dynamicList;
-                if (list != null) {
+                if (list != null && list.isNotEmpty) {
                   addTransactions(list: list);
                   widget = ListView.separated(
                     itemCount: transactionList.length,
@@ -70,6 +71,8 @@ class _TransactionListState extends State<TransactionList> {
                       height: 8,
                     ),
                   );
+                } else {
+                  widget = const EmptyUtil();
                 }
               }
               return widget;

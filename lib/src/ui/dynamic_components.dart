@@ -315,7 +315,7 @@ class _DynamicButtonState extends State<DynamicButton> {
           padding: const EdgeInsets.symmetric(vertical: 34),
           child: Consumer<PluginState>(builder: (context, state, child) {
             return state.loadingNetworkData
-                ? LoadUtil()
+                ? const LoadUtil()
                 : WidgetFactory.buildButton(
                     context, onClick, formItem!.controlText!.capitalize());
           }));
@@ -648,7 +648,8 @@ class _DynamicPhonePickerFormWidgetState
             onPressed: () async {
               final PhoneContact contact =
                   await FlutterContactPicker.pickPhoneContact();
-              number = contact.phoneNumber?.number;
+              number =
+                  contact.phoneNumber?.number?.replaceAll(RegExp('[^0-9]'), '');
               controller.text = number!;
             }),
       ),

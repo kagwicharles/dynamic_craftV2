@@ -25,8 +25,8 @@ class AlertUtil {
                 isInfoAlert
                     ? Lottie.asset(
                         "packages/craft_dynamic/assets/lottie/info_lottie.json")
-                    : Image.asset(
-                        "packages/craft_dynamic/assets/images/warning.png",
+                    : Lottie.asset(
+                        "packages/craft_dynamic/assets/lottie/error.json",
                         height: 88,
                         width: 88)
               ],

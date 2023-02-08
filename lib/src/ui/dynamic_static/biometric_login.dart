@@ -29,8 +29,12 @@ class _BiometricLoginState extends State<BiometricLogin> {
   }
 
   _checkBioIsEnabled() async {
-    bool? bioEnabled = await _sharedPref.getBio();
-    isBiometricEnabled.value = bioEnabled ?? false;
+    String? bioEnabled = await _sharedPref.getBio();
+    if (bioEnabled != null && bioEnabled == "true") {
+      isBiometricEnabled.value = true;
+    } else {
+      isBiometricEnabled.value = false;
+    }
   }
 
   @override

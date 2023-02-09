@@ -16,6 +16,8 @@ class APIService {
   static String liveUrl = "";
   static String tokenUrl = "";
   static String appName = "";
+  static String bankID = "";
+  static String countryName = "";
 
   static String staticLogKeyValue = "";
   static String staticEncryptIv = "";
@@ -67,12 +69,14 @@ class APIService {
     tokenUrl = urlsConfig?["tokenUrl"] ?? "";
     appName = requestConfig?["appName"] ?? "";
     currentBaseUrl = isTestUrl ? uatUrl : liveUrl;
+    bankID = requestConfig?["bankId"].toString() ?? "";
+    countryName = requestConfig?["country"];
   }
 
   Future<Map<String, dynamic>> buildRequestMap() async {
     var requestBuilder = RequestBuilder(
-        bankID: requestConfig?["bankId"].toString(),
-        country: requestConfig?["country"],
+        bankID: bankID,
+        country: countryName,
         versionNumber: requestConfig?["versionNumber"].toString(),
         trxSource: requestConfig?["trxSource"],
         appName: requestConfig?["appName"],

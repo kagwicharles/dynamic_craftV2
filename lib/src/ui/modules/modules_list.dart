@@ -50,8 +50,8 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
                     height: double.infinity,
                     child: GridView.builder(
                         // physics: const NeverScrollableScrollPhysics(),
-                        padding:
-                            const EdgeInsets.only(left: 12, right: 12, top: 8),
+                        padding: const EdgeInsets.only(
+                            left: 12, right: 12, top: 8, bottom: 8),
                         shrinkWrap: true,
                         itemCount: snapshot.data?.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -59,9 +59,9 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
                                 (widget.orientation == Orientation.portrait)
                                     ? 3
                                     : 3,
-                            mainAxisSpacing: 8,
+                            mainAxisSpacing: 18,
                             crossAxisSpacing: 4,
-                            childAspectRatio: 4 / 4),
+                            childAspectRatio: 16 / 12),
                         itemBuilder: (BuildContext context, int index) {
                           var module = snapshot.data![index];
                           return ModuleItemWidget(moduleItem: module);

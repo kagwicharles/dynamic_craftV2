@@ -21,32 +21,37 @@ class ModuleItemWidget extends StatelessWidget {
     const double iconSize = 54;
 
     return InkWell(
-      onTap: () {
-        _moduleItemUtil.onItemClick(moduleItem, context);
-      },
-      borderRadius: BorderRadius.circular(14.0),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        CachedNetworkImage(
-          imageUrl: moduleItem.moduleUrl ?? "",
-          height: iconSize,
-          width: iconSize,
-          placeholder: (context, url) =>
-              Lottie.asset('packages/craft_dynamic/assets/lottie/loading.json'),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Flexible(
-            child: Text(
-          moduleItem.moduleName.capitalizeWords(),
-          // overflow: TextOverflow.fade,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.visible,
-          style: GoogleFonts.roboto(fontSize: 14),
-        )),
-      ]),
-    );
+        splashColor: Colors.transparent,
+        onTap: () {
+          _moduleItemUtil.onItemClick(moduleItem, context);
+        },
+        borderRadius: BorderRadius.circular(14.0),
+        child: Padding(
+          padding: const EdgeInsets.all(2),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CachedNetworkImage(
+                  imageUrl: moduleItem.moduleUrl ?? "",
+                  height: iconSize,
+                  width: iconSize,
+                  placeholder: (context, url) => Lottie.asset(
+                      'packages/craft_dynamic/assets/lottie/loading.json'),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Flexible(
+                    child: Text(
+                  moduleItem.moduleName.capitalizeWords(),
+                  // overflow: TextOverflow.fade,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.visible,
+                  style: GoogleFonts.roboto(fontSize: 14),
+                )),
+              ]),
+        ));
   }
 }
 
@@ -57,7 +62,7 @@ class OtherModuleItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double iconSize = 60;
+    const double iconSize = 48;
 
     return Card(
         elevation: 1,
@@ -75,6 +80,7 @@ class OtherModuleItem extends StatelessWidget {
               child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       CachedNetworkImage(
                         imageUrl: moduleItem.moduleUrl ?? "",

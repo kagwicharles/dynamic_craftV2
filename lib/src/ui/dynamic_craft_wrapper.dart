@@ -23,6 +23,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   final _initRepository = InitRepository();
   final _sessionRepository = SessionRepository();
   final _sharedPref = CommonSharedPref();
+  final _dynamicRequest = DynamicFormRequest();
   var _appTimeout = 10000;
 
   @override
@@ -40,6 +41,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
 
   getAppData() async {
     await _initRepository.getAppToken();
+    getAppAssets();
     await _initRepository.getAppUIData();
     showLoadingScreen.value = false;
     var timeout = await _sharedPref.getAppIdleTimeout();
@@ -89,5 +91,18 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
         _appTimeout,
         widget.appInactivityScreen,
         widget.appTimeoutScreen);
+  }
+
+  getAppAssets() {
+    var params = [
+      {"BANKID": APIService.bankID},
+      {"COUNTRY": APIService.countryName},
+      {"CATEGORY": "LOGIN"},
+      {"HEADER": "GetBankImages"}
+    ];
+
+    _dynamicRequest.dynamicRequest(null, dataObj: params).then((value) {
+      debugPrint("All images:::${value?.dynamicList}");
+    });
   }
 }

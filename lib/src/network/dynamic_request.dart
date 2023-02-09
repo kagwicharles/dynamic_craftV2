@@ -18,7 +18,7 @@ class DynamicFormRequest {
   DynamicResponse? dynamicResponse;
 
   Future<DynamicResponse?> dynamicRequest(
-    ModuleItem moduleItem, {
+    ModuleItem? moduleItem, {
     FormItem? formItem,
     dataObj,
     encryptedField,
@@ -40,15 +40,15 @@ class DynamicFormRequest {
     if (listType == ListType.ViewOrderList ||
         listType == ListType.BeneficiaryList) {
       requestObj["EncryptedFields"] = {};
-      requestObj["MerchantID"] = moduleItem.merchantID;
+      requestObj["MerchantID"] = moduleItem?.merchantID;
     }
 
-    requestObj["ModuleID"] = moduleItem.moduleId;
+    requestObj["ModuleID"] = moduleItem?.moduleId;
     requestObj["SessionID"] = "ffffffff-e46c-53ce-0000-00001d093e12";
 
     var actionControl =
         await _actionControlRepository.getActionControlByModuleIdAndControlId(
-            moduleItem.moduleId, formItem?.controlId);
+            moduleItem?.moduleId ?? "", formItem?.controlId);
     if (actionControl?.displayFormID == ControlFormat.LISTDATA.name ||
         actionControl == null) {
       isList = true;
@@ -72,7 +72,7 @@ class DynamicFormRequest {
       var result = await ConfirmationForm.showModalBottomDialog(
           context,
           form,
-          moduleItem,
+          moduleItem!,
           Provider.of<PluginState>(context, listen: false).formInputValues);
       if (result != null) {
         if (result == 1) {
@@ -81,13 +81,18 @@ class DynamicFormRequest {
           return dynamicResponse;
         }
       } else {
-        Provider.of<PluginState>(context, listen: false).setRequestState(false);
+        try {
+          Provider.of<PluginState>(context, listen: false)
+              .setRequestState(false);
+        } catch (e) {
+          debugPrint(e.toString());
+        }
         return dynamicResponse;
       }
     }
 
     requestObj = DynamicFactory.getDynamicRequestObject(actionType,
-        merchantID: moduleItem.merchantID,
+        merchantID: moduleItem?.merchantID,
         actionID: formItem?.actionId,
         requestMap: requestObj,
         dataObject: dataObj,
@@ -116,7 +121,7 @@ class DynamicFormRequest {
 
     dynamicResponse?.dynamicData = dynamicData;
 
-    if (moduleItem.moduleId == "PIN" &&
+    if (moduleItem?.moduleId == "PIN" &&
         dynamicResponse?.status == StatusCode.success.statusCode) {
       _sharedPref.setBio(false);
     }

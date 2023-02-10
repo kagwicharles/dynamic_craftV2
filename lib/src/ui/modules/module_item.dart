@@ -45,7 +45,9 @@ class VerticalModule extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(8.0),
         child: Container(
+          padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
               border: hasBorder
                   ? Border.all(width: 1, color: Colors.grey[400]!)
                   : null),
@@ -80,7 +82,9 @@ class HorizontalModule extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(8.0),
         child: Container(
+          padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
               border: hasBorder
                   ? Border.all(width: 1, color: Colors.grey[400]!)
                   : null),

@@ -7,7 +7,7 @@ abstract class IMenuUtil {
   factory IMenuUtil(MenuType menuType, ModuleItem moduleItem) {
     switch (menuType) {
       case MenuType.VerticalPlain:
-        return VerticalOutlinedMenuItem(moduleItem: moduleItem);
+        return VerticalPlainMenuItem(moduleItem: moduleItem);
       case MenuType.VerticalOutlined:
         return VerticalOutlinedMenuItem(moduleItem: moduleItem);
       case MenuType.HorizontalPlain:

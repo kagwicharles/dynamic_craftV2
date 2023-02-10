@@ -150,8 +150,18 @@ enum StatusCode {
   success("000"),
   failure("091"),
   token("099"),
-  changePin("101");
+  changePin("101"),
+  unknown("XXXX");
 
   const StatusCode(this.statusCode);
   final String statusCode;
+}
+
+enum MenuCategory { BLOCK, FORM }
+
+enum MenuType {
+  VerticalPlain,
+  VerticalOutlined,
+  HorizontalPlain,
+  HorizontalOutlined
 }

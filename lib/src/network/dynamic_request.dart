@@ -28,7 +28,7 @@ class DynamicFormRequest {
     tappedButton = false,
   }) async {
     debugPrint("****Making dynamic request****");
-    dynamicResponse = DynamicResponse(status: "XXXX");
+    dynamicResponse = DynamicResponse(status: StatusCode.unknown.name);
     if (dataObj == null) {
       debugPrint("Data object is null!!!");
       Fluttertoast.showToast(
@@ -106,13 +106,14 @@ class DynamicFormRequest {
         webHeader: actionControl?.webHeader,
         formID: actionType.name);
 
-    if (dynamicResponse?.status == "XXXX") {
+    if (dynamicResponse?.status == StatusCode.unknown.name) {
       Provider.of<PluginState>(context, listen: false).setRequestState(false);
     }
 
     var dynamicData = DynamicData(
         actionType: actionType,
-        dynamicResponse: dynamicResponse ?? DynamicResponse(status: "XXXX"),
+        dynamicResponse:
+            dynamicResponse ?? DynamicResponse(status: StatusCode.unknown.name),
         moduleItem: moduleItem,
         controlID: formItem?.controlId,
         isList: isList,
@@ -121,7 +122,7 @@ class DynamicFormRequest {
 
     dynamicResponse?.dynamicData = dynamicData;
 
-    if (moduleItem?.moduleId == "PIN" &&
+    if (moduleItem?.moduleId == StatusCode.unknown.name &&
         dynamicResponse?.status == StatusCode.success.statusCode) {
       _sharedPref.setBio(false);
     }

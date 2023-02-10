@@ -6,14 +6,16 @@ class DynamicCraftWrapper extends StatefulWidget {
   final Widget appTimeoutScreen;
   final Widget appInactivityScreen;
   final ThemeData appTheme;
+  Widget? menuItem;
 
-  const DynamicCraftWrapper(
+  DynamicCraftWrapper(
       {super.key,
       required this.dashboard,
       required this.appLoadingScreen,
       required this.appTimeoutScreen,
       required this.appInactivityScreen,
-      required this.appTheme});
+      required this.appTheme,
+      this.menuItem});
 
   @override
   State<DynamicCraftWrapper> createState() => _DynamicCraftWrapperState();
@@ -79,8 +81,8 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
                   : widget.dashboard),
               navigatorKey: Get.key,
               builder: (context, child) {
-                Provider.of<PluginState>(context, listen: false)
-                    .setLogoutScreen(widget.appTimeoutScreen);
+                setPluginWidgets(
+                    widget.appTimeoutScreen, widget.menuItem, context);
                 return MediaQuery(
                   data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                   child: child!,
@@ -91,6 +93,15 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
         _appTimeout,
         widget.appInactivityScreen,
         widget.appTimeoutScreen);
+  }
+
+  setPluginWidgets(
+      Widget logoutWidget, Widget? menuWidget, BuildContext context) {
+    if (menuWidget != null) {
+      Provider.of<PluginState>(context, listen: false).setMenuItem(menuWidget);
+    }
+    Provider.of<PluginState>(context, listen: false)
+        .setLogoutScreen(logoutWidget);
   }
 
   getAppAssets() {

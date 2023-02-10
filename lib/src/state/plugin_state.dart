@@ -6,7 +6,7 @@ class PluginState extends ChangeNotifier {
   bool _obscureText = true;
   bool _deleteFormValues = true;
   String _currentTab = "";
-  Widget? _logoutScreen;
+  Widget? _logoutScreen, _menuItem;
   final List<Map<String?, dynamic>> _formInputValues = [];
   Map<String?, dynamic> _encryptedFields = {};
 
@@ -19,6 +19,8 @@ class PluginState extends ChangeNotifier {
   bool get deleteFormInput => _deleteFormValues;
 
   Widget? get logoutScreen => _logoutScreen;
+
+  Widget? get menuItem => _menuItem;
 
   List<Map<String?, dynamic>> get formInputValues => _formInputValues;
 
@@ -46,6 +48,10 @@ class PluginState extends ChangeNotifier {
 
   setLogoutScreen(Widget widget) {
     _logoutScreen = widget;
+  }
+
+  setMenuItem(Widget widget) {
+    _menuItem = widget;
   }
 
   addFormInput(Map<String?, dynamic> formInput) {

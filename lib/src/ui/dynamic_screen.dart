@@ -31,7 +31,7 @@ class DynamicWidget extends StatelessWidget {
     // _formItems = DynamicData.readFormsJson(moduleId);
     // _moduleItems = DynamicData.readModulesJson(moduleId);
 
-    return moduleItem?.moduleCategory == "FORM"
+    return moduleItem?.moduleCategory == MenuCategory.FORM.name
         ? FormsListWidget(
             jsonDisplay: jsonDisplay,
             formFields: formFields,

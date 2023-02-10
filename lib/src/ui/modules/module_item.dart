@@ -18,96 +18,86 @@ class ModuleItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double iconSize = 54;
-
     return InkWell(
         splashColor: Colors.transparent,
         onTap: () {
           _moduleItemUtil.onItemClick(moduleItem, context);
         },
-        child: Provider.of<PluginState>(context, listen: false).menuItem ??
-            Padding(
-              padding: const EdgeInsets.all(2),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: moduleItem.moduleUrl ?? "",
-                      height: iconSize,
-                      width: iconSize,
-                      placeholder: (context, url) => Lottie.asset(
-                          'packages/craft_dynamic/assets/lottie/loading.json'),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Flexible(
-                        child: Text(
-                      moduleItem.moduleName.capitalizeWords(),
-                      // overflow: TextOverflow.fade,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.visible,
-                      style: GoogleFonts.roboto(fontSize: 14),
-                    )),
-                  ]),
-            ));
+        child: IMenuUtil(
+                Provider.of<PluginState>(context, listen: false).menuType ??
+                    MenuType.DefaultMenuItem,
+                moduleItem)
+            .getMenuItem());
   }
 }
 
-class OtherModuleItem extends StatelessWidget {
+class VerticalModule extends StatelessWidget {
   ModuleItem moduleItem;
+  bool hasBorder;
 
-  OtherModuleItem({super.key, required this.moduleItem});
+  VerticalModule({super.key, required this.moduleItem, this.hasBorder = false});
 
   @override
   Widget build(BuildContext context) {
-    const double iconSize = 48;
+    return InkWell(
+        onTap: () {
+          _moduleItemUtil.onItemClick(moduleItem, context);
+        },
+        borderRadius: BorderRadius.circular(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              border: hasBorder
+                  ? Border.all(width: 1, color: Colors.grey[400]!)
+                  : null),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MenuItemImage(
+                imageUrl: moduleItem.moduleUrl ?? "",
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              MenuItemTitle(title: moduleItem.moduleName)
+            ],
+          ),
+        ));
+  }
+}
 
-    return Card(
-        elevation: 1,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8.0))),
-        child: Material(
-            color: Colors.white,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            child: InkWell(
-              onTap: () {
-                _moduleItemUtil.onItemClick(moduleItem, context);
-              },
-              borderRadius: BorderRadius.circular(8.0),
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl: moduleItem.moduleUrl ?? "",
-                        height: iconSize,
-                        width: iconSize,
-                        placeholder: (context, url) => Lottie.asset(
-                            'packages/craft_dynamic/assets/lottie/loading.json'),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Flexible(
-                          child: Text(
-                        moduleItem.moduleName,
-                        // overflow: TextOverflow.fade,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.visible,
-                        style: const TextStyle(
-                          fontSize: 14,
-                        ),
-                      )),
-                    ],
-                  )),
-            )));
+class HorizontalModule extends StatelessWidget {
+  ModuleItem moduleItem;
+  bool hasBorder;
+
+  HorizontalModule(
+      {super.key, required this.moduleItem, this.hasBorder = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () {
+          _moduleItemUtil.onItemClick(moduleItem, context);
+        },
+        borderRadius: BorderRadius.circular(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              border: hasBorder
+                  ? Border.all(width: 1, color: Colors.grey[400]!)
+                  : null),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              MenuItemImage(
+                imageUrl: moduleItem.moduleUrl ?? "",
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              MenuItemTitle(title: moduleItem.moduleName)
+            ],
+          ),
+        ));
   }
 }
 

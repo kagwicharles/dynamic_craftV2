@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../craft_dynamic.dart';
+
 class PluginState extends ChangeNotifier {
   bool _loadingNetworkData = false;
   bool _obscureText = true;
   bool _deleteFormValues = true;
   String _currentTab = "";
-  Widget? _logoutScreen, _menuItem;
+  Widget? _logoutScreen;
+  MenuType? _menuType;
   final List<Map<String?, dynamic>> _formInputValues = [];
   Map<String?, dynamic> _encryptedFields = {};
 
@@ -20,7 +23,7 @@ class PluginState extends ChangeNotifier {
 
   Widget? get logoutScreen => _logoutScreen;
 
-  Widget? get menuItem => _menuItem;
+  MenuType? get menuType => _menuType;
 
   List<Map<String?, dynamic>> get formInputValues => _formInputValues;
 
@@ -50,8 +53,8 @@ class PluginState extends ChangeNotifier {
     _logoutScreen = widget;
   }
 
-  setMenuItem(Widget widget) {
-    _menuItem = widget;
+  setMenuType(MenuType menuType) {
+    _menuType = menuType;
   }
 
   addFormInput(Map<String?, dynamic> formInput) {

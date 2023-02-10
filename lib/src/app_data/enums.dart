@@ -163,5 +163,6 @@ enum MenuType {
   VerticalPlain,
   VerticalOutlined,
   HorizontalPlain,
-  HorizontalOutlined
+  HorizontalOutlined,
+  DefaultMenuItem
 }

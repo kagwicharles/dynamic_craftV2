@@ -59,8 +59,8 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
                                 (widget.orientation == Orientation.portrait)
                                     ? 3
                                     : 3,
-                            mainAxisSpacing: 18,
-                            crossAxisSpacing: 4,
+                            mainAxisSpacing: 22,
+                            crossAxisSpacing: 8,
                             childAspectRatio: 16 / 12),
                         itemBuilder: (BuildContext context, int index) {
                           var module = snapshot.data![index];

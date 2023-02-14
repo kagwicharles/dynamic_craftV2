@@ -527,9 +527,9 @@ class DynamicTextViewWidget implements IFormWidget {
                       key == null || value == null || value == "");
 
                   return Material(
-                      elevation: 2,
+                      elevation: 1,
                       borderRadius:
-                          const BorderRadius.all(Radius.circular(4.0)),
+                          const BorderRadius.all(Radius.circular(8.0)),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12.0, vertical: 8.0),
@@ -566,7 +566,7 @@ class DynamicTextViewWidget implements IFormWidget {
                 },
               ),
               const SizedBox(
-                height: 12,
+                height: 18,
               )
             ]);
           })

@@ -47,7 +47,7 @@ enum ControlFormat {
   RADIOGROUPS
 }
 
-enum FormId { MENU, FORMS, ACTIONS, STATICDATA, LOGIN }
+enum FormId { MENU, FORMS, ACTIONS, STATICDATA, LOGIN ,ALERTCONFIRMATIONFORM}
 
 enum DynamicDataType { Modules, ActionControls, FormControls }
 

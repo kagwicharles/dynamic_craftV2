@@ -120,11 +120,15 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
           child: Container(
               margin: const EdgeInsets.only(right: 2),
               child: ChoiceChip(
+                disabledColor: Colors.transparent,
+                selectedColor: _value == index
+                    ? APIService.appSecondaryColor
+                    : Colors.white,
                 labelStyle: TextStyle(
                   overflow: TextOverflow.visible,
                   color: _value == index
                       ? Colors.white
-                      : APIService.appPrimaryColor,
+                      : APIService.appSecondaryColor,
                 ),
                 label: SizedBox(
                   width: double.infinity,
@@ -132,9 +136,11 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
                 ),
                 selected: _value == index,
                 onSelected: (bool selected) {
-                  setState(() {
-                    _value = selected ? index : null;
-                  });
+                  if (_value != index) {
+                    setState(() {
+                      _value = selected ? index : null;
+                    });
+                  }
                 },
               ))));
     });

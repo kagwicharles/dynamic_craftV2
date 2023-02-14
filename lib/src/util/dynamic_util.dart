@@ -1,3 +1,4 @@
+import 'package:craft_dynamic/database.dart';
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/builder/factory_builder.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/list_data.dart';
@@ -5,6 +6,8 @@ import 'package:craft_dynamic/src/ui/dynamic_static/list_screen.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/request_status.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/transaction_receipt.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
+import 'package:craft_dynamic/src/ui/forms/confirmation_form.dart';
+import 'package:craft_dynamic/src/ui/forms/otp_form.dart';
 import 'package:flutter/material.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
@@ -53,7 +56,7 @@ class DynamicUtil {
         {
           if (postDynamic.opensDynamicRoute) {
             postDynamic.formID != null &&
-                    postDynamic.formID == "ALERTCONFIRMATIONFORM"
+                    postDynamic.formID == FormId.ALERTCONFIRMATIONFORM.name
                 ? AlertUtil.showModalBottomDialog(
                     postDynamic.context, postDynamic.jsonDisplay)
                 : CommonUtils.navigateToRoute(
@@ -117,6 +120,11 @@ class DynamicUtil {
           );
         }
         break;
+      case "093":
+        {
+          showOTPForm(postDynamic, moduleItem, context);
+        }
+        break;
       default:
         {
           CommonUtils.buildErrorSnackBar(
@@ -124,5 +132,13 @@ class DynamicUtil {
               message: "Error processing request!");
         }
     }
+  }
+
+  static showOTPForm(
+      PostDynamic postDynamic, ModuleItem moduleItem, context) async {
+    final formsRepository = FormsRepository();
+    List<FormItem> formItems =
+        await formsRepository.getFormsByModuleId(postDynamic.formID ?? "");
+    OTPForm.showModalBottomDialog(context, formItems, moduleItem, []);
   }
 }

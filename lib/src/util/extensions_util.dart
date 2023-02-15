@@ -30,5 +30,7 @@ extension ColorExtension on String {
 }
 
 extension FormatPhone on String {
-  String formatPhone() => replaceAll(RegExp('[^0-9]'), '');
+  String formatPhone() {
+    return replaceAll(RegExp('[^0-9]'), '');
+  }
 }

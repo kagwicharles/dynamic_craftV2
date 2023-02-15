@@ -120,10 +120,7 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
           child: Container(
               margin: const EdgeInsets.only(right: 2),
               child: ChoiceChip(
-                disabledColor: Colors.transparent,
-                selectedColor: _value == index
-                    ? APIService.appSecondaryColor
-                    : Colors.white,
+                selectedColor: APIService.appSecondaryColor,
                 labelStyle: TextStyle(
                   overflow: TextOverflow.visible,
                   color: _value == index

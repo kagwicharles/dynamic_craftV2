@@ -22,7 +22,6 @@ import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/providers/group_button_provider.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
 import 'package:craft_dynamic/src/util/dynamic_util.dart';
-import 'package:craft_dynamic/src/util/extensions_util.dart';
 import 'package:craft_dynamic/src/util/widget_util.dart';
 
 class DynamicInput {

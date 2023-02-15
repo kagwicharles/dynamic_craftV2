@@ -9,11 +9,11 @@ import 'dart:ui';
 import 'package:craft_dynamic/src/builder/request_builder.dart';
 import 'package:craft_dynamic/database.dart';
 import 'package:craft_dynamic/src/network/dynamic_request.dart';
-import 'package:craft_dynamic/src/util/extensions_util.dart';
 import 'package:craft_dynamic/src/util/location_util.dart';
 import 'package:craft_dynamic/src/util/permissions_util.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' hide Key;
 import 'package:flutter/material.dart' hide Key, Table, Column;
 import 'package:flutter/services.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
@@ -84,3 +84,5 @@ part 'src/ui/dynamic_static/search_module_screen.dart';
 part 'src/util/common_lib_util.dart';
 
 part 'src/repository/profile_repository.dart';
+
+part 'src/util/extensions_util.dart';

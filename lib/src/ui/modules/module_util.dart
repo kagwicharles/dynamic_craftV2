@@ -17,9 +17,7 @@ abstract class IMenuUtil {
       case MenuType.DefaultMenuItem:
         return DefaultMenuItem(moduleItem: moduleItem);
       default:
-        {
-          return DefaultMenuItem(moduleItem: moduleItem);
-        }
+        return DefaultMenuItem(moduleItem: moduleItem);
     }
   }
 

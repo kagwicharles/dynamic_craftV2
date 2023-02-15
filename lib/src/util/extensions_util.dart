@@ -1,6 +1,4 @@
-import 'package:craft_dynamic/craft_dynamic.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+part of craft_dynamic;
 
 extension StringExtension on String {
   String capitalize() {
@@ -29,4 +27,8 @@ extension ColorExtension on String {
     buffer.write(hexString.replaceFirst('#', ''));
     return Color(int.parse(buffer.toString(), radix: 16));
   }
+}
+
+extension FormatPhone on String {
+  String formatPhone() => replaceAll(RegExp('[^0-9]'), '');
 }

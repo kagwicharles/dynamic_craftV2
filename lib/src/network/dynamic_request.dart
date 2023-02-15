@@ -74,6 +74,7 @@ class DynamicFormRequest {
           form,
           moduleItem!,
           Provider.of<PluginState>(context, listen: false).formInputValues);
+      debugPrint("Bottom sheet result:::$result");
       if (result != null) {
         if (result == 1) {
           Provider.of<PluginState>(context, listen: false)

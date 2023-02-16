@@ -64,6 +64,15 @@ class CommonUtils {
     );
   }
 
+
+  static navigateToRouteAndPopAll({required context, required widget}) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => widget), (
+        route) => false
+    );
+  }
+
   static newRouter({required widget}) {
     Get.offAll(widget);
   }

@@ -60,9 +60,17 @@ class DynamicFormRequest {
 
     debugPrint("Action Type::::::$actionType");
     if (actionType == ActionType.VALIDATE) {
-      Provider.of<PluginState>(context, listen: false).setDeleteForm(false);
+      try {
+        Provider.of<PluginState>(context, listen: false).setDeleteForm(false);
+      } catch (e) {
+        debugPrint(e.toString());
+      }
     } else {
-      Provider.of<PluginState>(context, listen: false).setDeleteForm(true);
+      try {
+        Provider.of<PluginState>(context, listen: false).setDeleteForm(true);
+      } catch (e) {
+        debugPrint(e.toString());
+      }
     }
 
     confirmationModuleID = actionControl?.confirmationModuleID;

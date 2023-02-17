@@ -15,19 +15,29 @@ abstract class IElevatedButton {
     }
   }
 
-  Widget getPlatformButton(Function() function, String buttonTitle);
+  Widget getPlatformButton(
+      Function() function, String buttonTitle, Color? color);
 }
 
 class IOSButton implements IElevatedButton {
   @override
-  Widget getPlatformButton(Function() function, String buttonTitle) {
-    return CupertinoButton(onPressed: function, child: Text(buttonTitle));
+  Widget getPlatformButton(
+      Function() function, String buttonTitle, Color? color) {
+    return CupertinoButton(
+      onPressed: function,
+      color: color,
+      child: Text(buttonTitle),
+    );
   }
 }
 
 class AndroidButton implements IElevatedButton {
   @override
-  Widget getPlatformButton(Function() function, String buttonTitle) {
-    return ElevatedButton(onPressed: function, child: Text(buttonTitle));
+  Widget getPlatformButton(
+      Function() function, String buttonTitle, Color? color) {
+    return ElevatedButton(
+        onPressed: function,
+        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(color)),
+        child: Text(buttonTitle));
   }
 }

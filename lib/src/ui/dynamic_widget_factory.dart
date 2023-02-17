@@ -63,9 +63,10 @@ abstract class IFormWidget {
 
 class WidgetFactory {
   static Widget buildButton(
-      BuildContext context, Function() onPressed, String buttonTitle) {
+      BuildContext context, Function() onPressed, String buttonTitle,
+      {Color? color}) {
     return IElevatedButton(Theme.of(context).platform)
-        .getPlatformButton(onPressed, buttonTitle);
+        .getPlatformButton(onPressed, buttonTitle, color);
   }
 
   static Widget buildTextField(BuildContext context,

@@ -288,6 +288,19 @@ class _$ModuleItemDao extends ModuleItemDao {
   }
 
   @override
+  Future<ModuleItem?> getTabModules() async {
+    return _queryAdapter.query(
+        'SELECT * FROM ModuleItem WHERE isMainMenu == true',
+        mapper: (Map<String, Object?> row) => ModuleItem(
+            parentModule: row['parentModule'] as String,
+            moduleUrl: row['moduleUrl'] as String?,
+            moduleId: row['moduleId'] as String,
+            moduleName: row['moduleName'] as String,
+            moduleCategory: row['moduleCategory'] as String,
+            merchantID: row['merchantID'] as String?));
+  }
+
+  @override
   Future<List<ModuleItem>> searchModuleItem(String moduleName) async {
     return _queryAdapter.queryList(
         'SELECT * FROM ModuleItem WHERE moduleName LIKE ?1 AND parentModule != \'ALL\'',

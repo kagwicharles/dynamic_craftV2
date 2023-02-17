@@ -54,8 +54,7 @@ class AlertUtil {
                   isConfirm
                       ? Row(
                           children: [
-                            OutlinedButton(
-                                style: const ButtonStyle(),
+                            TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop(false);
                                 },
@@ -67,8 +66,7 @@ class AlertUtil {
                         )
                       : const SizedBox(),
                   Align(
-                      child: OutlinedButton(
-                          style: const ButtonStyle(),
+                      child: TextButton(
                           onPressed: () {
                             Navigator.of(context).pop(true);
                           },

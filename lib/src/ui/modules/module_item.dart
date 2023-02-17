@@ -43,11 +43,11 @@ class VerticalModule extends StatelessWidget {
         onTap: () {
           _moduleItemUtil.onItemClick(moduleItem, context);
         },
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(12.0),
         child: Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
               border: hasBorder
                   ? Border.all(width: 1, color: Colors.grey[400]!)
                   : null),
@@ -80,11 +80,11 @@ class HorizontalModule extends StatelessWidget {
         onTap: () {
           _moduleItemUtil.onItemClick(moduleItem, context);
         },
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(12.0),
         child: Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              borderRadius: const BorderRadius.all(Radius.circular(12)),
               border: hasBorder
                   ? Border.all(width: 1, color: Colors.grey[400]!)
                   : null),

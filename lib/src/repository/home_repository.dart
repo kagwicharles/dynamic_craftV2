@@ -22,13 +22,13 @@ class HomeRepository {
   }
 
   // Call this method to get tab modules
-  Future<List<ModuleItem>> getTabModules() async {
-    List<ModuleItem> modules = await _moduleRepository.getTabModules();
+  Future<List<ModuleItem>?> getTabModules() async {
+    List<ModuleItem>? modules = await _moduleRepository.getTabModules();
     List<ModuleToHide>? hiddenModules =
         await _hiddenModulesRepository.getAllModulesToHide();
     hiddenModules?.forEach((hiddenModule) {
       try {
-        modules.removeWhere(
+        modules?.removeWhere(
             (element) => element.moduleId == hiddenModule.moduleId);
       } catch (e) {
         debugPrint(e.toString());

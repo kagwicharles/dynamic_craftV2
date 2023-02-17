@@ -19,7 +19,7 @@ class ModuleRepository {
     return modules;
   }
 
-  Future<List<ModuleItem>> getTabModules() async {
+  Future<List<ModuleItem>?> getTabModules() async {
     var modules;
     await db.then((database) {
       modules = database.moduleItemDao.getTabModules();

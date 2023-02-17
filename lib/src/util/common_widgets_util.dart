@@ -28,9 +28,7 @@ class EmptyUtil extends StatelessWidget {
           ),
           const Text(
             "Nothing was found!",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            
           )
         ],
       ));

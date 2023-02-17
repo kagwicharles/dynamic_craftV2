@@ -5,10 +5,11 @@ class ModuleItem {
   @primaryKey
   String moduleId;
   String parentModule;
-  String? moduleUrl;
   String moduleName;
   String moduleCategory;
+  String? moduleUrl;
   String? merchantID;
+  String? isMainMenu;
 
   ModuleItem(
       {required this.parentModule,
@@ -16,7 +17,8 @@ class ModuleItem {
       required this.moduleId,
       required this.moduleName,
       required this.moduleCategory,
-      required this.merchantID});
+      required this.merchantID,
+      this.isMainMenu});
 
   ModuleItem.fromJson(Map<String, dynamic> json)
       : parentModule = json["ParentModule"],
@@ -24,7 +26,8 @@ class ModuleItem {
         moduleId = json["ModuleID"],
         moduleName = json["ModuleName"],
         moduleCategory = json["ModuleCategory"],
-        merchantID = json["MerchantID"];
+        merchantID = json["MerchantID"],
+        isMainMenu = json["IsMainMenu"];
 }
 
 @entity

@@ -27,7 +27,7 @@ class EmptyUtil extends StatelessWidget {
             height: 14,
           ),
           const Text(
-            "Nothing was found!",
+            "Nothing found!",
             
           )
         ],

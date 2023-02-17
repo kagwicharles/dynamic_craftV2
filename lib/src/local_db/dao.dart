@@ -58,7 +58,7 @@ abstract class ModuleItemDao {
   Future<ModuleItem?> getModuleById(String moduleId);
 
   @Query('SELECT * FROM ModuleItem WHERE isMainMenu == true')
-  Future<ModuleItem?> getTabModules();
+  Future<List<ModuleItem>?> getTabModules();
 
   @Query(
       "SELECT * FROM ModuleItem WHERE moduleName LIKE :moduleName AND parentModule != 'ALL'")

@@ -54,14 +54,11 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
                             left: 12, right: 12, top: 8, bottom: 8),
                         shrinkWrap: true,
                         itemCount: snapshot.data?.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount:
-                                (widget.orientation == Orientation.portrait)
-                                    ? 3
-                                    : 3,
-                            mainAxisSpacing: 22,
-                            crossAxisSpacing: 8,
-                            childAspectRatio: 16 / 12),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 8,
+                                mainAxisSpacing: 12),
                         itemBuilder: (BuildContext context, int index) {
                           var module = snapshot.data![index];
                           return ModuleItemWidget(moduleItem: module);

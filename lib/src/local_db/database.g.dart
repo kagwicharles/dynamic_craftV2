@@ -113,7 +113,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `ModuleItem` (`moduleId` TEXT NOT NULL, `parentModule` TEXT NOT NULL, `moduleUrl` TEXT, `moduleName` TEXT NOT NULL, `moduleCategory` TEXT NOT NULL, `merchantID` TEXT, PRIMARY KEY (`moduleId`))');
+            'CREATE TABLE IF NOT EXISTS `ModuleItem` (`moduleId` TEXT NOT NULL, `parentModule` TEXT NOT NULL, `moduleName` TEXT NOT NULL, `moduleCategory` TEXT NOT NULL, `moduleUrl` TEXT, `merchantID` TEXT, `isMainMenu` INTEGER, PRIMARY KEY (`moduleId`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `FormItem` (`no` INTEGER, `controlType` TEXT, `controlText` TEXT, `moduleId` TEXT, `controlId` TEXT, `containerID` TEXT, `actionId` TEXT, `linkedToControl` TEXT, `formSequence` INTEGER, `serviceParamId` TEXT, `displayOrder` REAL, `controlFormat` TEXT, `dataSourceId` TEXT, `controlValue` TEXT, `isMandatory` INTEGER, `isEncrypted` INTEGER, `minValue` TEXT, `maxValue` TEXT, PRIMARY KEY (`no`))');
         await database.execute(
@@ -246,10 +246,13 @@ class _$ModuleItemDao extends ModuleItemDao {
             (ModuleItem item) => <String, Object?>{
                   'moduleId': item.moduleId,
                   'parentModule': item.parentModule,
-                  'moduleUrl': item.moduleUrl,
                   'moduleName': item.moduleName,
                   'moduleCategory': item.moduleCategory,
-                  'merchantID': item.merchantID
+                  'moduleUrl': item.moduleUrl,
+                  'merchantID': item.merchantID,
+                  'isMainMenu': item.isMainMenu == null
+                      ? null
+                      : (item.isMainMenu! ? 1 : 0)
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -270,7 +273,10 @@ class _$ModuleItemDao extends ModuleItemDao {
             moduleId: row['moduleId'] as String,
             moduleName: row['moduleName'] as String,
             moduleCategory: row['moduleCategory'] as String,
-            merchantID: row['merchantID'] as String?),
+            merchantID: row['merchantID'] as String?,
+            isMainMenu: row['isMainMenu'] == null
+                ? null
+                : (row['isMainMenu'] as int) != 0),
         arguments: [parentModule]);
   }
 
@@ -283,7 +289,10 @@ class _$ModuleItemDao extends ModuleItemDao {
             moduleId: row['moduleId'] as String,
             moduleName: row['moduleName'] as String,
             moduleCategory: row['moduleCategory'] as String,
-            merchantID: row['merchantID'] as String?),
+            merchantID: row['merchantID'] as String?,
+            isMainMenu: row['isMainMenu'] == null
+                ? null
+                : (row['isMainMenu'] as int) != 0),
         arguments: [moduleId]);
   }
 
@@ -297,14 +306,17 @@ class _$ModuleItemDao extends ModuleItemDao {
             moduleId: row['moduleId'] as String,
             moduleName: row['moduleName'] as String,
             moduleCategory: row['moduleCategory'] as String,
-            merchantID: row['merchantID'] as String?));
+            merchantID: row['merchantID'] as String?,
+            isMainMenu: row['isMainMenu'] == null
+                ? null
+                : (row['isMainMenu'] as int) != 0));
   }
 
   @override
   Future<List<ModuleItem>> searchModuleItem(String moduleName) async {
     return _queryAdapter.queryList(
         'SELECT * FROM ModuleItem WHERE moduleName LIKE ?1 AND parentModule != \'ALL\'',
-        mapper: (Map<String, Object?> row) => ModuleItem(parentModule: row['parentModule'] as String, moduleUrl: row['moduleUrl'] as String?, moduleId: row['moduleId'] as String, moduleName: row['moduleName'] as String, moduleCategory: row['moduleCategory'] as String, merchantID: row['merchantID'] as String?),
+        mapper: (Map<String, Object?> row) => ModuleItem(parentModule: row['parentModule'] as String, moduleUrl: row['moduleUrl'] as String?, moduleId: row['moduleId'] as String, moduleName: row['moduleName'] as String, moduleCategory: row['moduleCategory'] as String, merchantID: row['merchantID'] as String?, isMainMenu: row['isMainMenu'] == null ? null : (row['isMainMenu'] as int) != 0),
         arguments: [moduleName]);
   }
 

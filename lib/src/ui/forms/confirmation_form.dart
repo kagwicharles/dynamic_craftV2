@@ -22,7 +22,7 @@ class ConfirmationForm {
                       style: TextStyle(fontSize: 18),
                     ),
                     const Spacer(),
-                    OutlinedButton(
+                    TextButton(
                       onPressed: () {
                         Get.back(result: 1);
                       },

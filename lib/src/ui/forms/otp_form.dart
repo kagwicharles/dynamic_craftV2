@@ -21,7 +21,7 @@ class OTPForm {
                     style: TextStyle(fontSize: 18),
                   ),
                   const Spacer(),
-                  OutlinedButton(
+                  TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(1);
                     },

@@ -48,7 +48,7 @@ class _ViewBeneficiaryState extends State<ViewBeneficiary> {
               future: viewBeneficiaries(),
               builder: (BuildContext context,
                   AsyncSnapshot<List<Beneficiary>> snapshot) {
-                Widget widget = const Center(child: LoadUtil());
+                Widget widget = Center(child: LoadUtil());
 
                 if (snapshot.hasData) {
                   final itemCount = snapshot.data?.length ?? 0;

@@ -52,7 +52,7 @@ class _TransactionListState extends State<TransactionList> {
             future: getTransactionList(),
             builder: (BuildContext context,
                 AsyncSnapshot<DynamicResponse?> snapshot) {
-              Widget widget = const Center(child: LoadUtil());
+              Widget widget = Center(child: LoadUtil());
 
               if (snapshot.hasData) {
                 debugPrint("Transactions SNAPSHOT:::${snapshot.data}");

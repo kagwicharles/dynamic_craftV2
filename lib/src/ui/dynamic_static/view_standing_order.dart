@@ -52,7 +52,7 @@ class _ViewStandingOrderState extends State<ViewStandingOrder> {
           future: getStandingOrder(),
           builder:
               (BuildContext context, AsyncSnapshot<DynamicResponse?> snapshot) {
-            Widget widget = const Center(
+            Widget widget = Center(
               child: LoadUtil(),
             );
             if (snapshot.hasData) {

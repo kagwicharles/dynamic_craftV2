@@ -146,7 +146,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                   height: 24,
                 ),
                 _isLoading
-                    ? const Center(child: LoadUtil())
+                    ? Center(child: LoadUtil())
                     : Obx(() => WidgetFactory.buildButton(
                         context,
                         enableBiometric,

@@ -314,7 +314,7 @@ class _DynamicButtonState extends State<DynamicButton> {
           padding: const EdgeInsets.symmetric(vertical: 34),
           child: Consumer<PluginState>(builder: (context, state, child) {
             return state.loadingNetworkData
-                ? const LoadUtil()
+                ? LoadUtil()
                 : WidgetFactory.buildButton(
                     context, onClick, formItem!.controlText!.capitalize());
           }));

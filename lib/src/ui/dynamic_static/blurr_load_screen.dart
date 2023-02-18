@@ -30,7 +30,7 @@ class _BlurrLoadScreenState extends State<BlurrLoadScreen> {
                 )
               : const SizedBox()),
           Obx(() => isCallingService.value
-              ? const Positioned(
+              ? Positioned(
                   right: 0,
                   left: 0,
                   top: 0,

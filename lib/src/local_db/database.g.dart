@@ -250,7 +250,9 @@ class _$ModuleItemDao extends ModuleItemDao {
                   'moduleCategory': item.moduleCategory,
                   'moduleUrl': item.moduleUrl,
                   'merchantID': item.merchantID,
-                  'isMainMenu': item.isMainMenu
+                  'isMainMenu': item.isMainMenu == null
+                      ? null
+                      : (item.isMainMenu! ? 1 : 0)
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -272,7 +274,9 @@ class _$ModuleItemDao extends ModuleItemDao {
             moduleName: row['moduleName'] as String,
             moduleCategory: row['moduleCategory'] as String,
             merchantID: row['merchantID'] as String?,
-            isMainMenu: row['isMainMenu'] as int?),
+            isMainMenu: row['isMainMenu'] == null
+                ? null
+                : (row['isMainMenu'] as int) != 0),
         arguments: [parentModule]);
   }
 
@@ -286,14 +290,16 @@ class _$ModuleItemDao extends ModuleItemDao {
             moduleName: row['moduleName'] as String,
             moduleCategory: row['moduleCategory'] as String,
             merchantID: row['merchantID'] as String?,
-            isMainMenu: row['isMainMenu'] as int?),
+            isMainMenu: row['isMainMenu'] == null
+                ? null
+                : (row['isMainMenu'] as int) != 0),
         arguments: [moduleId]);
   }
 
   @override
   Future<List<ModuleItem>?> getTabModules() async {
     return _queryAdapter.queryList(
-        'SELECT * FROM ModuleItem WHERE isMainMenu == 1',
+        'SELECT * FROM ModuleItem WHERE isMainMenu IS TRUE',
         mapper: (Map<String, Object?> row) => ModuleItem(
             parentModule: row['parentModule'] as String,
             moduleUrl: row['moduleUrl'] as String?,
@@ -301,14 +307,16 @@ class _$ModuleItemDao extends ModuleItemDao {
             moduleName: row['moduleName'] as String,
             moduleCategory: row['moduleCategory'] as String,
             merchantID: row['merchantID'] as String?,
-            isMainMenu: row['isMainMenu'] as int?));
+            isMainMenu: row['isMainMenu'] == null
+                ? null
+                : (row['isMainMenu'] as int) != 0));
   }
 
   @override
   Future<List<ModuleItem>> searchModuleItem(String moduleName) async {
     return _queryAdapter.queryList(
         'SELECT * FROM ModuleItem WHERE moduleName LIKE ?1 AND parentModule != \'ALL\'',
-        mapper: (Map<String, Object?> row) => ModuleItem(parentModule: row['parentModule'] as String, moduleUrl: row['moduleUrl'] as String?, moduleId: row['moduleId'] as String, moduleName: row['moduleName'] as String, moduleCategory: row['moduleCategory'] as String, merchantID: row['merchantID'] as String?, isMainMenu: row['isMainMenu'] as int?),
+        mapper: (Map<String, Object?> row) => ModuleItem(parentModule: row['parentModule'] as String, moduleUrl: row['moduleUrl'] as String?, moduleId: row['moduleId'] as String, moduleName: row['moduleName'] as String, moduleCategory: row['moduleCategory'] as String, merchantID: row['merchantID'] as String?, isMainMenu: row['isMainMenu'] == null ? null : (row['isMainMenu'] as int) != 0),
         arguments: [moduleName]);
   }
 

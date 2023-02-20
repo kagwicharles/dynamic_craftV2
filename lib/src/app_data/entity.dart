@@ -9,7 +9,7 @@ class ModuleItem {
   String moduleCategory;
   String? moduleUrl;
   String? merchantID;
-  int? isMainMenu;
+  bool? isMainMenu;
 
   ModuleItem(
       {required this.parentModule,

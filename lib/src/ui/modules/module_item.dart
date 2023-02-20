@@ -47,7 +47,7 @@ class VerticalModule extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: Colors.white,
+              color: getMenuColor(context) ?? Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               border: hasBorder
                   ? Border.all(width: 1, color: Colors.grey[400]!)
@@ -66,6 +66,9 @@ class VerticalModule extends StatelessWidget {
           ),
         ));
   }
+
+  Color? getMenuColor(context) =>
+      Provider.of<PluginState>(context, listen: false).menuColor;
 }
 
 class HorizontalModule extends StatelessWidget {
@@ -84,7 +87,7 @@ class HorizontalModule extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0),
         child: Container(
           padding: const EdgeInsets.all(4),
-          color: Colors.white,
+          color: getMenuColor(context) ?? Colors.white,
           decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               border: hasBorder
@@ -105,6 +108,9 @@ class HorizontalModule extends StatelessWidget {
           ),
         ));
   }
+
+  Color? getMenuColor(context) =>
+      Provider.of<PluginState>(context, listen: false).menuColor;
 }
 
 class ModuleItemUtil {

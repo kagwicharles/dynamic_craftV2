@@ -7,6 +7,7 @@ class DynamicCraftWrapper extends StatefulWidget {
   final Widget appInactivityScreen;
   final ThemeData appTheme;
   MenuType? menuType;
+  Color? menuColor;
 
   DynamicCraftWrapper(
       {super.key,
@@ -15,7 +16,8 @@ class DynamicCraftWrapper extends StatefulWidget {
       required this.appTimeoutScreen,
       required this.appInactivityScreen,
       required this.appTheme,
-      this.menuType});
+      this.menuType,
+      this.menuColor});
 
   @override
   State<DynamicCraftWrapper> createState() => _DynamicCraftWrapperState();
@@ -82,7 +84,11 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
               navigatorKey: Get.key,
               builder: (context, child) {
                 setPluginWidgets(
-                    widget.appTimeoutScreen, widget.menuType, context);
+                  widget.appTimeoutScreen,
+                  context,
+                  widget.menuType,
+                  widget.menuColor,
+                );
                 return MediaQuery(
                   data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                   child: child!,
@@ -95,10 +101,13 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
         widget.appTimeoutScreen);
   }
 
-  setPluginWidgets(
-      Widget logoutWidget, MenuType? menuType, BuildContext context) {
+  setPluginWidgets(Widget logoutWidget, BuildContext context,
+      MenuType? menuType, Color? menuColor) {
     if (menuType != null) {
       Provider.of<PluginState>(context, listen: false).setMenuType(menuType);
+    }
+    if (menuColor != null) {
+      Provider.of<PluginState>(context, listen: false).setMenuColor(menuColor);
     }
     Provider.of<PluginState>(context, listen: false)
         .setLogoutScreen(logoutWidget);

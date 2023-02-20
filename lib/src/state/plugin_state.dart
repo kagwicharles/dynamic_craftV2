@@ -10,6 +10,7 @@ class PluginState extends ChangeNotifier {
   String _currentTab = "";
   Widget? _logoutScreen;
   MenuType? _menuType;
+  Color? _menuColor;
   final List<Map<String?, dynamic>> _formInputValues = [];
   Map<String?, dynamic> _encryptedFields = {};
 
@@ -24,6 +25,8 @@ class PluginState extends ChangeNotifier {
   Widget? get logoutScreen => _logoutScreen;
 
   MenuType? get menuType => _menuType;
+
+  Color? get menuColor => _menuColor;
 
   List<Map<String?, dynamic>> get formInputValues => _formInputValues;
 
@@ -55,6 +58,10 @@ class PluginState extends ChangeNotifier {
 
   setMenuType(MenuType menuType) {
     _menuType = menuType;
+  }
+
+  setMenuColor(Color color){
+    _menuColor = color;
   }
 
   addFormInput(Map<String?, dynamic> formInput) {

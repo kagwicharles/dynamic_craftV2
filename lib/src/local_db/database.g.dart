@@ -299,7 +299,7 @@ class _$ModuleItemDao extends ModuleItemDao {
   @override
   Future<List<ModuleItem>?> getTabModules() async {
     return _queryAdapter.queryList(
-        'SELECT * FROM ModuleItem WHERE isMainMenu IS TRUE',
+        'SELECT * FROM ModuleItem WHERE isMainMenu = 1',
         mapper: (Map<String, Object?> row) => ModuleItem(
             parentModule: row['parentModule'] as String,
             moduleUrl: row['moduleUrl'] as String?,

@@ -87,8 +87,8 @@ class HorizontalModule extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0),
         child: Container(
           padding: const EdgeInsets.all(4),
-          color: getMenuColor(context) ?? Colors.white,
           decoration: BoxDecoration(
+              color: getMenuColor(context) ?? Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(12)),
               border: hasBorder
                   ? Border.all(width: 1, color: Colors.grey[400]!)

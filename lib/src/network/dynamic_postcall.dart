@@ -6,14 +6,13 @@ import 'package:craft_dynamic/src/ui/dynamic_static/list_screen.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/request_status.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/transaction_receipt.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
-import 'package:craft_dynamic/src/ui/forms/confirmation_form.dart';
 import 'package:craft_dynamic/src/ui/forms/otp_form.dart';
 import 'package:flutter/material.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:provider/provider.dart';
 
-class DynamicUtil {
+class DynamicPostCall {
   static showReceipt({required context, required postDynamic, moduleName}) {
     Future.delayed(const Duration(milliseconds: 500), () {
       CommonUtils.navigateToRoute(

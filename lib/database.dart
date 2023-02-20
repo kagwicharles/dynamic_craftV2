@@ -5,7 +5,6 @@ library database;
 import 'dart:async';
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:floor/floor.dart';
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 import 'src/local_db/dao.dart';

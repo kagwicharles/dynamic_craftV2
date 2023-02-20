@@ -21,7 +21,7 @@ import 'package:craft_dynamic/src/network/dynamic_request.dart';
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/providers/group_button_provider.dart';
 import 'package:craft_dynamic/src/state/plugin_state.dart';
-import 'package:craft_dynamic/src/util/dynamic_util.dart';
+import 'package:craft_dynamic/src/network/dynamic_postcall.dart';
 import 'package:craft_dynamic/src/util/widget_util.dart';
 
 class DynamicInput {
@@ -366,7 +366,7 @@ class _DynamicButtonState extends State<DynamicButton> {
                     .encryptedFields,
                 context: context,
                 tappedButton: true)
-            .then((value) => DynamicUtil.processDynamicResponse(
+            .then((value) => DynamicPostCall.processDynamicResponse(
                 value!.dynamicData!, context, formItem!.controlId!,
                 moduleItem: moduleItem));
       }
@@ -477,7 +477,7 @@ class DynamicLabelWidget implements IFormWidget {
                 Widget child = Text(formItem.controlText!);
                 if (snapshot.hasData) {
                   var dynamicResponse = snapshot.data;
-                  DynamicUtil.processDynamicResponse(
+                  DynamicPostCall.processDynamicResponse(
                       dynamicResponse!.dynamicData!,
                       context,
                       formItem.controlId!);
@@ -710,7 +710,7 @@ class DynamicListWidget implements IFormWidget {
                 );
                 if (snapshot.hasData) {
                   dynamicResponse = snapshot.data;
-                  // DynamicUtil.processDynamicResponse(
+                  // DynamicPostCall.processDynamicResponse(
                   //     dynamicResponse?.dynamicData,
                   //     context,
                   //     formItem?.controlId);

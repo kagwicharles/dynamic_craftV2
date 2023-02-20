@@ -8,7 +8,7 @@ abstract class IElevatedButton {
         return AndroidButton();
 
       case TargetPlatform.iOS:
-        return IOSButton();
+        return AndroidButton();
 
       default:
         return AndroidButton();

@@ -11,7 +11,7 @@ abstract class ITextFormField {
         return AndroidTextFormField();
 
       case TargetPlatform.iOS:
-        return IOSTextFormField();
+        return AndroidTextFormField();
 
       default:
         return AndroidTextFormField();

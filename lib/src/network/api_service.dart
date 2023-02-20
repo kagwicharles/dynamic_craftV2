@@ -155,10 +155,11 @@ class APIService {
 
     AppLogger.appLogE(tag: "REQ:", message: jsonEncode(requestObject));
 
+    var url = currentBaseUrl + tokenUrl;
+    AppLogger.appLogI(tag: "Token url:", message: url);
     var dioResponse;
     try {
-      dioResponse =
-          await dio.post(currentBaseUrl + tokenUrl, data: requestObject);
+      dioResponse = await dio.post(url, data: requestObject);
       AppLogger.writeResponseToFile(
           fileName: "TOken res", response: dioResponse.toString());
       if (dioResponse.statusCode == 200) {

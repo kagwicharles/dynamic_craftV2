@@ -7,6 +7,9 @@ import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/dynamic_widget.dart';
 import 'package:craft_dynamic/src/ui/dynamic_components.dart';
 import 'package:craft_dynamic/src/util/widget_util.dart';
+import 'package:provider/provider.dart';
+
+import '../../state/plugin_state.dart';
 
 class RadioWidget extends StatefulWidget {
   List<FormItem> formItems;
@@ -163,44 +166,51 @@ class _RadioWidgetListState extends State<RadioWidgetList> {
     addChips(getRButtons());
     getRButtonForms(chipChoices[_value ?? 0]);
 
-    return SizedBox(
-        height: double.infinity,
-        // padding: containsQR
-        //     ? const EdgeInsets.only(left: 8, right: 8, top: 8)
-        //     : const EdgeInsets.symmetric(
-        //         horizontal: 0,
-        //       ),
-        child: SingleChildScrollView(
-            child: Column(mainAxisSize: MainAxisSize.max, children: [
-          const SizedBox(
-            height: 12,
-          ),
-          Padding(
-              padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
-              child: Align(
-                  child: Row(
-                children: chips,
-              ))),
-          const SizedBox(
-            height: 18,
-          ),
-          Form(
-              key: _formKey,
-              child: ListView.builder(
-                  shrinkWrap: true,
+    return WillPopScope(
+        onWillPop: () async {
+          Provider.of<PluginState>(context, listen: false)
+              .setRequestState(false);
+          return true;
+        },
+        child: SizedBox(
+            height: double.infinity,
+            // padding: containsQR
+            //     ? const EdgeInsets.only(left: 8, right: 8, top: 8)
+            //     : const EdgeInsets.symmetric(
+            //         horizontal: 0,
+            //       ),
+            child: SingleChildScrollView(
+                child: Column(mainAxisSize: MainAxisSize.max, children: [
+              const SizedBox(
+                height: 12,
+              ),
+              Padding(
                   padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: sortedForms.length,
-                  itemBuilder: (context, index) {
-                    return BaseFormComponent(
-                        formItem: sortedForms[index],
-                        moduleItem: widget.moduleItem,
-                        formKey: _formKey,
-                        formItems: sortedForms,
-                        child: IFormWidget(
-                          sortedForms[index],
-                        ).render());
-                  }))
-        ])));
+                  child: Align(
+                      child: Row(
+                    children: chips,
+                  ))),
+              const SizedBox(
+                height: 18,
+              ),
+              Form(
+                  key: _formKey,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      padding:
+                          const EdgeInsets.only(left: 14, right: 14, top: 8),
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: sortedForms.length,
+                      itemBuilder: (context, index) {
+                        return BaseFormComponent(
+                            formItem: sortedForms[index],
+                            moduleItem: widget.moduleItem,
+                            formKey: _formKey,
+                            formItems: sortedForms,
+                            child: IFormWidget(
+                              sortedForms[index],
+                            ).render());
+                      }))
+            ]))));
   }
 }

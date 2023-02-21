@@ -151,21 +151,27 @@ class StepForm extends StatelessWidget {
         )
         .toList();
 
-    return Form(
-        key: formKey,
-        child: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: stepForms.length,
-            itemBuilder: (context, index) {
-              return BaseFormComponent(
-                  formItem: stepForms[index],
-                  moduleItem: moduleItem,
-                  formItems: stepForms,
-                  formKey: formKey,
-                  child: IFormWidget(stepForms[index],
-                          jsonText: jsonDisplay, formFields: formFields)
-                      .render());
-            }));
+    return WillPopScope(
+        onWillPop: () async {
+          Provider.of<PluginState>(context, listen: false)
+              .setRequestState(false);
+          return true;
+        },
+        child: Form(
+            key: formKey,
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: stepForms.length,
+                itemBuilder: (context, index) {
+                  return BaseFormComponent(
+                      formItem: stepForms[index],
+                      moduleItem: moduleItem,
+                      formItems: stepForms,
+                      formKey: formKey,
+                      child: IFormWidget(stepForms[index],
+                              jsonText: jsonDisplay, formFields: formFields)
+                          .render());
+                })));
   }
 }

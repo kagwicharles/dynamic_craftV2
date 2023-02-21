@@ -60,7 +60,7 @@ class PluginState extends ChangeNotifier {
     _menuType = menuType;
   }
 
-  setMenuColor(Color color){
+  setMenuColor(Color color) {
     _menuColor = color;
   }
 

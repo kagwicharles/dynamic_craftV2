@@ -139,53 +139,59 @@ class _TabWidgetState extends State<TabWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: tabs.length,
-        child: Builder(builder: (BuildContext context) {
-          final TabController? tabController = DefaultTabController.of(context);
-          tabController?.addListener(() {
-            if (!tabController.indexIsChanging) {
-              Provider.of<PluginState>(context, listen: false).setRequestState(
-                  false,
-                  currentTab: linkControls[tabController.index]);
-            }
-          });
-          return Scaffold(
-            appBar: AppBar(
-              elevation: 2,
-              actions: recentList != null
-                  ? [
-                      IconButton(
-                          onPressed: () {
-                            CommonUtils.navigateToRoute(
-                                context: context,
-                                widget: ListDataScreen(
-                                    widget: DynamicListWidget(
-                                            moduleItem: widget.moduleItem,
-                                            formItem: recentList)
-                                        .render(),
-                                    title: widget.moduleItem.moduleName));
-                          },
-                          icon: const Icon(
-                            Icons.view_list,
-                            color: Colors.white,
-                          ))
-                    ]
-                  : null,
-              bottom: TabBar(
-                tabs: tabs,
-                isScrollable: true,
-              ),
-              title: Text(widget.moduleItem.moduleName),
-            ),
-            body: TabBarView(children: tabWidgetList),
-          );
-        }));
+    return WillPopScope(
+        onWillPop: () async {
+          Provider.of<PluginState>(context, listen: false)
+              .setRequestState(false);
+          return true;
+        },
+        child: DefaultTabController(
+            length: tabs.length,
+            child: Builder(builder: (BuildContext context) {
+              final TabController? tabController =
+                  DefaultTabController.of(context);
+              tabController?.addListener(() {
+                if (!tabController.indexIsChanging) {
+                  Provider.of<PluginState>(context, listen: false)
+                      .setRequestState(false,
+                          currentTab: linkControls[tabController.index]);
+                }
+              });
+              return Scaffold(
+                appBar: AppBar(
+                  elevation: 2,
+                  actions: recentList != null
+                      ? [
+                          IconButton(
+                              onPressed: () {
+                                CommonUtils.navigateToRoute(
+                                    context: context,
+                                    widget: ListDataScreen(
+                                        widget: DynamicListWidget(
+                                                moduleItem: widget.moduleItem,
+                                                formItem: recentList)
+                                            .render(),
+                                        title: widget.moduleItem.moduleName));
+                              },
+                              icon: const Icon(
+                                Icons.view_list,
+                                color: Colors.white,
+                              ))
+                        ]
+                      : null,
+                  bottom: TabBar(
+                    tabs: tabs,
+                    isScrollable: true,
+                  ),
+                  title: Text(widget.moduleItem.moduleName),
+                ),
+                body: TabBarView(children: tabWidgetList),
+              );
+            })));
   }
 
   @override
   void dispose() {
-    Provider.of<PluginState>(context, listen: false).setRequestState(false);
     super.dispose();
   }
 }

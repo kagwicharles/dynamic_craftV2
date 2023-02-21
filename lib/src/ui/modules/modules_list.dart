@@ -33,44 +33,49 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            elevation: 2,
-            title: Text(widget.favouriteModule == null
-                ? widget.moduleItem!.moduleName
-                : widget.favouriteModule!.moduleName)),
-        body: FutureBuilder<List<ModuleItem>>(
-            future: getModules(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<ModuleItem>> snapshot) {
-              Widget child = const Center(child: Text("Please wait..."));
-              if (snapshot.hasData) {
-                debugPrint("Modules....${snapshot.data?.toList()}");
-                child = SizedBox(
-                    height: double.infinity,
-                    child: GridView.builder(
-                        // physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.only(
-                            left: 12, right: 12, top: 8, bottom: 8),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data?.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 8,
-                                mainAxisSpacing: 12),
-                        itemBuilder: (BuildContext context, int index) {
-                          var module = snapshot.data![index];
-                          return ModuleItemWidget(moduleItem: module);
-                        }));
-              }
-              return child;
-            }));
+    return WillPopScope(
+        onWillPop: () async {
+          Provider.of<PluginState>(context, listen: false)
+              .setRequestState(false);
+          return true;
+        },
+        child: Scaffold(
+            appBar: AppBar(
+                elevation: 2,
+                title: Text(widget.favouriteModule == null
+                    ? widget.moduleItem!.moduleName
+                    : widget.favouriteModule!.moduleName)),
+            body: FutureBuilder<List<ModuleItem>>(
+                future: getModules(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<ModuleItem>> snapshot) {
+                  Widget child = const Center(child: Text("Please wait..."));
+                  if (snapshot.hasData) {
+                    debugPrint("Modules....${snapshot.data?.toList()}");
+                    child = SizedBox(
+                        height: double.infinity,
+                        child: GridView.builder(
+                            // physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.only(
+                                left: 12, right: 12, top: 8, bottom: 8),
+                            shrinkWrap: true,
+                            itemCount: snapshot.data?.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 8,
+                                    mainAxisSpacing: 12),
+                            itemBuilder: (BuildContext context, int index) {
+                              var module = snapshot.data![index];
+                              return ModuleItemWidget(moduleItem: module);
+                            }));
+                  }
+                  return child;
+                })));
   }
 
   @override
   void dispose() {
-    Provider.of<PluginState>(context, listen: false).setRequestState(false);
     super.dispose();
   }
 }

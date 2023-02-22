@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:craft_dynamic/src/util/enum_formatter_util.dart';
 import 'package:provider/provider.dart';
+import 'package:badges/badges.dart' as badges;
 
 import 'src/ui/dynamic_static/biometric_login.dart';
 import 'src/ui/dynamic_static/transactions_list.dart';

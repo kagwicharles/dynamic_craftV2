@@ -64,16 +64,23 @@ class CommonUtils {
     );
   }
 
-
   static navigateToRouteAndPopAll({required context, required widget}) {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => widget), (
-        route) => false
-    );
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => widget), (route) => false);
   }
 
   static newRouter({required widget}) {
     Get.offAll(widget);
+  }
+
+  static showToast(message) {
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.SNACKBAR,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }

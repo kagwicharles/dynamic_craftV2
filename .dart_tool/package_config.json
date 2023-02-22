@@ -38,6 +38,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "badges",
+      "rootUri": "file:///home/charlesk/.pub-cache/hosted/pub.dev/badges-3.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///home/charlesk/.pub-cache/hosted/pub.dev/boolean_selector-2.1.1",
       "packageUri": "lib/",
@@ -1082,7 +1088,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2023-02-18T07:24:32.949992Z",
+  "generated": "2023-02-22T09:56:35.971735Z",
   "generator": "pub",
   "generatorVersion": "2.19.0"
 }

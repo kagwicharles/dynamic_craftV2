@@ -57,7 +57,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
           height: 44,
         ),
         Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.centerRight,
             child: OutlinedButton(
               onPressed: () {
                 widget.moduleItem != null &&
@@ -70,6 +70,7 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Icon(
                         Icons.close,

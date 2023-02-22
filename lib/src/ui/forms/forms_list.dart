@@ -73,6 +73,7 @@ class FormsListWidget extends StatelessWidget {
                 .where(
                     (formItem) => formItem.formSequence == (currentForm ?? 1))
                 .toList()
+              ..removeWhere((formItem) => formItem.hidden == true)
               ..sort(((a, b) {
                 return a.displayOrder!.compareTo(b.displayOrder!);
               }));

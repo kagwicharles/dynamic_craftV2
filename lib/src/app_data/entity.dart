@@ -10,6 +10,8 @@ class ModuleItem {
   String? moduleUrl;
   String? merchantID;
   bool? isMainMenu;
+  bool? isDisabled;
+  bool? isHidden;
 
   ModuleItem(
       {required this.parentModule,
@@ -18,7 +20,9 @@ class ModuleItem {
       required this.moduleName,
       required this.moduleCategory,
       required this.merchantID,
-      this.isMainMenu});
+      this.isMainMenu,
+      this.isDisabled,
+      this.isHidden});
 
   ModuleItem.fromJson(Map<String, dynamic> json)
       : parentModule = json["ParentModule"],
@@ -27,7 +31,9 @@ class ModuleItem {
         moduleName = json["ModuleName"],
         moduleCategory = json["ModuleCategory"],
         merchantID = json["MerchantID"],
-        isMainMenu = json["IsMainMenu"];
+        isMainMenu = json["IsMainMenu"],
+        isDisabled = json["IsDisabled"],
+        isHidden = json["IsHidden"];
 }
 
 @entity
@@ -51,6 +57,7 @@ class FormItem {
   bool? isEncrypted;
   String? minValue;
   String? maxValue;
+  bool? hidden;
 
   FormItem(
       {required this.controlType,
@@ -69,7 +76,8 @@ class FormItem {
       this.isMandatory,
       this.isEncrypted,
       this.minValue,
-      this.maxValue});
+      this.maxValue,
+      this.hidden});
 
   FormItem.fromJson(Map<String, dynamic> json) {
     controlType = json['ControlType'];
@@ -89,6 +97,7 @@ class FormItem {
     controlValue = json['ControlValue'];
     minValue = json['MinValue'];
     maxValue = json["MaxValue"];
+    hidden = json["Hidden"];
   }
 }
 

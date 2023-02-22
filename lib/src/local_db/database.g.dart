@@ -113,9 +113,9 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `ModuleItem` (`moduleId` TEXT NOT NULL, `parentModule` TEXT NOT NULL, `moduleName` TEXT NOT NULL, `moduleCategory` TEXT NOT NULL, `moduleUrl` TEXT, `merchantID` TEXT, `isMainMenu` INTEGER, PRIMARY KEY (`moduleId`))');
+            'CREATE TABLE IF NOT EXISTS `ModuleItem` (`moduleId` TEXT NOT NULL, `parentModule` TEXT NOT NULL, `moduleName` TEXT NOT NULL, `moduleCategory` TEXT NOT NULL, `moduleUrl` TEXT, `merchantID` TEXT, `isMainMenu` INTEGER, `isDisabled` INTEGER, `isHidden` INTEGER, PRIMARY KEY (`moduleId`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `FormItem` (`no` INTEGER, `controlType` TEXT, `controlText` TEXT, `moduleId` TEXT, `controlId` TEXT, `containerID` TEXT, `actionId` TEXT, `linkedToControl` TEXT, `formSequence` INTEGER, `serviceParamId` TEXT, `displayOrder` REAL, `controlFormat` TEXT, `dataSourceId` TEXT, `controlValue` TEXT, `isMandatory` INTEGER, `isEncrypted` INTEGER, `minValue` TEXT, `maxValue` TEXT, PRIMARY KEY (`no`))');
+            'CREATE TABLE IF NOT EXISTS `FormItem` (`no` INTEGER, `controlType` TEXT, `controlText` TEXT, `moduleId` TEXT, `controlId` TEXT, `containerID` TEXT, `actionId` TEXT, `linkedToControl` TEXT, `formSequence` INTEGER, `serviceParamId` TEXT, `displayOrder` REAL, `controlFormat` TEXT, `dataSourceId` TEXT, `controlValue` TEXT, `isMandatory` INTEGER, `isEncrypted` INTEGER, `minValue` TEXT, `maxValue` TEXT, `hidden` INTEGER, PRIMARY KEY (`no`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `ActionItem` (`no` INTEGER, `moduleID` TEXT NOT NULL, `actionType` TEXT NOT NULL, `webHeader` TEXT NOT NULL, `controlID` TEXT, `displayFormID` TEXT, `confirmationModuleID` TEXT, PRIMARY KEY (`no`))');
         await database.execute(
@@ -252,7 +252,12 @@ class _$ModuleItemDao extends ModuleItemDao {
                   'merchantID': item.merchantID,
                   'isMainMenu': item.isMainMenu == null
                       ? null
-                      : (item.isMainMenu! ? 1 : 0)
+                      : (item.isMainMenu! ? 1 : 0),
+                  'isDisabled': item.isDisabled == null
+                      ? null
+                      : (item.isDisabled! ? 1 : 0),
+                  'isHidden':
+                      item.isHidden == null ? null : (item.isHidden! ? 1 : 0)
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -276,7 +281,12 @@ class _$ModuleItemDao extends ModuleItemDao {
             merchantID: row['merchantID'] as String?,
             isMainMenu: row['isMainMenu'] == null
                 ? null
-                : (row['isMainMenu'] as int) != 0),
+                : (row['isMainMenu'] as int) != 0,
+            isDisabled: row['isDisabled'] == null
+                ? null
+                : (row['isDisabled'] as int) != 0,
+            isHidden:
+                row['isHidden'] == null ? null : (row['isHidden'] as int) != 0),
         arguments: [parentModule]);
   }
 
@@ -292,7 +302,12 @@ class _$ModuleItemDao extends ModuleItemDao {
             merchantID: row['merchantID'] as String?,
             isMainMenu: row['isMainMenu'] == null
                 ? null
-                : (row['isMainMenu'] as int) != 0),
+                : (row['isMainMenu'] as int) != 0,
+            isDisabled: row['isDisabled'] == null
+                ? null
+                : (row['isDisabled'] as int) != 0,
+            isHidden:
+                row['isHidden'] == null ? null : (row['isHidden'] as int) != 0),
         arguments: [moduleId]);
   }
 
@@ -309,14 +324,20 @@ class _$ModuleItemDao extends ModuleItemDao {
             merchantID: row['merchantID'] as String?,
             isMainMenu: row['isMainMenu'] == null
                 ? null
-                : (row['isMainMenu'] as int) != 0));
+                : (row['isMainMenu'] as int) != 0,
+            isDisabled: row['isDisabled'] == null
+                ? null
+                : (row['isDisabled'] as int) != 0,
+            isHidden: row['isHidden'] == null
+                ? null
+                : (row['isHidden'] as int) != 0));
   }
 
   @override
   Future<List<ModuleItem>> searchModuleItem(String moduleName) async {
     return _queryAdapter.queryList(
         'SELECT * FROM ModuleItem WHERE moduleName LIKE ?1 AND parentModule != \'ALL\'',
-        mapper: (Map<String, Object?> row) => ModuleItem(parentModule: row['parentModule'] as String, moduleUrl: row['moduleUrl'] as String?, moduleId: row['moduleId'] as String, moduleName: row['moduleName'] as String, moduleCategory: row['moduleCategory'] as String, merchantID: row['merchantID'] as String?, isMainMenu: row['isMainMenu'] == null ? null : (row['isMainMenu'] as int) != 0),
+        mapper: (Map<String, Object?> row) => ModuleItem(parentModule: row['parentModule'] as String, moduleUrl: row['moduleUrl'] as String?, moduleId: row['moduleId'] as String, moduleName: row['moduleName'] as String, moduleCategory: row['moduleCategory'] as String, merchantID: row['merchantID'] as String?, isMainMenu: row['isMainMenu'] == null ? null : (row['isMainMenu'] as int) != 0, isDisabled: row['isDisabled'] == null ? null : (row['isDisabled'] as int) != 0, isHidden: row['isHidden'] == null ? null : (row['isHidden'] as int) != 0),
         arguments: [moduleName]);
   }
 
@@ -362,7 +383,8 @@ class _$FormItemDao extends FormItemDao {
                       ? null
                       : (item.isEncrypted! ? 1 : 0),
                   'minValue': item.minValue,
-                  'maxValue': item.maxValue
+                  'maxValue': item.maxValue,
+                  'hidden': item.hidden == null ? null : (item.hidden! ? 1 : 0)
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -397,7 +419,8 @@ class _$FormItemDao extends FormItemDao {
                 ? null
                 : (row['isEncrypted'] as int) != 0,
             minValue: row['minValue'] as String?,
-            maxValue: row['maxValue'] as String?),
+            maxValue: row['maxValue'] as String?,
+            hidden: row['hidden'] == null ? null : (row['hidden'] as int) != 0),
         arguments: [id]);
   }
 
@@ -429,7 +452,8 @@ class _$FormItemDao extends FormItemDao {
                 ? null
                 : (row['isEncrypted'] as int) != 0,
             minValue: row['minValue'] as String?,
-            maxValue: row['maxValue'] as String?),
+            maxValue: row['maxValue'] as String?,
+            hidden: row['hidden'] == null ? null : (row['hidden'] as int) != 0),
         arguments: [id, formSequence]);
   }
 
@@ -461,7 +485,8 @@ class _$FormItemDao extends FormItemDao {
                 ? null
                 : (row['isEncrypted'] as int) != 0,
             minValue: row['minValue'] as String?,
-            maxValue: row['maxValue'] as String?),
+            maxValue: row['maxValue'] as String?,
+            hidden: row['hidden'] == null ? null : (row['hidden'] as int) != 0),
         arguments: [id, controlID]);
   }
 

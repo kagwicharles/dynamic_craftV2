@@ -51,24 +51,29 @@ class _ModulesListWidgetState extends State<ModulesListWidget> {
                     AsyncSnapshot<List<ModuleItem>> snapshot) {
                   Widget child = const Center(child: Text("Please wait..."));
                   if (snapshot.hasData) {
-                    debugPrint("Modules....${snapshot.data?.toList()}");
-                    child = SizedBox(
-                        height: double.infinity,
-                        child: GridView.builder(
-                            // physics: const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.only(
-                                left: 12, right: 12, top: 8, bottom: 8),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data?.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 8,
-                                    mainAxisSpacing: 12),
-                            itemBuilder: (BuildContext context, int index) {
-                              var module = snapshot.data![index];
-                              return ModuleItemWidget(moduleItem: module);
-                            }));
+                    var modules = snapshot.data?.toList();
+                    debugPrint("Modules....$modules");
+                    modules?.removeWhere((module) => module.isHidden == true);
+
+                    if (modules != null) {
+                      child = SizedBox(
+                          height: double.infinity,
+                          child: GridView.builder(
+                              // physics: const NeverScrollableScrollPhysics(),
+                              padding: const EdgeInsets.only(
+                                  left: 12, right: 12, top: 8, bottom: 8),
+                              shrinkWrap: true,
+                              itemCount: modules.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      crossAxisSpacing: 8,
+                                      mainAxisSpacing: 12),
+                              itemBuilder: (BuildContext context, int index) {
+                                var module = modules[index];
+                                return ModuleItemWidget(moduleItem: module);
+                              }));
+                    }
                   }
                   return child;
                 })));

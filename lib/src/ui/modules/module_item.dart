@@ -68,6 +68,7 @@ class VerticalModule extends StatelessWidget {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               MenuItemImage(
                 imageUrl: moduleItem.moduleUrl ?? "",

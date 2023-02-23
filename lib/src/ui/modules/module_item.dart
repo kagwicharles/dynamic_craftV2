@@ -54,32 +54,33 @@ class VerticalModule extends StatelessWidget {
                 ? Border.all(width: 1, color: Colors.grey[400]!)
                 : null),
         child: badges.Badge(
-          position: badges.BadgePosition.topEnd(top: -8, end: -8),
-          showBadge: isDisabled,
-          badgeContent: const Icon(
-            Icons.warning_rounded,
-            color: Colors.orangeAccent,
-          ),
-          badgeStyle: const badges.BadgeStyle(
-            shape: badges.BadgeShape.square,
-            badgeColor: Colors.transparent,
-            padding: EdgeInsets.all(5),
-            elevation: 0,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              MenuItemImage(
-                imageUrl: moduleItem.moduleUrl ?? "",
+            position: badges.BadgePosition.topEnd(top: -8, end: -8),
+            showBadge: isDisabled,
+            badgeContent: const Icon(
+              Icons.warning_rounded,
+              color: Colors.orangeAccent,
+            ),
+            badgeStyle: const badges.BadgeStyle(
+              shape: badges.BadgeShape.square,
+              badgeColor: Colors.transparent,
+              padding: EdgeInsets.all(5),
+              elevation: 0,
+            ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MenuItemImage(
+                    imageUrl: moduleItem.moduleUrl ?? "",
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  MenuItemTitle(title: moduleItem.moduleName)
+                ],
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              MenuItemTitle(title: moduleItem.moduleName)
-            ],
-          ),
-        ));
+            )));
   }
 
   Color? getMenuColor(context) =>
@@ -107,32 +108,33 @@ class HorizontalModule extends StatelessWidget {
                 ? Border.all(width: 1, color: Colors.grey[400]!)
                 : null),
         child: badges.Badge(
-          position: badges.BadgePosition.topEnd(top: -8, end: -8),
-          showBadge: isDisabled,
-          badgeContent: const Icon(
-            Icons.warning_rounded,
-            color: Colors.orangeAccent,
-          ),
-          badgeStyle: const badges.BadgeStyle(
-            shape: badges.BadgeShape.square,
-            badgeColor: Colors.transparent,
-            padding: EdgeInsets.all(5),
-            elevation: 0,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MenuItemImage(
-                imageUrl: moduleItem.moduleUrl ?? "",
+            position: badges.BadgePosition.topEnd(top: -8, end: -8),
+            showBadge: isDisabled,
+            badgeContent: const Icon(
+              Icons.warning_rounded,
+              color: Colors.orangeAccent,
+            ),
+            badgeStyle: const badges.BadgeStyle(
+              shape: badges.BadgeShape.square,
+              badgeColor: Colors.transparent,
+              padding: EdgeInsets.all(5),
+              elevation: 0,
+            ),
+            child: Center(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MenuItemImage(
+                    imageUrl: moduleItem.moduleUrl ?? "",
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  MenuItemTitle(title: moduleItem.moduleName)
+                ],
               ),
-              const SizedBox(
-                width: 8,
-              ),
-              MenuItemTitle(title: moduleItem.moduleName)
-            ],
-          ),
-        ));
+            )));
   }
 
   Color? getMenuColor(context) =>

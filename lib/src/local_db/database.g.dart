@@ -113,7 +113,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `ModuleItem` (`moduleId` TEXT NOT NULL, `parentModule` TEXT NOT NULL, `moduleName` TEXT NOT NULL, `moduleCategory` TEXT NOT NULL, `moduleUrl` TEXT, `merchantID` TEXT, `isMainMenu` INTEGER, `isDisabled` INTEGER, `isHidden` INTEGER, PRIMARY KEY (`moduleId`))');
+            'CREATE TABLE IF NOT EXISTS `ModuleItem` (`moduleId` TEXT NOT NULL, `parentModule` TEXT NOT NULL, `moduleName` TEXT NOT NULL, `moduleCategory` TEXT NOT NULL, `moduleUrl` TEXT, `merchantID` TEXT, `isMainMenu` INTEGER, `isDisabled` INTEGER, `isHidden` INTEGER, `displayOrder` REAL, PRIMARY KEY (`moduleId`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `FormItem` (`no` INTEGER, `controlType` TEXT, `controlText` TEXT, `moduleId` TEXT, `controlId` TEXT, `containerID` TEXT, `actionId` TEXT, `linkedToControl` TEXT, `formSequence` INTEGER, `serviceParamId` TEXT, `displayOrder` REAL, `controlFormat` TEXT, `dataSourceId` TEXT, `controlValue` TEXT, `isMandatory` INTEGER, `isEncrypted` INTEGER, `minValue` TEXT, `maxValue` TEXT, `hidden` INTEGER, PRIMARY KEY (`no`))');
         await database.execute(
@@ -257,7 +257,8 @@ class _$ModuleItemDao extends ModuleItemDao {
                       ? null
                       : (item.isDisabled! ? 1 : 0),
                   'isHidden':
-                      item.isHidden == null ? null : (item.isHidden! ? 1 : 0)
+                      item.isHidden == null ? null : (item.isHidden! ? 1 : 0),
+                  'displayOrder': item.displayOrder
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -286,7 +287,8 @@ class _$ModuleItemDao extends ModuleItemDao {
                 ? null
                 : (row['isDisabled'] as int) != 0,
             isHidden:
-                row['isHidden'] == null ? null : (row['isHidden'] as int) != 0),
+                row['isHidden'] == null ? null : (row['isHidden'] as int) != 0,
+            displayOrder: row['displayOrder'] as double?),
         arguments: [parentModule]);
   }
 
@@ -307,7 +309,8 @@ class _$ModuleItemDao extends ModuleItemDao {
                 ? null
                 : (row['isDisabled'] as int) != 0,
             isHidden:
-                row['isHidden'] == null ? null : (row['isHidden'] as int) != 0),
+                row['isHidden'] == null ? null : (row['isHidden'] as int) != 0,
+            displayOrder: row['displayOrder'] as double?),
         arguments: [moduleId]);
   }
 
@@ -328,16 +331,16 @@ class _$ModuleItemDao extends ModuleItemDao {
             isDisabled: row['isDisabled'] == null
                 ? null
                 : (row['isDisabled'] as int) != 0,
-            isHidden: row['isHidden'] == null
-                ? null
-                : (row['isHidden'] as int) != 0));
+            isHidden:
+                row['isHidden'] == null ? null : (row['isHidden'] as int) != 0,
+            displayOrder: row['displayOrder'] as double?));
   }
 
   @override
   Future<List<ModuleItem>> searchModuleItem(String moduleName) async {
     return _queryAdapter.queryList(
         'SELECT * FROM ModuleItem WHERE moduleName LIKE ?1 AND parentModule != \'ALL\'',
-        mapper: (Map<String, Object?> row) => ModuleItem(parentModule: row['parentModule'] as String, moduleUrl: row['moduleUrl'] as String?, moduleId: row['moduleId'] as String, moduleName: row['moduleName'] as String, moduleCategory: row['moduleCategory'] as String, merchantID: row['merchantID'] as String?, isMainMenu: row['isMainMenu'] == null ? null : (row['isMainMenu'] as int) != 0, isDisabled: row['isDisabled'] == null ? null : (row['isDisabled'] as int) != 0, isHidden: row['isHidden'] == null ? null : (row['isHidden'] as int) != 0),
+        mapper: (Map<String, Object?> row) => ModuleItem(parentModule: row['parentModule'] as String, moduleUrl: row['moduleUrl'] as String?, moduleId: row['moduleId'] as String, moduleName: row['moduleName'] as String, moduleCategory: row['moduleCategory'] as String, merchantID: row['merchantID'] as String?, isMainMenu: row['isMainMenu'] == null ? null : (row['isMainMenu'] as int) != 0, isDisabled: row['isDisabled'] == null ? null : (row['isDisabled'] as int) != 0, isHidden: row['isHidden'] == null ? null : (row['isHidden'] as int) != 0, displayOrder: row['displayOrder'] as double?),
         arguments: [moduleName]);
   }
 

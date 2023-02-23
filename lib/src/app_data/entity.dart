@@ -12,6 +12,7 @@ class ModuleItem {
   bool? isMainMenu;
   bool? isDisabled;
   bool? isHidden;
+  double? displayOrder;
 
   ModuleItem(
       {required this.parentModule,
@@ -22,7 +23,8 @@ class ModuleItem {
       required this.merchantID,
       this.isMainMenu,
       this.isDisabled,
-      this.isHidden});
+      this.isHidden,
+      this.displayOrder});
 
   ModuleItem.fromJson(Map<String, dynamic> json)
       : parentModule = json["ParentModule"],
@@ -33,7 +35,8 @@ class ModuleItem {
         merchantID = json["MerchantID"],
         isMainMenu = json["IsMainMenu"],
         isDisabled = json["IsDisabled"],
-        isHidden = json["IsHidden"];
+        isHidden = json["IsHidden"],
+        displayOrder = json['DisplayOrder'];
 }
 
 @entity

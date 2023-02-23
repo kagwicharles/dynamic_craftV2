@@ -1,8 +1,20 @@
 part of craft_dynamic;
 
 const storage = FlutterSecureStorage();
+final prefs = SharedPreferences.getInstance();
 
 class CommonSharedPref {
+  setLaunchCount(int launchCount) async {
+    prefs.then((pref) {
+      pref.setInt("launchCount", launchCount);
+    });
+  }
+
+  getLaunchCount() async {
+    var pref = await prefs;
+    return pref.getInt("launchCount") ?? 0;
+  }
+
   static addDeviceData(String token, String device, String iv) async {
     await storage.write(key: "token", value: token);
     await storage.write(key: "device", value: device);
@@ -114,5 +126,9 @@ class CommonSharedPref {
 
   getLatLong() async {
     return json.decode(await storage.read(key: "latlong") ?? "{}");
+  }
+
+  clearPrefs() async {
+    await storage.deleteAll();
   }
 }

@@ -37,6 +37,11 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   }
 
   initializeApp() async {
+    var launchCount = _sharedPref.getLaunchCount();
+    if (launchCount == 0) {
+      _sharedPref.clearPrefs();
+      _sharedPref.setLaunchCount(launchCount++);
+    }
     await PermissionUtil.checkRequiredPermissions();
     getCurrentLatLong();
     showLoadingScreen.value = true;

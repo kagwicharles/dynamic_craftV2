@@ -37,15 +37,22 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   }
 
   initializeApp() async {
+    getAppLaunchCount();
+    await PermissionUtil.checkRequiredPermissions();
+    getCurrentLatLong();
+    showLoadingScreen.value = true;
+    await getAppData();
+  }
+
+  getAppLaunchCount() {
     var launchCount = _sharedPref.getLaunchCount();
     if (launchCount == 0) {
       _sharedPref.clearPrefs();
       _sharedPref.setLaunchCount(launchCount++);
     }
-    await PermissionUtil.checkRequiredPermissions();
-    getCurrentLatLong();
-    showLoadingScreen.value = true;
-    await getAppData();
+    if (launchCount < 5) {
+      _sharedPref.setLaunchCount(launchCount++);
+    }
   }
 
   getAppData() async {

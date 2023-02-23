@@ -151,7 +151,7 @@ class APIService {
     requestObject["longit"] = latLong?["long"] ?? "0.00";
     requestObject["UniqueId"] = uniqueID;
     requestObject[RequestParam.MobileNumber.name] =
-        requestConfig?["bankId"].toString();
+        requestConfig?["bankCustomerID"].toString();
 
     AppLogger.appLogE(tag: "REQ:", message: jsonEncode(requestObject));
 
@@ -161,7 +161,7 @@ class APIService {
     try {
       dioResponse = await dio.post(url, data: requestObject);
       AppLogger.writeResponseToFile(
-          fileName: "TOken res", response: dioResponse.toString());
+          fileName: "Token res", response: dioResponse.toString());
       if (dioResponse.statusCode == 200) {
         device = dioResponse.data["payload"]["Device"];
         data = dioResponse.data["data"];

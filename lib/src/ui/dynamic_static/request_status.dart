@@ -47,109 +47,107 @@ class _RequestStatusScreenState extends State<RequestStatusScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SingleChildScrollView(
-            child: Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      height: MediaQuery.of(context).size.height,
-      child: Column(children: [
-        const SizedBox(
-          height: 44,
-        ),
-        Align(
-            alignment: Alignment.centerRight,
-            child: OutlinedButton(
-              onPressed: () {
-                widget.moduleItem != null &&
-                        widget.moduleItem?.moduleId == "PIN"
-                    ? logout()
-                    : closePage();
-              },
-              child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.close,
-                        color: Color(0xff15549A),
-                        size: 34,
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      Text(
-                        "CLOSE",
-                        style: Theme.of(context).textTheme.labelSmall,
-                      )
-                    ],
-                  )),
-            )),
-        const Spacer(),
-        Expanded(
-            flex: 4,
-            child: Center(
+    return WillPopScope(
+        onWillPop: () async {
+          widget.moduleItem != null &&
+                  widget.moduleItem?.moduleId == ModuleId.PIN.name
+              ? logout()
+              : closePage();
+          return true;
+        },
+        child: Scaffold(
+            body: SingleChildScrollView(
                 child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(18.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.blue[50]),
-                    child: Column(
-                      children: [
-                        // Expanded(
-                        //   flex: 1,
-                        //   child: Text(
-                        //     widget.statusCode == "000" ? "Success:" : "Error:",
-                        //     style: const TextStyle(
-                        //         fontSize: 16,
-                        //         fontWeight: FontWeight.w800,
-                        //         height: 1.5),
-                        //     textAlign: TextAlign.center,
-                        //   ),
-                        // ),
-                        Expanded(
-                          flex: 9,
-                          child: Column(
-                            children: [
-                              Lottie.asset(getAvatarType(widget.statusCode),
-                                  height: 88,
-                                  width: 88,
-                                  controller: _controller, onLoaded: (comp) {
-                                _controller
-                                  ..duration = comp.duration
-                                  ..forward();
-                              }),
-                              Expanded(
-                                  child: Center(
-                                      child: Text(
-                                widget.message,
-                                style:
-                                    const TextStyle(fontSize: 14, height: 1.5),
-                                textAlign: TextAlign.center,
-                              ))),
-                            ],
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          height: MediaQuery.of(context).size.height,
+          child: Column(children: [
+            const SizedBox(
+              height: 44,
+            ),
+            Align(
+                alignment: Alignment.centerRight,
+                child: OutlinedButton(
+                  onPressed: () {
+                    widget.moduleItem != null &&
+                            widget.moduleItem?.moduleId == ModuleId.PIN.name
+                        ? logout()
+                        : closePage();
+                  },
+                  child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.close,
+                            color: Color(0xff15549A),
+                            size: 34,
                           ),
-                        )
-                      ],
-                    )))),
-        const Spacer(),
-        Align(
-            alignment: Alignment.bottomCenter,
-            child: WidgetFactory.buildButton(
-                context,
-                widget.moduleItem != null &&
-                        widget.moduleItem?.moduleId == "PIN"
-                    ? logout
-                    : closePage,
-                "Done")),
-        const SizedBox(
-          height: 15,
-        )
-      ]),
-    )));
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Text(
+                            "CLOSE",
+                            style: Theme.of(context).textTheme.labelSmall,
+                          )
+                        ],
+                      )),
+                )),
+            const Spacer(),
+            Expanded(
+                flex: 4,
+                child: Center(
+                    child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(18.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: Colors.blue[50]),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 9,
+                              child: Column(
+                                children: [
+                                  Lottie.asset(getAvatarType(widget.statusCode),
+                                      height: 88,
+                                      width: 88,
+                                      controller: _controller,
+                                      onLoaded: (comp) {
+                                    _controller
+                                      ..duration = comp.duration
+                                      ..forward();
+                                  }),
+                                  Expanded(
+                                      child: Center(
+                                          child: Text(
+                                    widget.message,
+                                    style: const TextStyle(
+                                        fontSize: 14, height: 1.5),
+                                    textAlign: TextAlign.center,
+                                  ))),
+                                ],
+                              ),
+                            )
+                          ],
+                        )))),
+            const Spacer(),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: WidgetFactory.buildButton(
+                    context,
+                    widget.moduleItem != null &&
+                            widget.moduleItem?.moduleId == "PIN"
+                        ? logout
+                        : closePage,
+                    "Done")),
+            const SizedBox(
+              height: 15,
+            )
+          ]),
+        ))));
   }
 
   String getAvatarType(String statusCode) {

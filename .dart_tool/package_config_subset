@@ -462,6 +462,10 @@ path_provider_windows
 2.17
 file:///home/charlesk/.pub-cache/hosted/pub.dev/path_provider_windows-2.1.3/
 file:///home/charlesk/.pub-cache/hosted/pub.dev/path_provider_windows-2.1.3/lib/
+pattern_formatter
+2.12
+file:///home/charlesk/.pub-cache/hosted/pub.dev/pattern_formatter-2.0.0/
+file:///home/charlesk/.pub-cache/hosted/pub.dev/pattern_formatter-2.0.0/lib/
 pedantic
 2.12
 file:///home/charlesk/.pub-cache/hosted/pub.dev/pedantic-1.11.1/
@@ -704,8 +708,8 @@ file:///home/charlesk/.pub-cache/hosted/pub.dev/yaml-3.1.1/
 file:///home/charlesk/.pub-cache/hosted/pub.dev/yaml-3.1.1/lib/
 craft_dynamic
 2.17
-file:///home/charlesk/Desktop/Craft/ftbbank/packages/dynamic_craft/
-file:///home/charlesk/Desktop/Craft/ftbbank/packages/dynamic_craft/lib/
+file:///home/charlesk/Desktop/Craft/ftbbank/packages/dynamic_craftV2/
+file:///home/charlesk/Desktop/Craft/ftbbank/packages/dynamic_craftV2/lib/
 sky_engine
 2.12
 file:///opt/flutter/bin/cache/pkg/sky_engine/

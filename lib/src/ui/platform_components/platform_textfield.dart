@@ -3,6 +3,7 @@
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pattern_formatter/pattern_formatter.dart';
 
 abstract class ITextFormField {
   factory ITextFormField(TargetPlatform targetPlatform) {
@@ -26,7 +27,10 @@ class IOSTextFormField implements ITextFormField {
   @override
   Widget getPlatformTextField(
       TextFormFieldProperties properties, String? Function(String?) validator) {
+    properties.controller.text = properties.initialValue;
+
     return CupertinoTextFormFieldRow(
+      initialValue: properties.initialValue,
       autofocus: properties.autofocus,
       enabled: properties.isEnabled,
       controller: properties.controller,
@@ -36,6 +40,7 @@ class IOSTextFormField implements ITextFormField {
       style: const TextStyle(fontSize: 16),
       validator: validator,
       onChanged: properties.onChange,
+      inputFormatters: properties.isAmount ? [ThousandsFormatter()] : null,
     );
   }
 }
@@ -44,6 +49,7 @@ class AndroidTextFormField implements ITextFormField {
   @override
   Widget getPlatformTextField(
       TextFormFieldProperties properties, String? Function(String?) validator) {
+    properties.controller.text = properties.initialValue;
     return TextFormField(
       autofocus: properties.autofocus,
       enabled: properties.isEnabled,
@@ -54,6 +60,7 @@ class AndroidTextFormField implements ITextFormField {
       style: const TextStyle(fontSize: 16),
       validator: validator,
       onChanged: properties.onChange ?? (input) {},
+      inputFormatters: properties.isAmount ? [ThousandsFormatter()] : null,
     );
   }
 }

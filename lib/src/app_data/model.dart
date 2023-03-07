@@ -254,12 +254,16 @@ class TextFormFieldProperties {
   TextInputType textInputType;
   InputDecoration? inputDecoration;
   BoxDecoration? boxDecoration;
+  bool isAmount;
+  String initialValue;
   Function(String?)? onChange;
 
   TextFormFieldProperties({
     this.autofocus = false,
     this.isEnabled = false,
     this.isObscured = false,
+    this.isAmount = false,
+    this.initialValue = "",
     this.onChange,
     required this.controller,
     required this.textInputType,

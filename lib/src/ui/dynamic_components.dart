@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 import 'package:camera/camera.dart';
+import 'package:collection/collection.dart';
 
 import 'package:craft_dynamic/craft_dynamic.dart';
 import 'package:craft_dynamic/src/ui/dynamic_static/grouped_button.dart';
@@ -127,7 +128,9 @@ class DynamicTextFormField extends StatefulWidget implements IFormWidget {
 
   @override
   Widget render() {
-    return DynamicTextFormField();
+    return DynamicTextFormField(
+      formFields: formFields,
+    );
   }
 
   @override
@@ -140,6 +143,7 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
   bool isObscured = false;
   IconButton? suffixIcon;
   FormItem? formItem;
+  String? initialValue;
 
   @override
   void initState() {
@@ -174,26 +178,26 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           isObscure: isObscured,
           refreshParent: refreshParent);
       inputType = textFieldParams['inputType'];
-
-      var formFieldValue = widget.formFields?.firstWhere((formField) =>
+      var formFieldValue = widget.formFields?.firstWhereOrNull((formField) =>
               formField[FormFieldProp.ControlID.name] == formItem?.controlId) ??
           "";
 
       if (formFieldValue.isNotEmpty) {
-        controller.text = formFieldValue[FormFieldProp.ControlValue.name];
+        initialValue = formFieldValue[FormFieldProp.ControlValue.name];
       }
 
       var properties = TextFormFieldProperties(
-        isEnabled: formFieldValue.isNotEmpty ? false : widget.isEnabled,
-        isObscured: isObscured ? state.obscureText : false,
-        controller: controller,
-        textInputType: inputType,
-        inputDecoration: InputDecoration(
-          // border: const OutlineInputBorder(),
-          labelText: formItem?.controlText,
-          suffixIcon: textFieldParams['suffixIcon'],
-        ),
-      );
+          isEnabled: formFieldValue.isNotEmpty ? false : widget.isEnabled,
+          isObscured: isObscured ? state.obscureText : false,
+          initialValue: initialValue ?? "",
+          controller: controller,
+          textInputType: inputType,
+          inputDecoration: InputDecoration(
+            // border: const OutlineInputBorder(),
+            labelText: formItem?.controlText,
+            suffixIcon: textFieldParams['suffixIcon'],
+          ),
+          isAmount: formItem?.controlFormat == ControlFormat.Amount.name);
 
       return WidgetFactory.buildTextField(context, properties, validator);
     });

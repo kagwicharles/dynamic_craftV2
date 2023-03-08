@@ -24,13 +24,20 @@ class CryptLib {
 
   static String decrypt(
       String ciphertext, String decryptKey, String decryptIv) {
-    final key = encryptcrpto.Key.fromUtf8(decryptKey);
-    final iv = encryptcrpto.IV.fromUtf8(decryptIv);
+    String decrypted = "";
+    try {
+      final key = encryptcrpto.Key.fromUtf8(decryptKey);
+      final iv = encryptcrpto.IV.fromUtf8(decryptIv);
 
-    final encrypter = encryptcrpto.Encrypter(
-        encryptcrpto.AES(key, mode: encryptcrpto.AESMode.cbc));
-    encryptcrpto.Encrypted enBase64 = encryptcrpto.Encrypted.from64(ciphertext);
-    final decrypted = encrypter.decrypt(enBase64, iv: iv);
+      final encrypter = encryptcrpto.Encrypter(
+          encryptcrpto.AES(key, mode: encryptcrpto.AESMode.cbc));
+      encryptcrpto.Encrypted enBase64 =
+          encryptcrpto.Encrypted.from64(ciphertext);
+      decrypted = encrypter.decrypt(enBase64, iv: iv);
+    } catch (e) {
+      AppLogger.appLogE(
+          tag: "DECRYPT ERROR", message: "Unable to decrypt data:::$e");
+    }
     return decrypted;
   }
 

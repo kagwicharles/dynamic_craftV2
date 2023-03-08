@@ -114,13 +114,15 @@ class APIService {
     var url = route ?? currentBaseUrl + requestUrl!;
 
     AppLogger.appLogI(tag: "REQ:ROUTE", message: url);
-    AppLogger.appLogI(tag: "TOKEN", message: localToken);
+    var requestBody = {"Data": encryptedBody, "UniqueId": uniqueID};
+    AppLogger.appLogI(tag: "BODY", message: jsonEncode(requestBody));
+
     try {
       response = await dio.post(url,
           options: Options(
             headers: {'T': localToken},
           ),
-          data: {"Data": encryptedBody, "UniqueId": uniqueID});
+          data: requestBody);
     } catch (e) {
       AppLogger.appLogE(tag: "DIO:ERROR", message: e.toString());
       Fluttertoast.showToast(
@@ -179,8 +181,7 @@ class APIService {
         jsonEncode(requestObject), publicKey ?? "");
     AppLogger.writeResponseToFile(
         fileName: "RSA message", response: rsaEncrypted);
-    // var rsaEncrypted = await CryptLib.rsaEncrypt(
-    //           jsonEncode(requestObject), publicKey ?? "");
+
     try {
       dioResponse = await dio.post(url, data: {"Data": rsaEncrypted});
       var response = jsonDecode(dioResponse.toString())["Data"];
@@ -200,8 +201,7 @@ class APIService {
                 staticEncryptIv,
                 staticEncryptKey) ??
             "";
-        // routes = CryptLib.decrypt(dioResponse.data["payload"]["Routes"],
-        //     CryptLib.toSHA256(keys, 32), iv);
+
         AppLogger.appLogI(tag: "REQ:ROUTES", message: routes);
         await CommonSharedPref.addRoutes(json.decode(routes));
       }

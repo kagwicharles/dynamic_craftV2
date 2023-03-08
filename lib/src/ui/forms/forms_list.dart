@@ -45,9 +45,6 @@ class FormsListWidget extends StatelessWidget {
       });
     }
 
-    debugPrint(
-        "Current forms list::::${Provider.of<PluginState>(context, listen: false).formInputValues}");
-
     return FutureBuilder<List<FormItem>>(
         future: getFormItems(),
         builder:
@@ -55,7 +52,6 @@ class FormsListWidget extends StatelessWidget {
           Widget child = const SizedBox();
           if (snapshot.hasData) {
             int? currentFormSequence = nextFormSequence;
-            debugPrint("Current form sequence...$currentFormSequence");
             if (currentFormSequence != null) {
               if (currentFormSequence == 0) {
                 currentForm = 2;

@@ -716,6 +716,12 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "pattern_formatter",
+      "rootUri": "file:///home/charlesk/.pub-cache/hosted/pub.dev/pattern_formatter-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "pedantic",
       "rootUri": "file:///home/charlesk/.pub-cache/hosted/pub.dev/pedantic-1.11.1",
       "packageUri": "lib/",
@@ -1106,7 +1112,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2023-02-27T08:49:51.407461Z",
+  "generated": "2023-03-07T15:50:58.882083Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }

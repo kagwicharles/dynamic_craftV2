@@ -183,13 +183,12 @@ class _DynamicTextFormFieldState extends State<DynamicTextFormField> {
           "";
 
       if (formFieldValue.isNotEmpty) {
-        initialValue = formFieldValue[FormFieldProp.ControlValue.name];
+        controller.text = formFieldValue[FormFieldProp.ControlValue.name];
       }
 
       var properties = TextFormFieldProperties(
           isEnabled: formFieldValue.isNotEmpty ? false : widget.isEnabled,
           isObscured: isObscured ? state.obscureText : false,
-          initialValue: initialValue ?? "",
           controller: controller,
           textInputType: inputType,
           inputDecoration: InputDecoration(

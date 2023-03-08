@@ -27,10 +27,7 @@ class IOSTextFormField implements ITextFormField {
   @override
   Widget getPlatformTextField(
       TextFormFieldProperties properties, String? Function(String?) validator) {
-    properties.controller.text = properties.initialValue;
-
     return CupertinoTextFormFieldRow(
-      initialValue: properties.initialValue,
       autofocus: properties.autofocus,
       enabled: properties.isEnabled,
       controller: properties.controller,
@@ -49,7 +46,6 @@ class AndroidTextFormField implements ITextFormField {
   @override
   Widget getPlatformTextField(
       TextFormFieldProperties properties, String? Function(String?) validator) {
-    properties.controller.text = properties.initialValue;
     return TextFormField(
       autofocus: properties.autofocus,
       enabled: properties.isEnabled,

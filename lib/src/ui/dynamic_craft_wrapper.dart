@@ -28,7 +28,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
   final _sessionRepository = SessionRepository();
   final _sharedPref = CommonSharedPref();
   final _dynamicRequest = DynamicFormRequest();
-  var _appTimeout = 10000;
+  var _appTimeout = 100000;
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class _DynamicCraftWrapperState extends State<DynamicCraftWrapper> {
     var timeout = await _sharedPref.getAppIdleTimeout();
     if (timeout != null) {
       setState(() {
-        _appTimeout = timeout;
+        _appTimeout = timeout ?? 100000;
       });
     }
     periodicActions(timeout ?? _appTimeout);

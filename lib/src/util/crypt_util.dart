@@ -24,38 +24,44 @@ class CryptLib {
 
   static String decrypt(
       String ciphertext, String decryptKey, String decryptIv) {
-    final key = Key.fromUtf8(decryptKey);
-    final iv = IV.fromUtf8(decryptIv);
+    final key = encryptcrpto.Key.fromUtf8(decryptKey);
+    final iv = encryptcrpto.IV.fromUtf8(decryptIv);
 
-    final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
-    Encrypted enBase64 = Encrypted.from64(ciphertext);
+    final encrypter = encryptcrpto.Encrypter(
+        encryptcrpto.AES(key, mode: encryptcrpto.AESMode.cbc));
+    encryptcrpto.Encrypted enBase64 = encryptcrpto.Encrypted.from64(ciphertext);
     final decrypted = encrypter.decrypt(enBase64, iv: iv);
     return decrypted;
   }
 
   static String encrypt(String plainText, String encryptKey, String encryptIv) {
-    final key = Key.fromUtf8(toSHA256(encryptKey, 32));
-    final iv = IV.fromUtf8(encryptIv);
-    final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
+    final key = encryptcrpto.Key.fromUtf8(toSHA256(encryptKey, 32));
+    final iv = encryptcrpto.IV.fromUtf8(encryptIv);
+    final encrypter = encryptcrpto.Encrypter(
+        encryptcrpto.AES(key, mode: encryptcrpto.AESMode.cbc));
     final encrypted = encrypter.encrypt(plainText, iv: iv);
     return encrypted.base64;
   }
 
   static String encryptField(String plainText) {
-    final hashKey = Key.fromUtf8(toSHA256(APIService.staticLogKeyValue, 32));
-    final encrypter = Encrypter(AES(hashKey, mode: AESMode.cbc));
+    final hashKey =
+        encryptcrpto.Key.fromUtf8(toSHA256(APIService.staticLogKeyValue, 32));
+    final encrypter = encryptcrpto.Encrypter(
+        encryptcrpto.AES(hashKey, mode: encryptcrpto.AESMode.cbc));
     final encryptedText = encrypter.encrypt(plainText,
-        iv: IV.fromUtf8(APIService.staticEncryptIv));
+        iv: encryptcrpto.IV.fromUtf8(APIService.staticEncryptIv));
     return encryptedText.base64;
   }
 
   static String decryptField({encrypted}) {
-    final hashKey = Key.fromUtf8(toSHA256(APIService.staticLogKeyValue, 32));
+    final hashKey =
+        encryptcrpto.Key.fromUtf8(toSHA256(APIService.staticLogKeyValue, 32));
 
-    final encrypter = Encrypter(AES(hashKey, mode: AESMode.cbc));
-    Encrypted enBase64 = Encrypted.from64(encrypted);
+    final encrypter = encryptcrpto.Encrypter(
+        encryptcrpto.AES(hashKey, mode: encryptcrpto.AESMode.cbc));
+    encryptcrpto.Encrypted enBase64 = encryptcrpto.Encrypted.from64(encrypted);
     return encrypter.decrypt(enBase64,
-        iv: IV.fromUtf8(APIService.staticEncryptIv));
+        iv: encryptcrpto.IV.fromUtf8(APIService.staticEncryptIv));
   }
 
   static String encryptPayloadObj(
@@ -80,5 +86,25 @@ class CryptLib {
           tag: "Decryption Error", message: "Unable to decrypt data!");
     }
     return decrypted;
+  }
+
+  static Future<String?> gcmDecrypt(String encryptedData) async {
+    var localDevice = await _sharedPref.getLocalDevice();
+    var localIV = await _sharedPref.getLocalIv();
+    return await NativeBinder.gcmDecrypt(encryptedData, localIV, localDevice);
+  }
+
+  static Future<String> rsaEncrypt(String plainText, String publicKey) async {
+    String encryptedString = "";
+    try {
+      var rsaPublicKey = RSAUtil.parsePublicKeyFromPem(publicKey);
+      if (rsaPublicKey != null) {
+        encryptedString = rsa.encrypt(plainText, rsaPublicKey);
+      }
+      debugPrint("RSA encrypted string:::$encryptedString");
+    } catch (e) {
+      AppLogger.appLogE(tag: "RSA Encrypt Error", message: e.toString());
+    }
+    return encryptedString;
   }
 }

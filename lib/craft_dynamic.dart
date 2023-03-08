@@ -30,8 +30,11 @@ import 'package:local_session_timeout/local_session_timeout.dart'
 import 'package:logger/logger.dart';
 import 'package:floor/floor.dart';
 import 'package:archive/archive.dart';
-import 'package:encrypt/encrypt.dart';
+import 'package:encrypt/encrypt.dart' as encryptcrpto hide SecureRandom;
 import 'package:crypto/crypto.dart';
+import 'package:pem/pem.dart';
+
+import 'package:rsa_encrypt/rsa_encrypt.dart' as rsa;
 import "package:hex/hex.dart";
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lottie/lottie.dart';
@@ -43,6 +46,8 @@ import 'package:yaml/yaml.dart';
 
 import 'dynamic_widget.dart';
 import 'src/app_data/constants.dart';
+import 'src/native_binder/native_bind.dart';
+import 'src/network/rsa_util.dart';
 import 'src/session_manager/session_manager.dart';
 import 'src/state/plugin_state.dart';
 import 'src/ui/dynamic_components.dart';

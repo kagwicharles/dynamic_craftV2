@@ -179,8 +179,6 @@ class APIService {
     var dioResponse;
     var rsaEncrypted = await NativeBinder.rsaEncrypt(
         jsonEncode(requestObject), publicKey ?? "");
-    AppLogger.writeResponseToFile(
-        fileName: "RSA message", response: rsaEncrypted);
 
     try {
       dioResponse = await dio.post(url, data: {"Data": rsaEncrypted});
@@ -188,8 +186,6 @@ class APIService {
       var decryptedMessage = jsonDecode(await NativeBinder.gcmDecrypt(
               response, staticEncryptIv, staticEncryptKey) ??
           "");
-      AppLogger.writeResponseToFile(
-          fileName: "token res", response: jsonEncode(decryptedMessage));
       AppLogger.appLogI(tag: "TOKEN RESPONSE", message: decryptedMessage);
 
       if (dioResponse.statusCode == 200) {
@@ -223,8 +219,8 @@ class APIService {
               AppLogger.appLogI(
                   tag: "\n\n$formId Undecrypted REQ", message: res),
               // decrypted = await CryptLib.gcmDecrypt(res) ?? "",
-              decrypted = await CryptLib.oldDecrypt(res),
-              // decrypted = CryptLib.gzipDecompressStaticData(res),
+              // decrypted = await CryptLib.oldDecrypt(res),
+              decrypted = CryptLib.gzipDecompressStaticData(res),
               AppLogger.appLogI(tag: "\n\n$formId REQ", message: decrypted),
               AppLogger.writeResponseToFile(
                   fileName: formId.name, response: decrypted),

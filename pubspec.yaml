@@ -80,7 +80,6 @@ flutter:
     - packages/craft_dynamic/assets/lottie/info_lottie.json
     - packages/craft_dynamic/assets/images/warning.png
     - packages/craft_dynamic/assets/images/empty.png
-
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
   #

@@ -94,24 +94,4 @@ class CryptLib {
     }
     return decrypted;
   }
-
-  static Future<String?> gcmDecrypt(String encryptedData) async {
-    var localDevice = await _sharedPref.getLocalDevice();
-    var localIV = await _sharedPref.getLocalIv();
-    return await NativeBinder.gcmDecrypt(encryptedData, localIV, localDevice);
-  }
-
-  static Future<String> rsaEncrypt(String plainText, String publicKey) async {
-    String encryptedString = "";
-    try {
-      var rsaPublicKey = RSAUtil.parsePublicKeyFromPem(publicKey);
-      if (rsaPublicKey != null) {
-        encryptedString = rsa.encrypt(plainText, rsaPublicKey);
-      }
-      debugPrint("RSA encrypted string:::$encryptedString");
-    } catch (e) {
-      AppLogger.appLogE(tag: "RSA Encrypt Error", message: e.toString());
-    }
-    return encryptedString;
-  }
 }

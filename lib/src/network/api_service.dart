@@ -137,22 +137,12 @@ class APIService {
     return response;
   }
 
-  Future<String?> getPublicKey(String url) async {
-    final client = HttpClient();
-    final uri = Uri.parse(url);
-    final request = await client.getUrl(uri);
-    final response = await request.close();
-    final pem = response.certificate?.pem;
-    final blocks = decodePemBlocks(PemLabel.certificate, pem.toString());
-    var encodedPublicKey = base64.encode(blocks[0]);
-    AppLogger.appLogI(tag: "Public key", message: encodedPublicKey);
-    AppLogger.writeResponseToFile(
-        fileName: "Public key", response: encodedPublicKey);
-    return encodedPublicKey;
-  }
-
   Future<int?> getToken() async {
-    String routes, token = "";
+    var data;
+    var keys = "";
+    String routes, device, iv, token = "";
+    List<int> dataArr;
+    List<String> deviceCharArray;
     Map<String, dynamic> requestObject = {};
 
     String uniqueID = Constants.getUniqueID();
@@ -165,44 +155,37 @@ class APIService {
     requestObject["lat"] = latLong?["lat"] ?? "0.00";
     requestObject["longit"] = latLong?["long"] ?? "0.00";
     requestObject["UniqueId"] = uniqueID;
-    requestObject["KV"] = staticEncryptKey;
-    requestObject["IV"] = staticEncryptIv;
     requestObject[RequestParam.MobileNumber.name] =
         requestConfig?["bankCustomerID"].toString();
 
     AppLogger.appLogE(tag: "REQ:", message: jsonEncode(requestObject));
 
     var url = currentBaseUrl + tokenUrl;
-    var publicKey = await getPublicKey(currentBaseUrl);
-
     AppLogger.appLogI(tag: "Token url:", message: url);
     var dioResponse;
-    var rsaEncrypted = await NativeBinder.rsaEncrypt(
-        jsonEncode(requestObject), publicKey ?? "");
-
     try {
-      dioResponse = await dio.post(url, data: {"Data": rsaEncrypted});
-      var response = jsonDecode(dioResponse.toString())["Data"];
-      var decryptedMessage = jsonDecode(await NativeBinder.gcmDecrypt(
-              response, staticEncryptIv, staticEncryptKey) ??
-          "");
-      AppLogger.appLogI(tag: "TOKEN RESPONSE", message: decryptedMessage);
-
+      dioResponse = await dio.post(url, data: requestObject);
+      AppLogger.writeResponseToFile(
+          fileName: "Token res", response: dioResponse.toString());
       if (dioResponse.statusCode == 200) {
-        token = decryptedMessage["token"] ?? "";
-        await CommonSharedPref.addDeviceData(
-            token, staticEncryptKey, staticEncryptIv);
-        routes = await NativeBinder.gcmDecrypt(
-                decryptedMessage["payload"]["Routes"],
-                staticEncryptIv,
-                staticEncryptKey) ??
-            "";
+        device = dioResponse.data["payload"]["Device"];
+        data = dioResponse.data["data"];
+        token = dioResponse.data["token"];
 
+        deviceCharArray = device.split('');
+        dataArr = data.cast<int>();
+        for (var i in dataArr) {
+          keys += deviceCharArray[i];
+        }
+        iv = dioResponse.data["payload"]["Ran"];
+        await CommonSharedPref.addDeviceData(token, keys, iv);
+        routes = CryptLib.decrypt(dioResponse.data["payload"]["Routes"],
+            CryptLib.toSHA256(keys, 32), iv);
         AppLogger.appLogI(tag: "REQ:ROUTES", message: routes);
         await CommonSharedPref.addRoutes(json.decode(routes));
       }
     } catch (e) {
-      AppLogger.appLogE(tag: "GET TOKEN ERROR:", message: e.toString());
+      AppLogger.appLogE(tag: "ERROR:", message: e.toString());
     }
     return dioResponse?.statusCode;
   }

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 class NativeBinder {
@@ -8,35 +7,5 @@ class NativeBinder {
     await platform.invokeMethod('getLittleProduct', <String, dynamic>{
       'littleProduct': littleProduct,
     });
-  }
-
-  static Future<String?> rsaEncrypt(String plainText, String publicKey) async {
-    debugPrint("Starting rsa encrypt....");
-    try {
-      String encryptedString = await platform.invokeMethod('encrypt',
-          <String, dynamic>{'plainText': plainText, 'publicKey': publicKey});
-      debugPrint("Encrypted string:::$encryptedString");
-      return encryptedString;
-    } catch (e) {
-      debugPrint("Invoke method error:::$e");
-      return null;
-    }
-  }
-
-  static Future<String?> gcmDecrypt(
-      String encryptedString, String iv, String key) async {
-    try {
-      String decryptedString = await platform.invokeMethod(
-          'decrypt', <String, dynamic>{
-        'encryptedText': encryptedString,
-        'iv': iv,
-        'key': key
-      });
-      debugPrint("Encrypted string:::$encryptedString");
-      return decryptedString;
-    } catch (e) {
-      debugPrint("Invoke method error:::$e");
-      return null;
-    }
   }
 }

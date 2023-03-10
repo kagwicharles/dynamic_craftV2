@@ -27,7 +27,7 @@ class ModuleRepository {
     return modules;
   }
 
-  Future<ModuleItem> getModuleById(String id) async {
+  Future<ModuleItem?> getModuleById(String id) async {
     var module;
     await db.then((database) {
       module = database.moduleItemDao.getModuleById(id);
